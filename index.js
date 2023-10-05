@@ -28,6 +28,8 @@ for (const folder of commandFolders) {
 
 client.once(Events.ClientReady, () => {
 	console.log(`Ready! Logged in as ${client.user.tag}`);
+	client.user.setActivity('Me estan programando');
+
 });
 
 client.on(Events.InteractionCreate, async interaction => {
