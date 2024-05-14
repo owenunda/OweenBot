@@ -1,5 +1,10 @@
-const {SlashCommandBuilder} = require("discord.js")
+const {SlashCommandBuilder, EmbedBuilder} = require("discord.js")
+const agentValorant = require("./json/agentValorant.json")
 
+const randomAgent = () =>{
+  let numRandom = Math.floor(Math.random() * (agentValorant.length - 1)) 
+  return agentValorant[numRandom].img
+}
 
 
 module.exports = {
@@ -9,11 +14,7 @@ module.exports = {
     .setDescription("te da un agente random de valorant"),
     
     async execute(interaction){
-      const agentesValorant = ["Astra","Brimstone","Harbor","Omen","Viper","Jett","Neon","Phoenix","Raze","Reyna","Yoru","Iso","Breach","Fade", "Gekko","KAY/O","Skye","Sova","Chamber","Cypher","Deadlock","Killjoy","Sage","clove"]
-      const randomAgent = () =>{
-        let numRandom = Math.floor(Math.random() * (agentesValorant.length - 1)) 
-        return agentesValorant[numRandom]
-      } 
+      
         await interaction.reply(randomAgent())
     }
 }
