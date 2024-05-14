@@ -4,7 +4,7 @@ const wait = require('node:timers/promises').setTimeout;
 module.exports = {
     cooldown: 5,
     data: new SlashCommandBuilder()
-    .setName("hola")
+    .setName("hola-pepe")
     .setDescription("te responde con un hola :D"),
 
     async execute(interaction){
