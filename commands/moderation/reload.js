@@ -11,9 +11,7 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 		const commandName = interaction.options.getString('command', true).toLowerCase();
-    console.log(commandName)
 		const command = interaction.client.commands.get(commandName);
-    console.log(command)
 
 		if (!command) {
 			return interaction.reply(`There is no command with name \`${commandName}\`!`);
