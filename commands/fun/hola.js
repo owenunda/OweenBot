@@ -1,7 +1,7 @@
-const {SlashCommandBuilder} = require("discord.js")
-const wait = require('node:timers/promises').setTimeout;
+import { SlashCommandBuilder } from "discord.js";
+import { setTimeout as wait } from 'node:timers/promises';
 
-module.exports = {
+export default {
     cooldown: 5,
     data: new SlashCommandBuilder()
     .setName("hola-pepe")

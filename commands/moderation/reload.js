@@ -1,6 +1,7 @@
-const { SlashCommandBuilder } = require("discord.js");
+import { SlashCommandBuilder } from "discord.js";
+import path from 'node:path';
 
-module.exports = {
+export default {
   category: "utility",
   data: new SlashCommandBuilder()
     .setName("reload")
@@ -23,13 +24,17 @@ module.exports = {
       );
     }
 
-    delete require.cache[
-      require.resolve(`../${command.category}/${command.data.name}.js`)
-    ];
-
     try {
+      // Construir URL del módulo a recargar relativa a este archivo usando el nombre real del archivo
+      const baseUrl = new URL(import.meta.url);
+      const fileName = command.fileName ?? command.data.name; // fallback por si acaso
+      const targetUrl = new URL(`../${command.category}/${fileName}.js?update=${Date.now()}`, baseUrl);
+      const imported = await import(targetUrl.href);
+      const newCommand = imported.default ?? imported;
+      // Asegurar metadatos para futuras recargas
+      newCommand.category = newCommand.category ?? command.category;
+      newCommand.fileName = newCommand.fileName ?? fileName;
       interaction.client.commands.delete(command.data.name);
-      const newCommand = require(`../${command.category}/${command.data.name}.js`);
       interaction.client.commands.set(newCommand.data.name, newCommand);
       await interaction.reply(
         `Comando \`${newCommand.data.name}\` recargado!`

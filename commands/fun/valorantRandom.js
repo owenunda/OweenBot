@@ -1,5 +1,8 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const agentValorant = require("./json/agentValorant.json");
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
+import fs from 'node:fs';
+const agentValorant = JSON.parse(
+  fs.readFileSync(new URL('./json/agentValorant.json', import.meta.url), 'utf-8')
+);
 
 let imgAgent = "";
 let nameAgent = "";
@@ -54,7 +57,7 @@ const randomAgent = (role) => {
     });
   return { embeds: [exampleEmbed] };
 };
-module.exports = {
+export default {
   cooldown: 3,
   data: new SlashCommandBuilder()
     .setName("random-agent")

@@ -1,8 +1,11 @@
-const fs = require('node:fs');
-const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+import fs from 'node:fs';
+import path from 'node:path';
+import { pathToFileURL, fileURLToPath } from 'node:url';
+import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
+import 'dotenv/config';
 
-require('dotenv').config()
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -16,17 +19,23 @@ for (const folder of commandFolders) {
 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
-		const command = require(filePath);
+		const moduleUrl = pathToFileURL(filePath).href;
+		const imported = await import(moduleUrl);
+		const command = imported.default ?? imported;
 		if ('data' in command && 'execute' in command) {
+			// Asegura que cada comando conozca su categoría (subcarpeta) para funciones como reload
+			command.category = command.category ?? folder;
+			// Guarda el nombre real del archivo (sin extensión) para reload
+			command.fileName = command.fileName ?? path.parse(file).name;
 			client.commands.set(command.data.name, command);
 		} else {
-				console.log(`[ADVERTENCIA] El comando en ${filePath} no tiene la propiedad requerida "data" o "execute". - index.js:23`);
+				console.log(`[ADVERTENCIA] El comando en ${filePath} no tiene la propiedad requerida "data" o "execute". - index.js:32`);
 		}
 	}
 }
 
 client.once(Events.ClientReady, c => {
-	console.log(`¡Listo! Conectado como ${c.user.tag} - index.js:29`);
+	console.log(`¡Listo! Conectado como ${c.user.tag} - index.js:38`);
 });
 
 client.on(Events.InteractionCreate, async interaction => {
@@ -34,7 +43,7 @@ client.on(Events.InteractionCreate, async interaction => {
 	const command = client.commands.get(interaction.commandName);
 
 	if (!command) {
-	console.error(`No se encontró ningún comando que coincida con ${interaction.commandName}. - index.js:37`);
+	console.error(`No se encontró ningún comando que coincida con ${interaction.commandName}. - index.js:46`);
 		return;
 	}
 
@@ -73,4 +82,4 @@ client.on(Events.InteractionCreate, async interaction => {
 	}
 });
 
-client.login(process.env.token);
+client.login(process.env.TOKEN);

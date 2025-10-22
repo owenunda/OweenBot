@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
 
-module.exports = {
+export default {
 	data: new SlashCommandBuilder()
 		.setName('ban')
 		.setDescription('Select a member and ban them.')
