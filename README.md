@@ -2,7 +2,7 @@
 
 # 🐱✨ OweenBot
 
-![OweenBot - Gatito mago](./assets/imgs/image-profile.png)
+<img src="./assets/imgs/image-profile.png" alt="OweenBot - Gatito mago" width="200">
 
 Tu compañero de aventuras en Discord: saluda, juega, muestra avatares, comparte datos del server y hasta te asigna un agente aleatorio de Valorant. Todo, con el encanto de un gatito mago.
 
