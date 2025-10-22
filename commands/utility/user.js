@@ -7,6 +7,6 @@ module.exports = {
     .setDescription("Da informacion del usuario"),
 
     async execute(interaction){
-        await interaction.reply(`Comando ejecutado por ${interaction.user.username} `) 
+    await interaction.reply(`Comando ejecutado por ${interaction.user.username}`) 
     }
 }

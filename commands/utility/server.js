@@ -7,7 +7,7 @@ module.exports = {
 		.setDescription('Provides information about the server.'),
 	async execute(interaction) {
 		// interaction.guild is the object representing the Guild in which the command was run
-		await interaction.reply(`El nombre del server es ${interaction.guild.name} y tiene ${interaction.guild.memberCount} personitas.`);
+		await interaction.reply(`El nombre del servidor es ${interaction.guild.name} y tiene ${interaction.guild.memberCount} miembros.`);
 	},
 };
 

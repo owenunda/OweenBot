@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+
 require('dotenv').config()
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -19,13 +20,13 @@ for (const folder of commandFolders) {
 		if ('data' in command && 'execute' in command) {
 			client.commands.set(command.data.name, command);
 		} else {
-			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+				console.log(`[ADVERTENCIA] El comando en ${filePath} no tiene la propiedad requerida "data" o "execute". - index.js:23`);
 		}
 	}
 }
 
 client.once(Events.ClientReady, c => {
-	console.log(`Ready! Logged in as ${c.user.tag}`);
+	console.log(`¡Listo! Conectado como ${c.user.tag} - index.js:29`);
 });
 
 client.on(Events.InteractionCreate, async interaction => {
@@ -33,7 +34,7 @@ client.on(Events.InteractionCreate, async interaction => {
 	const command = client.commands.get(interaction.commandName);
 
 	if (!command) {
-		console.error(`No command matching ${interaction.commandName} was found.`);
+	console.error(`No se encontró ningún comando que coincida con ${interaction.commandName}. - index.js:37`);
 		return;
 	}
 
@@ -53,7 +54,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
 		if (now < expirationTime) {
 			const expiredTimestamp = Math.round(expirationTime / 1000);
-			return interaction.reply({ content: `Please wait, you are on a cooldown for \`${command.data.name}\`. You can use it again <t:${expiredTimestamp}:R>.`, ephemeral: true });
+			return interaction.reply({ content: `Por favor espera, estás en periodo de espera para \`${command.data.name}\`. Podrás usarlo de nuevo <t:${expiredTimestamp}:R>.`, ephemeral: true });
 		}
 	}
 
@@ -65,9 +66,9 @@ client.on(Events.InteractionCreate, async interaction => {
 	} catch (error) {
 		console.error(error);
 		if (interaction.replied || interaction.deferred) {
-			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+			await interaction.followUp({ content: "Hubo un error al ejecutar este comando!", ephemeral: true });
 		} else {
-			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+			await interaction.reply({ content: 'Hubo un error al ejecutar este comando!', ephemeral: true });
 		}
 	}
 });

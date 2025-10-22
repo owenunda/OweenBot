@@ -9,8 +9,8 @@ module.exports = {
     .setDescription("Te dice pong!!"),
 
     async execute(interaction){
-        await interaction.reply("pong!!")
-        await wait(4000)
-        await interaction.followUp('otro pong!!');
+    await interaction.reply("pong!!")
+    await wait(4000)
+    await interaction.followUp('otro pong!!');
     }
 }

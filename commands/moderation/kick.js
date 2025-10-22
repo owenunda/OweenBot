@@ -20,7 +20,7 @@ module.exports = {
     const target = interaction.options.getMember('target');
     const reason = interaction.options.getString('reason') ?? 'No reason provided';
     
-    await interaction.guild.members.kick(target);
-    return interaction.reply(`kick: ${target.user.username} reason: ${reason}`);
+  await interaction.guild.members.kick(target);
+  return interaction.reply(`Expulsión: ${target.user.username} — Motivo: ${reason}`);
   },
 };

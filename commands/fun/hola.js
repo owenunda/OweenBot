@@ -8,9 +8,9 @@ module.exports = {
     .setDescription("te responde con un hola :D"),
 
     async execute(interaction){
-        await interaction.reply({ content: 'Hoqa!'})
-        await wait(2000)
-        await interaction.editReply("escribi mal era, Hola!")
+    await interaction.reply({ content: 'Hoqa!'})
+    await wait(2000)
+    await interaction.editReply("Escribí mal, era: Hola!")
 
     }
     

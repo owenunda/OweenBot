@@ -41,14 +41,14 @@ const randomAgent = (role) => {
   const exampleEmbed = new EmbedBuilder()
     .setColor(0x0099ff)
     .setAuthor({
-      name: `The random agent is ${nameAgent} 😉 `,
+      name: `El agente aleatorio es ${nameAgent} 😉 `,
       iconURL:
         "https://cdn4.iconfinder.com/data/icons/valorant-jett-and-killjoy-cute-chibi/2000/valorant_chibi_killjoy_jettvalorant_cute_jettcute_killjoycute-09-512.png",
     })
     .setImage(imgAgent)
     .setTimestamp()
     .setFooter({
-      text: "thanks for using oweenbot ❤️",
+  text: "gracias por usar OweenBot ❤️",
       iconURL:
         "https://www.techspot.com/images2/downloads/topdownload/2020/06/2020-06-09-ts3_thumbs-7fd-p_256.webp",
     });
