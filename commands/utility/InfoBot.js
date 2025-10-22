@@ -3,8 +3,9 @@ import { SlashCommandBuilder } from 'discord.js';
 export default {
   cooldown: 5,
   data: new SlashCommandBuilder()
-    .setName('infoBot')
+    .setName('infobot')
     .setDescription('Informacion general sobre el bot.'),
+
   async execute(interaction) {
     const botUser = interaction.client.user;
     const botUptime = interaction.client.uptime;
@@ -24,7 +25,6 @@ export default {
     - website: https://wooden-marcella-oub-8ebc8c6f.koyeb.app/
     - Librería: discord.js
     - Plataforma de hosting: Koyeb
-    - Soporte: [Servidor de Discord](https://discord.gg/J9YrgE77)
-    `);
+    - Soporte: [Servidor de Discord](https://discord.gg/J9YrgE77)`);
   },
 }
