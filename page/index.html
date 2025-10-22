@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>OweenBot — Gatito mago para tu servidor</title>
+		<meta name="description" content="Tu compañero de aventuras en Discord: saluda, juega, muestra avatares, comparte datos del server y te asigna un agente aleatorio de Valorant." />
+		<link rel="icon" href="/assets/imgs/image-profile.png" />
+		<style>
+			:root {
+				--bg: #0b0c10;
+				--card: #111317;
+				--text: #e6edf3;
+				--muted: #c2c7cf;
+				--accent: #8a63d2;
+				--accent-2: #2ea043;
+			}
+			* { box-sizing: border-box; }
+			html, body { height: 100%; }
+			body {
+				margin: 0;
+				font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+				color: var(--text);
+				background: radial-gradient(1200px 600px at 80% -10%, #1b1333 10%, transparent 60%),
+									radial-gradient(900px 400px at -10% 20%, #0f2a35 10%, transparent 60%),
+									var(--bg);
+				background-size: 140% 140%, 160% 160%, auto;
+				background-position: 80% -10%, -10% 20%, 0 0;
+				animation: bgMove 25s ease-in-out infinite alternate;
+			}
+			@keyframes bgMove { 0% { background-position: 80% -10%, -10% 20%, 0 0; } 100% { background-position: 55% -25%, 5% 35%, 0 0; } }
+			.container {
+				max-width: 920px;
+				margin: 0 auto;
+				padding: 32px 20px 56px;
+			}
+			header {
+				text-align: center;
+				margin-bottom: 28px;
+			}
+			header img {
+				width: 140px;
+				height: 140px;
+				object-fit: cover;
+				border-radius: 16px;
+				box-shadow: 0 10px 30px rgba(0,0,0,.35);
+				animation: float 6s ease-in-out infinite;
+			}
+			@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+			h1 { font-size: 2rem; margin: 16px 0 8px; }
+			.subtitle { color: var(--muted); font-size: 1.05rem; }
+			.grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+			@media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+			.card {
+				background: linear-gradient(135deg, rgba(138,99,210,.08), rgba(94,160,255,.05));
+				border: 1px solid rgba(138,99,210,.2);
+				padding: 24px;
+				border-radius: 16px;
+				backdrop-filter: blur(8px);
+				box-shadow: 0 4px 16px rgba(0,0,0,.2);
+				transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+			}
+			.card:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 8px 24px rgba(138,99,210,.25);
+				border-color: rgba(138,99,210,.35);
+			}
+			h2 { 
+				font-size: 1.3rem; 
+				margin: 0 0 14px;
+				background: linear-gradient(90deg, var(--accent), #5ea0ff);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+			}
+			ul { margin: 0; padding-left: 20px; color: var(--muted); line-height: 1.7; }
+			ul li { margin-bottom: 8px; }
+			a { color: var(--accent); text-decoration: none; }
+			a:hover { text-decoration: underline; }
+			.cta {
+				margin-top: 8px;
+				display: inline-block;
+				background: linear-gradient(135deg, var(--accent), #5ea0ff);
+				color: white;
+				padding: 12px 28px;
+				border-radius: 12px;
+				box-shadow: 0 8px 20px rgba(138, 99, 210, .4);
+				transition: transform .2s ease, box-shadow .2s ease;
+				animation: glow 3s ease-in-out infinite;
+				font-weight: 600;
+				letter-spacing: 0.3px;
+			}
+			.cta:hover { 
+				transform: translateY(-2px) scale(1.05); 
+				box-shadow: 0 12px 32px rgba(138, 99, 210, .55);
+				text-decoration: none;
+			}
+			@keyframes glow { 0%, 100% { box-shadow: 0 8px 20px rgba(138,99,210,.35); } 50% { box-shadow: 0 10px 30px rgba(94,160,255,.45); } }
+			.center { text-align: center; }
+			.reveal { opacity: 0; transform: translateY(10px); }
+			.reveal-visible { opacity: 1; transform: translateY(0); transition: opacity .6s ease, transform .6s ease; }
+			@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+			.tips { color: var(--muted); font-size: .95rem; margin-top: 8px; }
+			footer { margin-top: 36px; text-align: center; color: var(--muted); font-size: .9rem; }
+		</style>
+	</head>
+	<body>
+		<main class="container">
+			<header>
+				<img src="/assets/imgs/image-profile.png" alt="OweenBot - Gatito mago" />
+				<h1>OweenBot 🐱✨</h1>
+				<p class="subtitle">Tu compañero de aventuras en Discord: saluda, juega, muestra avatares, comparte datos del server y hasta te asigna un agente aleatorio de Valorant.</p>
+			</header>
+
+			<section class="grid">
+				<div class="card reveal">
+					<h2>¿Qué puede hacer?</h2>
+					<ul>
+						<li>“¡Hola!” con estilo — saluda, bromea y corrige typos.</li>
+						<li>“Pong!!” — responde a tu ping como todo buen bot.</li>
+						<li>“Dime tu avatar” — muestra el tuyo o el de quien elijas.</li>
+						<li>“¿Quién manda aquí?” — cuenta cuánta gente hay en tu server.</li>
+						<li>“¡Acción!” — banea o expulsa si hace falta.</li>
+						<li>“Suerte, agente” — agente random de Valorant con un embed precioso.</li>
+					</ul>
+				</div>
+				<div class="card reveal">
+					<h2>Comandos favoritos</h2>
+					<ul>
+						<li><code>/hola-pepe</code> — humor del bueno.</li>
+						<li><code>/ping</code> — check rápido.</li>
+						<li><code>/avatar</code> — muestra avatares.</li>
+						<li><code>/server</code> — info del servidor.</li>
+						<li><code>/random-agent</code> — Valorant vibes.</li>
+						<li><code>/reload</code> — recarga comandos sin reiniciar.</li>
+					</ul>
+				</div>
+			</section>
+
+			<section class="card reveal" style="margin-top:20px;">
+				<p class="center">
+					<a class="cta" href="https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=8&scope=bot%20applications.commands" target="_blank" rel="noreferrer">Generar enlace de invitación</a>
+				</p>
+			</section>
+
+			<section class="card reveal" style="margin-top:20px;">
+				<h2>¿Y lo técnico?</h2>
+				<p class="tips">
+					Instalación, variables de entorno, despliegue de (/) comandos y estructura del proyecto.
+					Échale un vistazo al documento técnico en GitHub:
+					<a href="https://github.com/owenunda/OweenBot/blob/main/TECHNICAL.md" target="_blank" rel="noreferrer">TECHNICAL.md</a>.
+				</p>
+			</section>
+
+			<footer>
+				Hecho con cariño, café y un sombrero de mago. 🎩
+			</footer>
+		</main>
+		<script>
+			(() => {
+				const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+				const els = document.querySelectorAll('.reveal');
+				if (reduce) {
+					els.forEach(el => el.classList.add('reveal-visible'));
+					return;
+				}
+				const obs = new IntersectionObserver((entries) => {
+					for (const e of entries) {
+						if (e.isIntersecting) {
+							e.target.classList.add('reveal-visible');
+							obs.unobserve(e.target);
+						}
+					}
+				}, { threshold: 0.1 });
+				els.forEach(el => obs.observe(el));
+			})();
+		</script>
+	</body>
+	</html>
