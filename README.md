@@ -22,7 +22,7 @@ Tu compañero de aventuras en Discord: saluda, juega, muestra avatares, comparte
 Usa este enlace (reemplaza CLIENT_ID por el de tu bot):
 
 ```
-https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=8&scope=bot%20applications.commands
+https://discord.com/api/oauth2/authorize?client_id=1158512555245981706&permissions=8&scope=bot%20applications.commands
 ```
 
 ## Comandos favoritos
