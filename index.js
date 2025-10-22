@@ -2,8 +2,22 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL, fileURLToPath } from 'node:url';
 import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
+import express from "express";
 import 'dotenv/config';
 
+// --- Express server para mantener el bot activo en plataformas como Replit o Render ---
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get("/", (req, res) => {
+  res.send("Bot is alive!");
+});
+
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT} - index.js:16`));
+
+
+// --- FIN Express server ---
+//--- Configuración del bot de Discord ---
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -29,13 +43,13 @@ for (const folder of commandFolders) {
 			command.fileName = command.fileName ?? path.parse(file).name;
 			client.commands.set(command.data.name, command);
 		} else {
-				console.log(`[ADVERTENCIA] El comando en ${filePath} no tiene la propiedad requerida "data" o "execute". - index.js:32`);
+				console.log(`[ADVERTENCIA] El comando en ${filePath} no tiene la propiedad requerida "data" o "execute". - index.js:46`);
 		}
 	}
 }
 
 client.once(Events.ClientReady, c => {
-	console.log(`¡Listo! Conectado como ${c.user.tag} - index.js:38`);
+	console.log(`¡Listo! Conectado como ${c.user.tag} - index.js:52`);
 });
 
 client.on(Events.InteractionCreate, async interaction => {
@@ -43,7 +57,7 @@ client.on(Events.InteractionCreate, async interaction => {
 	const command = client.commands.get(interaction.commandName);
 
 	if (!command) {
-	console.error(`No se encontró ningún comando que coincida con ${interaction.commandName}. - index.js:46`);
+	console.error(`No se encontró ningún comando que coincida con ${interaction.commandName}. - index.js:60`);
 		return;
 	}
 
