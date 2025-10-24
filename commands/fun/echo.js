@@ -13,5 +13,6 @@ export default {
     async execute(interaction) {
         const input = await interaction.options.getString("input");
         await interaction.reply(`Dijiste: ${input}`)
+        await interaction.followUp({ content: '¡Echo completado!', ephemeral: true });
     },
 }
