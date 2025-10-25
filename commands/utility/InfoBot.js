@@ -22,7 +22,7 @@ export default {
     - Versión: 1.0.0
     - GitHub: https://github.com/owenunda/OweenBot/
     - Lenguaje: JavaScript (Node.js)
-    - website: https://wooden-marcella-oub-8ebc8c6f.koyeb.app/
+    - website: https://oweenbot.oween.software/
     - Librería: discord.js
     - Plataforma de hosting: Koyeb
     - Soporte: [Servidor de Discord](https://discord.gg/J9YrgE77)`);
