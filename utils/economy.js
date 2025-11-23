@@ -97,8 +97,9 @@ export const updateWorkTime = async (userId) => {
 // Elimina monedas 
 export const removeCoins = async (userId, amount) => {
   try {
-    const result = await pool.query('SELECT manticoins FROM economy WHERE userId = $1', [userId]);
-    if (result.rows.length === 0 || result.rows[0].manticoins < amount) {
+    const currentBalance = await getBalance(userId);
+
+    if (currentBalance < amount) {
       return false; // No hay suficientes monedas
     }
 
