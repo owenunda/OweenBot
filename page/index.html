@@ -1,180 +1,460 @@
-<!doctype html>
-<html lang="es">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>OweenBot — Gatito mago para tu servidor</title>
-		<meta name="description" content="Tu compañero de aventuras en Discord: saluda, juega, muestra avatares, comparte datos del server y te asigna un agente aleatorio de Valorant." />
-		<link rel="icon" href="/assets/imgs/image-profile.png" />
-		<style>
-			:root {
-				--bg: #0b0c10;
-				--card: #111317;
-				--text: #e6edf3;
-				--muted: #c2c7cf;
-				--accent: #8a63d2;
-				--accent-2: #2ea043;
-			}
-			* { box-sizing: border-box; }
-			html, body { height: 100%; }
-			body {
-				margin: 0;
-				font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-				color: var(--text);
-				background: radial-gradient(1200px 600px at 80% -10%, #1b1333 10%, transparent 60%),
-									radial-gradient(900px 400px at -10% 20%, #0f2a35 10%, transparent 60%),
-									var(--bg);
-				background-size: 140% 140%, 160% 160%, auto;
-				background-position: 80% -10%, -10% 20%, 0 0;
-				animation: bgMove 25s ease-in-out infinite alternate;
-			}
-			@keyframes bgMove { 0% { background-position: 80% -10%, -10% 20%, 0 0; } 100% { background-position: 55% -25%, 5% 35%, 0 0; } }
-			.container {
-				max-width: 920px;
-				margin: 0 auto;
-				padding: 32px 20px 56px;
-			}
-			header {
-				text-align: center;
-				margin-bottom: 28px;
-			}
-			header img {
-				width: 140px;
-				height: 140px;
-				object-fit: cover;
-				border-radius: 16px;
-				box-shadow: 0 10px 30px rgba(0,0,0,.35);
-				animation: float 6s ease-in-out infinite;
-			}
-			@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-			h1 { font-size: 2rem; margin: 16px 0 8px; }
-			.subtitle { color: var(--muted); font-size: 1.05rem; }
-			.grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
-			@media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
-			.card {
-				background: linear-gradient(135deg, rgba(138,99,210,.08), rgba(94,160,255,.05));
-				border: 1px solid rgba(138,99,210,.2);
-				padding: 24px;
-				border-radius: 16px;
-				backdrop-filter: blur(8px);
-				box-shadow: 0 4px 16px rgba(0,0,0,.2);
-				transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
-			}
-			.card:hover {
-				transform: translateY(-2px);
-				box-shadow: 0 8px 24px rgba(138,99,210,.25);
-				border-color: rgba(138,99,210,.35);
-			}
-			h2 { 
-				font-size: 1.3rem; 
-				margin: 0 0 14px;
-				background: linear-gradient(90deg, var(--accent), #5ea0ff);
-				-webkit-background-clip: text;
-				-webkit-text-fill-color: transparent;
-				background-clip: text;
-			}
-			ul { margin: 0; padding-left: 20px; color: var(--muted); line-height: 1.7; }
-			ul li { margin-bottom: 8px; }
-			a { color: var(--accent); text-decoration: none; }
-			a:hover { text-decoration: underline; }
-			.cta {
-				margin-top: 8px;
-				display: inline-block;
-				background: linear-gradient(135deg, var(--accent), #5ea0ff);
-				color: white;
-				padding: 12px 28px;
-				border-radius: 12px;
-				box-shadow: 0 8px 20px rgba(138, 99, 210, .4);
-				transition: transform .2s ease, box-shadow .2s ease;
-				animation: glow 3s ease-in-out infinite;
-				font-weight: 600;
-				letter-spacing: 0.3px;
-			}
-			.cta:hover { 
-				transform: translateY(-2px) scale(1.05); 
-				box-shadow: 0 12px 32px rgba(138, 99, 210, .55);
-				text-decoration: none;
-			}
-			@keyframes glow { 0%, 100% { box-shadow: 0 8px 20px rgba(138,99,210,.35); } 50% { box-shadow: 0 10px 30px rgba(94,160,255,.45); } }
-			.center { text-align: center; }
-			.reveal { opacity: 0; transform: translateY(10px); }
-			.reveal-visible { opacity: 1; transform: translateY(0); transition: opacity .6s ease, transform .6s ease; }
-			@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
-			.tips { color: var(--muted); font-size: .95rem; margin-top: 8px; }
-			footer { margin-top: 36px; text-align: center; color: var(--muted); font-size: .9rem; }
-		</style>
-	</head>
-	<body>
-		<main class="container">
-			<header>
-				<img src="/assets/imgs/image-profile.png" alt="OweenBot - Gatito mago" />
-				<h1>OweenBot 🐱✨</h1>
-				<p class="subtitle">Tu compañero de aventuras en Discord: saluda, juega, muestra avatares, comparte datos del server y hasta te asigna un agente aleatorio de Valorant.</p>
-			</header>
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OweenBot - The Magical Discord Companion</title>
+    <meta name="description" content="Level up your Discord server with OweenBot! Casino games, economy system, social interactions, and more.">
+    <link rel="icon" href="/assets/imgs/image-profile.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-			<section class="grid">
-				<div class="card reveal">
-					<h2>¿Qué puede hacer?</h2>
-					<ul>
-						<li>“¡Hola!” con estilo — saluda, bromea y corrige typos.</li>
-						<li>“Pong!!” — responde a tu ping como todo buen bot.</li>
-						<li>“Dime tu avatar” — muestra el tuyo o el de quien elijas.</li>
-						<li>“¿Quién manda aquí?” — cuenta cuánta gente hay en tu server.</li>
-						<li>“¡Acción!” — banea o expulsa si hace falta.</li>
-						<li>“Suerte, agente” — agente random de Valorant con un embed precioso.</li>
-					</ul>
-				</div>
-				<div class="card reveal">
-					<h2>Comandos favoritos</h2>
-					<ul>
-						<li><code>/hola-pepe</code> — humor del bueno.</li>
-						<li><code>/ping</code> — check rápido.</li>
-						<li><code>/avatar</code> — muestra avatares.</li>
-						<li><code>/server</code> — info del servidor.</li>
-						<li><code>/random-agent</code> — Valorant vibes.</li>
-						<li><code>/reload</code> — recarga comandos sin reiniciar.</li>
-					</ul>
-				</div>
-			</section>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#8B5CF6', // Violet
+                        secondary: '#EC4899', // Pink
+                        dark: {
+                            900: '#0F172A',
+                            800: '#1E293B',
+                            700: '#334155',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
-			<section class="card reveal" style="margin-top:20px;">
-				<p class="center">
-					<a class="cta" href="https://discord.com/api/oauth2/authorize?client_id=1158512555245981706&permissions=8&scope=bot%20applications.commands" target="_blank" rel="noreferrer">Generar enlace de invitación</a>
-				</p>
-			</section>
+    <style>
+        body {
+            background-color: #0F172A;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.15) 0px, transparent 50%);
+            color: #F8FAFC;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #8B5CF6, #EC4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
 
-			<section class="card reveal" style="margin-top:20px;">
-				<h2>¿Y lo técnico?</h2>
-				<p class="tips">
-					Instalación, variables de entorno, despliegue de (/) comandos y estructura del proyecto.
-					Échale un vistazo al documento técnico en GitHub:
-					<a href="https://github.com/owenunda/OweenBot/blob/main/TECHNICAL.md" target="_blank" rel="noreferrer">TECHNICAL.md</a>.
-				</p>
-			</section>
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <div class="flex items-center gap-2 md:gap-3">
+                    <img src="/assets/imgs/image-profile.png" alt="Logo" class="h-8 w-8 md:h-10 md:w-10 rounded-full border-2 border-primary">
+                    <span class="font-bold text-lg md:text-xl tracking-tight">OweenBot</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#features" class="hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Features</a>
+                        <a href="#commands" class="hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Commands</a>
+                        <a href="#stats" class="hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Stats</a>
+                        <a href="https://discord.gg/3rE9PRH95y" target="_blank" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full text-sm font-medium transition-all">Support</a>
+                        <a href="https://discord.com/api/oauth2/authorize?client_id=1158512555245981706&permissions=8&scope=bot%20applications.commands" target="_blank" class="bg-gradient-to-r from-primary to-secondary hover:opacity-90 px-5 py-2 rounded-full text-sm font-bold shadow-lg shadow-primary/25 transition-all transform hover:scale-105">Invite Bot</a>
+                    </div>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-white/10 focus:outline-none transition-colors">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 bg-dark-900/95 backdrop-blur-md border-t border-white/10">
+                <a href="#features" class="block hover:bg-white/10 px-3 py-2 rounded-md text-base font-medium transition-colors">Features</a>
+                <a href="#commands" class="block hover:bg-white/10 px-3 py-2 rounded-md text-base font-medium transition-colors">Commands</a>
+                <a href="#stats" class="block hover:bg-white/10 px-3 py-2 rounded-md text-base font-medium transition-colors">Stats</a>
+                <a href="https://discord.gg/3rE9PRH95y" target="_blank" class="block hover:bg-white/10 px-3 py-2 rounded-md text-base font-medium transition-colors">Support</a>
+                <a href="https://discord.com/api/oauth2/authorize?client_id=1158512555245981706&permissions=8&scope=bot%20applications.commands" target="_blank" class="block bg-gradient-to-r from-primary to-secondary px-3 py-2 rounded-md text-base font-bold text-center">Invite Bot</a>
+            </div>
+        </div>
+    </nav>
 
-			<footer>
-				Hecho con cariño, café y un sombrero de mago. 🎩
-				
-			</footer>
-		</main>
-		<script>
-			(() => {
-				const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-				const els = document.querySelectorAll('.reveal');
-				if (reduce) {
-					els.forEach(el => el.classList.add('reveal-visible'));
-					return;
-				}
-				const obs = new IntersectionObserver((entries) => {
-					for (const e of entries) {
-						if (e.isIntersecting) {
-							e.target.classList.add('reveal-visible');
-							obs.unobserve(e.target);
-						}
-					}
-				}, { threshold: 0.1 });
-				els.forEach(el => obs.observe(el));
-			})();
-		</script>
-	</body>
-	</html>
+    <!-- Hero Section -->
+    <section class="relative pt-24 pb-12 md:pt-32 md:pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center lg:text-left lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                <div class="mb-12 lg:mb-0">
+                    <div class="inline-block px-3 py-1.5 md:px-4 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs md:text-sm font-semibold mb-4 md:mb-6 animate-fade-in-up">
+                        ✨ The Ultimate Discord Companion
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight mb-4 md:mb-6 leading-tight">
+                        Level Up Your <br>
+                        <span class="text-gradient">Discord Server</span>
+                    </h1>
+                    <p class="text-base md:text-lg text-gray-400 mb-6 md:mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed px-4 lg:px-0">
+                        Engage your community with casino games, a robust economy system, social interactions, and powerful utilities. All in one magical bot.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start px-4 lg:px-0">
+                        <a href="https://discord.com/api/oauth2/authorize?client_id=1158512555245981706&permissions=8&scope=bot%20applications.commands" target="_blank" class="group relative px-6 md:px-8 py-3 md:py-4 bg-primary rounded-xl font-bold text-white shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-all transform hover:-translate-y-1 overflow-hidden text-center">
+                            <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                            <span class="flex items-center gap-2 justify-center">
+                                <i class="fab fa-discord text-lg md:text-xl"></i> Add to Discord
+                            </span>
+                        </a>
+                        <a href="#features" class="px-6 md:px-8 py-3 md:py-4 bg-dark-800 border border-dark-700 hover:border-primary/50 rounded-xl font-bold text-white transition-all hover:bg-dark-700 text-center">
+                            Explore Features
+                        </a>
+                    </div>
+                </div>
+                <div class="relative lg:h-[600px] flex items-center justify-center mt-8 lg:mt-0">
+                    <div class="absolute w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-primary/20 rounded-full blur-[100px] -z-10 animate-pulse-slow"></div>
+                    <img src="/assets/imgs/image-profile.png" alt="OweenBot Preview" class="w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 object-cover rounded-3xl shadow-2xl border-4 border-dark-800 animate-float z-10 relative">
+                    
+                    <!-- Floating Cards - Hidden on mobile -->
+                    <div class="hidden lg:block absolute top-10 -right-4 lg:right-0 glass-card p-4 rounded-xl animate-float z-20 shadow-xl" style="animation-delay: 1s;">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-400">Balance</p>
+                                <p class="font-bold">1,500 MantiCoins</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="hidden lg:block absolute bottom-10 -left-4 lg:left-0 glass-card p-4 rounded-xl animate-float z-20 shadow-xl" style="animation-delay: 2s;">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-400">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-400">Social</p>
+                                <p class="font-bold">Hug sent! 🤗</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="stats" class="py-10 border-y border-white/5 bg-dark-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="p-4">
+                    <div class="text-4xl font-bold text-white mb-2 counter" data-target="100">0+</div>
+                    <div class="text-sm text-gray-400 uppercase tracking-wider">Servers</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-4xl font-bold text-white mb-2 counter" data-target="5000">0+</div>
+                    <div class="text-sm text-gray-400 uppercase tracking-wider">Users</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-4xl font-bold text-white mb-2 counter" data-target="28">0</div>
+                    <div class="text-sm text-gray-400 uppercase tracking-wider">Commands</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-4xl font-bold text-white mb-2">99.9%</div>
+                    <div class="text-sm text-gray-400 uppercase tracking-wider">Uptime</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Everything you need</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">OweenBot comes packed with features to keep your server entertained and engaged.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-primary/50 transition-all group hover:-translate-y-2">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white text-2xl mb-6 shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-dice"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Casino Games</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Full-featured casino system with Blackjack, Roulette, Slots, and Coinflip. Bet your MantiCoins and win big!
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-primary/50 transition-all group hover:-translate-y-2">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-white text-2xl mb-6 shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Economy System</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Robust economy with daily rewards, server-specific leaderboards, and global rankings.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-primary/50 transition-all group hover:-translate-y-2">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-400 to-rose-600 flex items-center justify-center text-white text-2xl mb-6 shadow-lg shadow-rose-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Social Actions</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Express yourself with interactive commands like hug, kiss, slap, dance, and more. Earn coins while socializing!
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-primary/50 transition-all group hover:-translate-y-2">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center text-white text-2xl mb-6 shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Server Utilities</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Get detailed server info, user avatars, join dates, and more useful tools for moderation.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-primary/50 transition-all group hover:-translate-y-2">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center text-white text-2xl mb-6 shadow-lg shadow-red-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Gaming Tools</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Valorant random agent selector and other gaming-related utilities for your squad.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-primary/50 transition-all group hover:-translate-y-2">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-400 to-violet-600 flex items-center justify-center text-white text-2xl mb-6 shadow-lg shadow-violet-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Always Online</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Hosted 24/7 with 99.9% uptime, ensuring OweenBot is always there when you need it.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands Preview -->
+    <section id="commands" class="py-24 bg-dark-800/30">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Popular Commands</h2>
+                <p class="text-gray-400">Just a taste of what OweenBot can do.</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Command Item -->
+                <div class="glass-card p-4 rounded-xl flex items-center justify-between group hover:bg-white/5 transition-colors">
+                    <div class="flex items-center gap-4">
+                        <span class="bg-dark-900 px-3 py-1 rounded font-mono text-primary group-hover:text-white transition-colors">/blackjack</span>
+                        <span class="text-gray-300">Play a game of blackjack against the dealer</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-600"></i>
+                </div>
+
+                <div class="glass-card p-4 rounded-xl flex items-center justify-between group hover:bg-white/5 transition-colors">
+                    <div class="flex items-center gap-4">
+                        <span class="bg-dark-900 px-3 py-1 rounded font-mono text-primary group-hover:text-white transition-colors">/manticoins daily</span>
+                        <span class="text-gray-300">Claim your daily reward of 100 coins</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-600"></i>
+                </div>
+
+                <div class="glass-card p-4 rounded-xl flex items-center justify-between group hover:bg-white/5 transition-colors">
+                    <div class="flex items-center gap-4">
+                        <span class="bg-dark-900 px-3 py-1 rounded font-mono text-primary group-hover:text-white transition-colors">/joindate</span>
+                        <span class="text-gray-300">Check when a user joined the server</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-600"></i>
+                </div>
+
+                <div class="glass-card p-4 rounded-xl flex items-center justify-between group hover:bg-white/5 transition-colors">
+                    <div class="flex items-center gap-4">
+                        <span class="bg-dark-900 px-3 py-1 rounded font-mono text-primary group-hover:text-white transition-colors">/random-agent</span>
+                        <span class="text-gray-300">Get a random Valorant agent for your next match</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-600"></i>
+                </div>
+            </div>
+            
+            <div class="text-center mt-10">
+                <a href="https://github.com/owenunda/OweenBot/blob/main/README.md" target="_blank" class="text-primary hover:text-white font-medium transition-colors">View all commands <i class="fas fa-arrow-right ml-2"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 blur-[100px]"></div>
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Ready to upgrade your server?</h2>
+            <p class="text-xl text-gray-300 mb-10">Join hundreds of other users enjoying OweenBot today.</p>
+            <a href="https://discord.com/api/oauth2/authorize?client_id=1158512555245981706&permissions=8&scope=bot%20applications.commands" target="_blank" class="inline-block px-10 py-5 bg-white text-dark-900 rounded-full font-bold text-lg shadow-xl hover:bg-gray-100 transition-transform hover:scale-105">
+                Invite OweenBot Now
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900 border-t border-white/5 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="/assets/imgs/image-profile.png" alt="Logo" class="h-8 w-8 rounded-full">
+                        <span class="font-bold text-xl">OweenBot</span>
+                    </div>
+                    <p class="text-gray-400 max-w-sm">
+                        The magical Discord bot that brings fun, economy, and utility to your server. Made with ❤️ and ☕.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-primary transition-colors">Home</a></li>
+                        <li><a href="#features" class="hover:text-primary transition-colors">Features</a></li>
+                        <li><a href="https://discord.gg/3rE9PRH95y" class="hover:text-primary transition-colors">Support Server</a></li>
+                        <li><a href="https://github.com/owenunda/OweenBot" class="hover:text-primary transition-colors">GitHub</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-primary transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/5 pt-8 text-center text-gray-500 text-sm">
+                <p>&copy; 2025 OweenBot. All rights reserved. Developed by <a href="https://github.com/owenunda" class="text-primary hover:underline">owenunda</a>.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when clicking a link
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                navbar.classList.add('bg-dark-900/90', 'backdrop-blur-md', 'shadow-lg');
+            } else {
+                navbar.classList.remove('bg-dark-900/90', 'backdrop-blur-md', 'shadow-lg');
+            }
+        });
+
+        // Fetch stats from API
+        const fetchStats = async () => {
+            try {
+                const response = await fetch('/api/stats');
+                const data = await response.json();
+                
+                // Update data-target attributes
+                document.querySelectorAll('.counter').forEach(counter => {
+                    // Identify which stat this counter represents based on its initial value or position
+                    // Ideally we should add IDs to the counters, but we can infer from context
+                    const label = counter.nextElementSibling.innerText.trim().toUpperCase();
+                    
+                    if (label === 'SERVERS') counter.setAttribute('data-target', data.servers);
+                    if (label === 'USERS') counter.setAttribute('data-target', data.users);
+                    if (label === 'COMMANDS') counter.setAttribute('data-target', data.commands);
+                });
+                
+                // Trigger animation after data is loaded
+                animateCounters();
+            } catch (error) {
+                console.error('Error fetching stats:', error);
+                // Fallback to default animation if fetch fails
+                animateCounters();
+            }
+        };
+
+        // Counter animation
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200;
+
+        const animateCounters = () => {
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText.replace('+', '');
+                    const inc = Math.max(1, target / speed); // Ensure increment is at least 1
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc) + (target > 100 ? '+' : '');
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = target + (target > 100 ? '+' : '');
+                    }
+                };
+                updateCount();
+            });
+        };
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    fetchStats(); // Fetch and animate when visible
+                    observer.disconnect();
+                }
+            });
+        });
+
+        observer.observe(document.querySelector('#stats'));
+    </script>
+</body>
+</html>
