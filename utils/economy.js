@@ -78,13 +78,15 @@ export const getWorkData = async (userId) => {
 export const updateWorkTime = async (userId) => {
   try {
     const currentTime = new Date();
+    // Usar INSERT ON CONFLICT para crear el usuario si no existe
     await pool.query(
       `
-        UPDATE economy
-        SET lastDaily = $1
-        WHERE userId = $2
+        INSERT INTO economy (userId, manticoins, lastDaily)
+        VALUES ($1, 0, $2)
+        ON CONFLICT (userId)
+        DO UPDATE SET lastDaily = $2
         `,
-      [currentTime, userId]
+      [userId, currentTime]
     );
   } catch (error) {
     console.error('❌ Error al actualizar tiempo de trabajo:', error.message);

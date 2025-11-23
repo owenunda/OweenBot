@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 
-import { topUsersManticoins, addCoins } from '../../utils/economy.js';
+import { topUsersManticoins, addCoins, getWorkData, updateWorkTime } from '../../utils/economy.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -55,14 +55,43 @@ export default {
     // claim daily MantiCoins
     if (subcommand === 'daily') {
       await interaction.deferReply();
-      const daily = await addCoins(interaction.user.id, 10);
+      
+      // Obtener la última vez que el usuario reclamó el daily
+      const { lastDaily } = await getWorkData(interaction.user.id);
+      const now = new Date();
+      const timeDiff = now - new Date(lastDaily);
+      const hoursDiff = timeDiff / (1000 * 60 * 60); // Convertir a horas
+      
+      // Verificar si han pasado 24 horas
+      if (hoursDiff < 24) {
+        const hoursLeft = Math.floor(24 - hoursDiff);
+        const minutesLeft = Math.floor((24 - hoursDiff - hoursLeft) * 60);
+        
+        const embed = new EmbedBuilder()
+          .setColor('#FF6B6B') // Color rojo para indicar error
+          .setTitle(`⏰ Daily MantiCoins`)
+          .setDescription(
+            `Ya reclamaste tu recompensa diaria.\n\n` +
+            `**Tiempo restante:** ${hoursLeft}h ${minutesLeft}m`
+          )
+          .setTimestamp()
+          .setFooter({ text: 'MantiCoins - La moneda oficial de OweenBot', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
+        
+        return await interaction.editReply({ embeds: [embed] });
+      }
+      
+      // Si han pasado 24 horas, dar las monedas
+      const dailyAmount = 100; // Cantidad de monedas diarias
+      const newBalance = await addCoins(interaction.user.id, dailyAmount);
+      await updateWorkTime(interaction.user.id);
 
       const embed = new EmbedBuilder()
         .setColor('#FFD700') // Color Oro
         .setTitle(`💰 Daily MantiCoins`)
         .setDescription(
-          `**Daily MantiCoins:** \`${daily.toLocaleString()} 🪙\`\n\n` +
-          `¡Sigue interactuando para ganar más!` // Mensaje adicional de decoración
+          `¡Has reclamado tu recompensa diaria!\n\n` +
+          `**+${dailyAmount} MantiCoins** 🪙\n` +
+          `**Nuevo saldo:** \`${newBalance.toLocaleString()}\` 🪙`
         )
         .setTimestamp()
         .setFooter({ text: 'MantiCoins - La moneda oficial de OweenBot', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
