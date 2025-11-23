@@ -7,7 +7,7 @@ import 'dotenv/config'
 export default {
   data: new SlashCommandBuilder()
     .setName("pat")
-    .setDescription("Pat someone")
+    .setDescription("Pat someone! 🫢")
     .addUserOption(option => option.setName("user").setDescription("The user to pat").setRequired(true)),
 
   async execute(interaction) {

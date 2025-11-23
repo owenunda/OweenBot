@@ -7,7 +7,7 @@ import 'dotenv/config'
 export default {
   data: new SlashCommandBuilder()
     .setName("kiss")
-    .setDescription("Kiss someone")
+    .setDescription("Kiss someone! 😘")
     .addUserOption(option => option.setName("user").setDescription("The user to kiss").setRequired(true)),
 
   async execute(interaction) {

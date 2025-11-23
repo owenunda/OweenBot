@@ -1,72 +1,56 @@
-import { SlashCommandBuilder, EmbedBuilder, MessageFlags } from "discord.js";
-import axios from "axios";
-import 'dotenv/config'
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
+import NekosLife from "nekos.life";
 
-
+const nekoClient = new NekosLife();
 
 export default {
   data: new SlashCommandBuilder()
     .setName("hug")
-    .setDescription("Hug someone")
+    .setDescription("Hug someone! 🫢")
     .addUserOption(option => option.setName("user").setDescription("The user to hug").setRequired(true)),
 
   async execute(interaction) {
     const targetUser = interaction.options.getUser("user");
     const user = interaction.user;
 
-    // Evitamos besarnos a uno mismo 
+    // Evitamos abrazarnos a uno mismo 
     if (targetUser.id === user.id) {
-      await interaction.deferReply({
+      return await interaction.reply({
+        content: "You can't hug yourself! 🥺",
         ephemeral: true
-      })
-      return await interaction.editReply({
-        content: "You can't hug yourself",
-      })
+      });
     }
 
-    // Si mencioa al mismo bot
+    // Si menciona al mismo bot
     if (targetUser.id === interaction.client.user.id) {
       return await interaction.reply({
-        content: "🫢 Oh! Thanks you, but I'm a bot",
-      })
+        content: "🫢 Oh! Thank you, but I'm a bot! 🤖",
+        ephemeral: true
+      });
     }
-    // DeferReply: Avisamos a Discord que estamos "pensando" (por si Giphy tarda un poco)
-    await interaction.deferReply()
-    // lista de gifs
-    const gifs = [
-      'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmZrbWFvdGVvZWZxam1tNGQ5YjgwOTJ6Ym9iejgxc2l4Ym5xaGMxcSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/PHZ7v9tfQu0o0/giphy.webp',
-      'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmZrbWFvdGVvZWZxam1tNGQ5YjgwOTJ6Ym9iejgxc2l4Ym5xaGMxcSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/49mdjsMrH7oze/200.webp'
-    ]
+
+    // DeferReply: Avisamos a Discord que estamos "pensando"
+    await interaction.deferReply();
 
     try {
-      const response = await axios.get(`https://api.giphy.com/v1/gifs/random`, {
-        params: {
-          api_key: process.env.GIPHY_API_KEY,
-          tag: "anime hug",
-          rating: "g" // contenido para todo publico
-        }
-      })
-      const ramdomGiff = gifs[Math.floor(Math.random() * gifs.length)]
-
-      const gifUrl = response.data.data?.images?.original?.url || ramdomGiff
+      const response = await nekoClient.hug();
+      const imageUrl = response.url;
 
       const embed = new EmbedBuilder()
         .setColor('#1EE9E9')
         .setDescription(`**${user}** hugged **${targetUser}**! 🫢`)
-        .setImage(gifUrl)
+        .setImage(imageUrl)
         .setTimestamp()
-        .setFooter({ text: `Requested by ${user.username}` })
+        .setFooter({ text: `Requested by ${user.username}` });
 
-      await interaction.editReply({ embeds: [embed] })
+      await interaction.editReply({ embeds: [embed] });
 
     } catch (error) {
-      console.log('Error al obtener el gif', error)
+      console.error('Error fetching hug image:', error);
+      
       await interaction.editReply({
-        content: "There was an error while searching for the GIF, but the hug still counts.🫢",
-      })
+        content: "There was an error while searching for the GIF, but the hug still counts. 🫢",
+      });
     }
-
-
-
   },
-}
+};
