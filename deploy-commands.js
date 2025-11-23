@@ -35,7 +35,8 @@ import { pathToFileURL, fileURLToPath } from 'node:url';  // Conversión de ruta
  */
 const clientId = process.env.CLIENT_ID;
 const token = process.env.TOKEN;
-
+const guildId = process.env.GUILD_ID;
+const nodeEnv = process.env.NODE_ENV;
 // Obtiene el directorio actual del script
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -59,10 +60,10 @@ const commandFolders = fs.readdirSync(foldersPath);  // Lee carpetas: fun, moder
  */
 for (const folder of commandFolders) {
 	const commandsPath = path.join(foldersPath, folder);
-	
+
 	// Filtra solo archivos .js, ignora subcarpetas (como /json)
 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-	
+
 	/**
 	 * Procesa cada archivo de comando:
 	 * 1. Importa el módulo
@@ -72,12 +73,12 @@ for (const folder of commandFolders) {
 	 */
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
-		
+
 		// Convierte la ruta a URL para importación dinámica
 		const moduleUrl = pathToFileURL(filePath).href;
 		const imported = await import(moduleUrl);
 		const command = imported.default ?? imported;
-		
+
 		// Valida que el comando tenga las propiedades requeridas
 		if ('data' in command && 'execute' in command) {
 			/**
@@ -122,12 +123,23 @@ const rest = new REST().setToken(token);
 		 * - Registra comandos solo en un servidor específico
 		 * - Se actualiza instantáneamente
 		 */
-		const data = await rest.put(
-			Routes.applicationCommands(clientId),
-			{ body: commands },
-		);
 
-		console.log(`Se recargaron con éxito ${data.length} comandos de la aplicación (/) - deploy-commands.js:49`);
+		if (nodeEnv === 'development') {
+			const data = await rest.put(
+				Routes.applicationGuildCommands(clientId, guildId),
+				{ body: commands },
+			);
+			console.log(`Se recargaron con éxito en el servidor ${guildId} ${data.length} comandos de la aplicación (/) - deploy-commands.js:46`);
+		} else {
+			const data = await rest.put(
+				Routes.applicationCommands(clientId),
+				{ body: commands },
+			);
+			console.log(`Se recargaron con éxito globalmente ${data.length} comandos de la aplicación (/) - deploy-commands.js:49`);
+		}
+
+
+
 	} catch (error) {
 		/**
 		 * Posibles errores:

@@ -6,9 +6,9 @@ import 'dotenv/config'
 
 export default {
   data: new SlashCommandBuilder()
-    .setName("kiss")
-    .setDescription("Kiss someone")
-    .addUserOption(option => option.setName("user").setDescription("The user to kiss").setRequired(true)),
+    .setName("pat")
+    .setDescription("Pat someone")
+    .addUserOption(option => option.setName("user").setDescription("The user to pat").setRequired(true)),
 
   async execute(interaction) {
     const targetUser = interaction.options.getUser("user");
@@ -20,7 +20,7 @@ export default {
         ephemeral: true
       })
       return await interaction.editReply({
-        content: "No puedes besarte a ti mismo",
+        content: "You can't pat yourself",
       })
     }
 
@@ -34,16 +34,16 @@ export default {
     await interaction.deferReply()
     // lista de gifs
     const gifs = [
-      'https://media.tenor.com/vFJDG6BUNucAAAAi/monkey.gif',
-      'https://media.tenor.com/LcGHOGH6iz8AAAAm/kiss-kisses.webp'
+      'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdng0Nml4NXE3MmszZzF6ZG9mcXFmNnY1NHIxeHU1bXI1MjdyZXpqYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ye7OTQgwmVuVy/200.webp',
+      'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdng0Nml4NXE3MmszZzF6ZG9mcXFmNnY1NHIxeHU1bXI1MjdyZXpqYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/5tmRHwTlHAA9WkVxTU/200.webp'
     ]
 
     try {
       const response = await axios.get(`https://api.giphy.com/v1/gifs/random`, {
         params: {
           api_key: process.env.GIPHY_API_KEY,
-          tag: "anime kiss",
-          rating: "g" // contenido para todo publico
+          tag: "anime pat",
+          rating: "g", // contenido para todo publico
         }
       })
       const ramdomGiff = gifs[Math.floor(Math.random() * gifs.length)]
@@ -51,8 +51,8 @@ export default {
       const gifUrl = response.data.data?.images?.original?.url || ramdomGiff
 
       const embed = new EmbedBuilder()
-        .setColor('#FF69B4')
-        .setDescription(`**${user}** gave **${targetUser}** a passionate kiss! 😘`)
+        .setColor('#1E25E9')
+        .setDescription(`**${user}** pat **${targetUser}**! 🫢`)
         .setImage(gifUrl)
         .setTimestamp()
         .setFooter({ text: `Requested by ${user.username}` })
@@ -62,7 +62,7 @@ export default {
     } catch (error) {
       console.log('Error al obtener el gif', error)
       await interaction.editReply({
-        content: "There was an error while searching for the GIF, but the kiss still counts. 💋",
+        content: "There was an error while searching for the GIF, but the pat still counts.🫢",
       })
     }
 
