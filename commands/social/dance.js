@@ -2,6 +2,8 @@ import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import axios from "axios";
 import 'dotenv/config'
 import { addCoins } from "../../utils/economy.js";
+import { getGuildLanguage } from "../../utils/language.js";
+import { t } from "../../utils/i18n.js";
 
 export default {
   data: new SlashCommandBuilder()
@@ -10,13 +12,14 @@ export default {
     .addUserOption(option => option.setName("user").setDescription("The user to dance with").setRequired(true)),
 
   async execute(interaction) {
+    const lang = await getGuildLanguage(interaction.guildId);
     const targetUser = interaction.options.getUser("user");
     const user = interaction.user;
 
     // Evitamos bailar con uno mismo 
     if (targetUser.id === user.id) {
       return await interaction.reply({
-        content: "You can't dance with yourself! 🥺",
+        content: t(lang, 'dance.self_dance'),
         ephemeral: true
       });
     }
@@ -24,7 +27,7 @@ export default {
     // Si menciona al mismo bot
     if (targetUser.id === interaction.client.user.id) {
       return await interaction.reply({
-        content: "🫢 Oh! Thank you, but I'm a bot! 🤖",
+        content: t(lang, 'dance.bot_dance'),
         ephemeral: true
       });
     }
@@ -45,7 +48,7 @@ export default {
 
       if(!gifs || gifs.length === 0) {
         return await interaction.editReply({
-          content: "No GIFs found, but the dance still counts. 💃"
+          content: t(lang, 'common.no_gifs')
         });
       }
 
@@ -55,7 +58,7 @@ export default {
 
       const embed = new EmbedBuilder()
         .setColor('#9B59B6')
-        .setDescription(`**${user}** is dancing with **${targetUser}**! 💃`)
+        .setDescription(t(lang, 'dance.msg', { user: user, target: targetUser }))
         .setImage(gifUrl)
         .setTimestamp()
 
@@ -66,7 +69,7 @@ export default {
       const newBalance = await addCoins(user.id, interaction.guildId, reward);
 
       embed.setFooter({
-        text: `¡${user.username} ganó ${reward} MantiCoins! Saldo: ${newBalance.toLocaleString()} 🪙`,
+        text: t(lang, 'economy.reward', { user: user.username, reward: reward, balance: newBalance.toLocaleString() }),
         iconURL: interaction.client.user.displayAvatarURL()
       });
 
@@ -75,7 +78,7 @@ export default {
     } catch (error) {
       console.error('Error fetching dance gif:', error);
       await interaction.editReply({
-        content: "There was an error while searching for the GIF, but the dance still counts. 💃",
+        content: t(lang, 'common.error'),
       });
     }
   },

@@ -1,6 +1,8 @@
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import NekosLife from "nekos.life";
 import { addCoins } from "../../utils/economy.js";
+import { getGuildLanguage } from "../../utils/language.js";
+import { t } from "../../utils/i18n.js";
 
 const nekoClient = new NekosLife();
 
@@ -13,11 +15,13 @@ export default {
   async execute(interaction) {
     const targetUser = interaction.options.getUser("user");
     const user = interaction.user;
+    const guildId = interaction.guildId;
+    const lang = await getGuildLanguage(guildId);
 
     // Evitamos abrazarnos a uno mismo 
     if (targetUser.id === user.id) {
       return await interaction.reply({
-        content: "You can't hug yourself! 🥺",
+        content: t(lang, 'hug.self_hug'),
         ephemeral: true
       });
     }
@@ -25,7 +29,7 @@ export default {
     // Si menciona al mismo bot
     if (targetUser.id === interaction.client.user.id) {
       return await interaction.reply({
-        content: "🫢 Oh! Thank you, but I'm a bot! 🤖",
+        content: t(lang, 'hug.bot_hug'),
         ephemeral: true
       });
     }
@@ -39,7 +43,7 @@ export default {
 
       const embed = new EmbedBuilder()
         .setColor('#1EE9E9')
-        .setDescription(`**${user}** hugged **${targetUser}**! 🫢`)
+        .setDescription(t(lang, 'hug.hug_message', { user: user, target: targetUser }))
         .setImage(imageUrl)
         .setTimestamp()
 
@@ -50,7 +54,7 @@ export default {
       const newBalance = await addCoins(user.id, interaction.guildId, reward);
 
       embed.setFooter({
-        text: `¡${user.username} ganó ${reward} MantiCoins! Saldo: ${newBalance.toLocaleString()} 🪙`,
+        text: t(lang, 'hug.reward', { user: user.username, reward: reward, balance: newBalance.toLocaleString() }),
         iconURL: interaction.client.user.displayAvatarURL()
       });
 
@@ -60,7 +64,7 @@ export default {
       console.error('Error fetching hug image:', error);
       
       await interaction.editReply({
-        content: "There was an error while searching for the GIF, but the hug still counts. 🫢",
+        content: t(lang, 'hug.error_gif'),
       });
     }
   },

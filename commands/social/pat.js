@@ -1,6 +1,8 @@
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import NekosLife from "nekos.life";
 import { addCoins } from "../../utils/economy.js";
+import { getGuildLanguage } from "../../utils/language.js";
+import { t } from "../../utils/i18n.js";
 
 const nekoClient = new NekosLife();
 
@@ -11,13 +13,14 @@ export default {
     .addUserOption(option => option.setName("user").setDescription("The user to pat").setRequired(true)),
 
   async execute(interaction) {
+    const lang = await getGuildLanguage(interaction.guildId);
     const targetUser = interaction.options.getUser("user");
     const user = interaction.user;
 
     // Evitamos acariciarnos a uno mismo 
     if (targetUser.id === user.id) {
       return await interaction.reply({
-        content: "You can't pat yourself! 🥺",
+        content: t(lang, 'pat.self_pat'),
         ephemeral: true
       });
     }
@@ -25,7 +28,7 @@ export default {
     // Si menciona al mismo bot
     if (targetUser.id === interaction.client.user.id) {
       return await interaction.reply({
-        content: "🫢 Oh! Thank you, but I'm a bot! 🤖",
+        content: t(lang, 'pat.bot_pat'),
         ephemeral: true
       });
     }
@@ -39,7 +42,7 @@ export default {
 
       const embed = new EmbedBuilder()
         .setColor('#1E25E9')
-        .setDescription(`**${user}** patted **${targetUser}**! 🫢`)
+        .setDescription(t(lang, 'pat.msg', { user: user, target: targetUser }))
         .setImage(imageUrl)
         .setTimestamp()
 
@@ -50,7 +53,7 @@ export default {
       const newBalance = await addCoins(user.id, interaction.guildId, reward);
 
       embed.setFooter({
-        text: `¡${user.username} ganó ${reward} MantiCoins! Saldo: ${newBalance.toLocaleString()} 🪙`,
+        text: t(lang, 'economy.reward', { user: user.username, reward: reward, balance: newBalance.toLocaleString() }),
         iconURL: interaction.client.user.displayAvatarURL()
       });
 
@@ -59,7 +62,7 @@ export default {
     } catch (error) {
       console.error('Error fetching pat image:', error);
       await interaction.editReply({
-        content: "There was an error while searching for the GIF, but the pat still counts. 🫢",
+        content: t(lang, 'common.error'),
       });
     }
   },

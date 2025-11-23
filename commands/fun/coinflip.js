@@ -1,5 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { getBalance, addCoins, removeCoins } from '../../utils/economy.js';
+import { getGuildLanguage } from '../../utils/language.js';
+import { t } from '../../utils/i18n.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -26,6 +28,7 @@ export default {
     const betAmount = interaction.options.getInteger('cantidad');
     const userId = interaction.user.id;
     const guildId = interaction.guildId;
+    const lang = await getGuildLanguage(guildId);
 
     // 1. Validación de Fondos
     const currentBalance = await getBalance(userId, guildId);
@@ -33,13 +36,13 @@ export default {
     if (currentBalance < betAmount) {
       const errorEmbed = new EmbedBuilder()
         .setColor('#FF0000') // Rojo
-        .setTitle('🚫 ¡No tienes suficientes MantiCoins!')
+        .setTitle(t(lang, 'economy.insufficient_funds'))
         .setDescription(
-          `**Tu saldo:** ${currentBalance.toLocaleString()} 🪙\n` +
-          `**Intentaste apostar:** ${betAmount.toLocaleString()} 🪙\n\n` +
-          `Te faltan **${(betAmount - currentBalance).toLocaleString()}** MantiCoins.`
+          `**${t(lang, 'economy.balance')}:** ${currentBalance.toLocaleString()} 🪙\n` +
+          `**${t(lang, 'economy.bet_amount')}:** ${betAmount.toLocaleString()} 🪙\n\n` +
+          t(lang, 'economy.need_more', { amount: (betAmount - currentBalance).toLocaleString() })
         )
-        .setFooter({ text: 'Usa /balance para ver tu saldo actual' });
+        .setFooter({ text: t(lang, 'economy.check_balance') });
       
       return interaction.editReply({ embeds: [errorEmbed] });
     }
@@ -47,7 +50,7 @@ export default {
     // Mostrar animación de moneda girando
     const coinflipGif = 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp';
     const loadingEmbed = new EmbedBuilder()
-      .setDescription('🪙 La moneda está girando...')
+      .setDescription(t(lang, 'coinflip.flipping'))
       .setImage(coinflipGif) // Gif de moneda
       .setColor('Yellow');
 
@@ -74,20 +77,20 @@ export default {
     if (hasWon) {
       // Ganó: Se le suma la cantidad apostada (Profit)
       newBalance = await addCoins(userId, guildId, betAmount);
-      description = `✅ **¡GANASTE!** La moneda cayó en **${result.toUpperCase()}**.\nGanaste **${betAmount.toLocaleString()}** MantiCoins.`;
+      description = t(lang, 'coinflip.win', { result: result.toUpperCase(), amount: betAmount.toLocaleString() });
       color = '#00FF00'; // Verde
     } else {
       // Perdió: Se le resta lo apostado
       newBalance = await removeCoins(userId, guildId, betAmount);
-      description = `❌ **PERDISTE...** La moneda cayó en **${result.toUpperCase()}**.\nPerdiste **${betAmount.toLocaleString()}** MantiCoins.`;
+      description = t(lang, 'coinflip.lose', { result: result.toUpperCase(), amount: betAmount.toLocaleString() });
       color = '#FF0000'; // Rojo
     }
 
     // 4. Crear Embed de Resultado
     const embed = new EmbedBuilder()
-      .setTitle(`🪙 Coinflip: ${interaction.user.username} apostó ${betAmount} 🪙`)
+      .setTitle(t(lang, 'coinflip.title', { user: interaction.user.username, amount: betAmount }))
       .setDescription(description)
-      .addFields({ name: 'Nuevo Saldo', value: `${newBalance.toLocaleString()} 🪙` })
+      .addFields({ name: t(lang, 'economy.new_balance'), value: `${newBalance.toLocaleString()} 🪙` })
       .setThumbnail(coinImg) // Muestra la moneda resultante
       .setColor(color)
       .setFooter({ text: 'Sistema de Apuestas OweenBot', iconURL: coinflipGif });

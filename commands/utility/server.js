@@ -1,4 +1,6 @@
 import { SlashCommandBuilder } from 'discord.js';
+import { getGuildLanguage } from '../../utils/language.js';
+import { t } from '../../utils/i18n.js';
 
 export default {
 	cooldown: 5,
@@ -6,6 +8,7 @@ export default {
 		.setName('server')
 		.setDescription('Provides information about the server'),
 	async execute(interaction) {
-		await interaction.reply(`Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`);
+		const lang = await getGuildLanguage(interaction.guildId);
+		await interaction.reply(t(lang, 'server.info', { name: interaction.guild.name, members: interaction.guild.memberCount }));
 	},
 };

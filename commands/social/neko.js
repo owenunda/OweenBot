@@ -1,6 +1,8 @@
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import NekosLife from "nekos.life";
 import { addCoins } from "../../utils/economy.js";
+import { getGuildLanguage } from "../../utils/language.js";
+import { t } from "../../utils/i18n.js";
 
 const nekoClient = new NekosLife();
 
@@ -11,6 +13,7 @@ export default {
 
   async execute(interaction) {
     await interaction.deferReply();
+    const lang = await getGuildLanguage(interaction.guildId);
 
     try {
       const response = await nekoClient.nekoGif();
@@ -18,7 +21,7 @@ export default {
 
       const embed = new EmbedBuilder()
         .setColor('#FF69B4') // Hot pink for nekos?
-        .setTitle("Here is your random Neko! 🐾")
+        .setTitle(t(lang, 'neko.title'))
         .setImage(imageUrl)
         .setTimestamp()
 
@@ -29,7 +32,7 @@ export default {
       const newBalance = await addCoins(interaction.user.id, interaction.guildId, reward);
 
       embed.setFooter({
-        text: `¡${interaction.user.username} ganó ${reward} MantiCoins! Saldo: ${newBalance.toLocaleString()} 🪙`,
+        text: t(lang, 'economy.reward', { user: interaction.user.username, reward: reward, balance: newBalance.toLocaleString() }),
         iconURL: interaction.client.user.displayAvatarURL()
       });
 
@@ -38,7 +41,7 @@ export default {
     } catch (error) {
       console.error('Error fetching neko image:', error);
       await interaction.editReply({
-        content: "Sorry, I couldn't find a neko for you right now. 😿",
+        content: t(lang, 'common.error'),
       });
     }
   },

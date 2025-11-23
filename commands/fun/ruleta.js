@@ -1,5 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { getBalance, addCoins, removeCoins } from '../../utils/economy.js';
+import { getGuildLanguage } from '../../utils/language.js';
+import { t } from '../../utils/i18n.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -15,6 +17,7 @@ export default {
     const betAmount = interaction.options.getInteger('cantidad');
     const userId = interaction.user.id;
     const guildId = interaction.guildId;
+    const lang = await getGuildLanguage(guildId);
 
     // Validar fondos
     const currentBalance = await getBalance(userId, guildId);
@@ -22,13 +25,13 @@ export default {
     if (currentBalance < betAmount) {
       const errorEmbed = new EmbedBuilder()
         .setColor('#FF0000')
-        .setTitle('🚫 ¡No tienes suficientes MantiCoins!')
+        .setTitle(t(lang, 'economy.insufficient_funds'))
         .setDescription(
-          `**Tu saldo:** ${currentBalance.toLocaleString()} 🪙\n` +
-          `**Intentaste apostar:** ${betAmount.toLocaleString()} 🪙\n\n` +
-          `Te faltan **${(betAmount - currentBalance).toLocaleString()}** MantiCoins.`
+          `**${t(lang, 'economy.balance')}:** ${currentBalance.toLocaleString()} 🪙\n` +
+          `**${t(lang, 'economy.bet_amount')}:** ${betAmount.toLocaleString()} 🪙\n\n` +
+          t(lang, 'economy.need_more', { amount: (betAmount - currentBalance).toLocaleString() })
         )
-        .setFooter({ text: 'Usa /balance para ver tu saldo actual' });
+        .setFooter({ text: t(lang, 'economy.check_balance') });
       
       return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
     }
@@ -38,30 +41,30 @@ export default {
       .addComponents(
         new ButtonBuilder()
           .setCustomId(`roulette_red_${userId}_${betAmount}`)
-          .setLabel('🔴 Rojo (2x)')
+          .setLabel(t(lang, 'ruleta.red_btn'))
           .setStyle(ButtonStyle.Danger),
         new ButtonBuilder()
           .setCustomId(`roulette_black_${userId}_${betAmount}`)
-          .setLabel('⚫ Negro (2x)')
+          .setLabel(t(lang, 'ruleta.black_btn'))
           .setStyle(ButtonStyle.Secondary),
         new ButtonBuilder()
           .setCustomId(`roulette_green_${userId}_${betAmount}`)
-          .setLabel('🟢 Verde (14x)')
+          .setLabel(t(lang, 'ruleta.green_btn'))
           .setStyle(ButtonStyle.Success)
       );
 
     const embed = new EmbedBuilder()
       .setColor('#FFD700')
-      .setTitle('🎰 Ruleta - Elige tu apuesta')
+      .setTitle(t(lang, 'ruleta.title'))
       .setDescription(
-        `**Apuesta:** ${betAmount.toLocaleString()} 🪙\n\n` +
-        `**Opciones:**\n` +
-        `🔴 **Rojo** - Paga 2x (números: 1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36)\n` +
-        `⚫ **Negro** - Paga 2x (números: 2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35)\n` +
-        `🟢 **Verde (0)** - Paga 14x (número: 0)\n\n` +
-        `Elige un color para girar la ruleta!`
+        `**${t(lang, 'economy.bet')}:** ${betAmount.toLocaleString()} 🪙\n\n` +
+        `**${t(lang, 'ruleta.options')}:**\n` +
+        `🔴 **${t(lang, 'ruleta.red')}** - ${t(lang, 'ruleta.payout_2x')} (1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36)\n` +
+        `⚫ **${t(lang, 'ruleta.black')}** - ${t(lang, 'ruleta.payout_2x')} (2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35)\n` +
+        `🟢 **${t(lang, 'ruleta.green')} (0)** - ${t(lang, 'ruleta.payout_14x')} (0)\n\n` +
+        t(lang, 'ruleta.choose_color')
       )
-      .setFooter({ text: `${interaction.user.username} | Saldo: ${currentBalance.toLocaleString()} 🪙` })
+      .setFooter({ text: `${interaction.user.username} | ${t(lang, 'economy.balance')}: ${currentBalance.toLocaleString()} 🪙` })
       .setTimestamp();
 
     await interaction.reply({ embeds: [embed], components: [row] });
@@ -81,8 +84,8 @@ export default {
       if (balanceCheck < betAmount) {
         const errorEmbed = new EmbedBuilder()
           .setColor('#FF0000')
-          .setTitle('🚫 Error')
-          .setDescription('Ya no tienes suficientes MantiCoins para esta apuesta.');
+          .setTitle(t(lang, 'common.error'))
+          .setDescription(t(lang, 'economy.insufficient_funds'));
         
         return i.editReply({ embeds: [errorEmbed], components: [] });
       }
@@ -90,8 +93,8 @@ export default {
       // Animación de ruleta girando
       const spinningEmbed = new EmbedBuilder()
         .setColor('#FFA500')
-        .setTitle('🎰 La ruleta está girando...')
-        .setDescription('🌀 Esperando el resultado...')
+        .setTitle(t(lang, 'ruleta.spinning'))
+        .setDescription(t(lang, 'ruleta.waiting'))
         .setImage('https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2swa3MzbWp4bDY3ODZpN3dqaHFwYmU5amwxZHRtenN5cHYwaHl5MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l2SpYSNrKPONySXYY/giphy.gif');
 
       await i.editReply({ embeds: [spinningEmbed], components: [] });
@@ -124,15 +127,15 @@ export default {
 
       if (resultColor === 'red') {
         colorEmoji = '🔴';
-        colorName = 'Rojo';
+        colorName = t(lang, 'ruleta.red');
         multiplier = 2;
       } else if (resultColor === 'black') {
         colorEmoji = '⚫';
-        colorName = 'Negro';
+        colorName = t(lang, 'ruleta.black');
         multiplier = 2;
       } else {
         colorEmoji = '🟢';
-        colorName = 'Verde';
+        colorName = t(lang, 'ruleta.green');
         multiplier = 14;
       }
 
@@ -146,12 +149,12 @@ export default {
         newBalance = await addCoins(userId, guildId, winAmount);
         
         description = 
-          `${colorEmoji} **La ruleta cayó en ${colorName} (${result})**\n\n` +
-          `✅ **¡GANASTE!**\n` +
-          `**Apuesta:** ${betAmount.toLocaleString()} 🪙\n` +
-          `**Multiplicador:** ${multiplier}x\n` +
-          `**Ganancia:** +${winAmount.toLocaleString()} 🪙\n` +
-          `**Nuevo saldo:** ${newBalance.toLocaleString()} 🪙`;
+          `${colorEmoji} **${t(lang, 'ruleta.landed_on', { color: colorName, number: result })}**\n\n` +
+          `✅ **${t(lang, 'ruleta.win')}**\n` +
+          `**${t(lang, 'economy.bet')}:** ${betAmount.toLocaleString()} 🪙\n` +
+          `**${t(lang, 'ruleta.multiplier')}:** ${multiplier}x\n` +
+          `**${t(lang, 'economy.profit')}:** +${winAmount.toLocaleString()} 🪙\n` +
+          `**${t(lang, 'economy.new_balance')}:** ${newBalance.toLocaleString()} 🪙`;
         
         embedColor = '#00FF00';
       } else {
@@ -159,20 +162,20 @@ export default {
         newBalance = await removeCoins(userId, guildId, betAmount);
         
         description = 
-          `${colorEmoji} **La ruleta cayó en ${colorName} (${result})**\n\n` +
-          `❌ **PERDISTE...**\n` +
-          `**Apuesta:** ${betAmount.toLocaleString()} 🪙\n` +
-          `**Pérdida:** -${betAmount.toLocaleString()} 🪙\n` +
-          `**Nuevo saldo:** ${newBalance.toLocaleString()} 🪙`;
+          `${colorEmoji} **${t(lang, 'ruleta.landed_on', { color: colorName, number: result })}**\n\n` +
+          `❌ **${t(lang, 'ruleta.lose')}**\n` +
+          `**${t(lang, 'economy.bet')}:** ${betAmount.toLocaleString()} 🪙\n` +
+          `**${t(lang, 'economy.loss')}:** -${betAmount.toLocaleString()} 🪙\n` +
+          `**${t(lang, 'economy.new_balance')}:** ${newBalance.toLocaleString()} 🪙`;
         
         embedColor = '#FF0000';
       }
 
       const resultEmbed = new EmbedBuilder()
         .setColor(embedColor)
-        .setTitle('🎰 Resultado de la Ruleta')
+        .setTitle(t(lang, 'ruleta.result_title'))
         .setDescription(description)
-        .setFooter({ text: `${interaction.user.username} | Sistema de Apuestas OweenBot` })
+        .setFooter({ text: `${interaction.user.username} | OweenBot Betting System` })
         .setTimestamp();
 
       await i.editReply({ embeds: [resultEmbed], components: [] });
@@ -183,8 +186,8 @@ export default {
         // Timeout - nadie presionó los botones
         const timeoutEmbed = new EmbedBuilder()
           .setColor('#808080')
-          .setTitle('⏱️ Tiempo agotado')
-          .setDescription('No elegiste ninguna opción. La apuesta ha sido cancelada.');
+          .setTitle(t(lang, 'ruleta.timeout_title'))
+          .setDescription(t(lang, 'ruleta.timeout_desc'));
 
         interaction.editReply({ embeds: [timeoutEmbed], components: [] }).catch(() => {});
       }

@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-
 import { getBalance } from '../../utils/economy.js';
+import { getGuildLanguage } from '../../utils/language.js';
+import { t } from '../../utils/i18n.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -15,6 +16,8 @@ export default {
     // para operaciones de DB
     await interaction.deferReply();
 
+    const lang = await getGuildLanguage(interaction.guildId);
+
     // determina el usuario objetivo
     const targetUser = interaction.options.getUser('user') || interaction.user;
     const guildId = interaction.guildId;
@@ -23,14 +26,13 @@ export default {
 
     const embed = new EmbedBuilder()
       .setColor('#FFD700') // Color Oro
-      .setTitle(`💰 Saldo de MantiCoins de ${targetUser.username}`)
+      .setTitle(t(lang, 'balance.title', { user: targetUser.username }))
       .setThumbnail(targetUser.displayAvatarURL({ dynamic: true })) // Avatar del usuario como thumbnail      .setImage(gifManti)
       .setDescription(
-        `**MantiCoins:** \`${balance.toLocaleString()}\` 🪙\n\n` +
-        `¡Sigue interactuando para ganar más!` // Mensaje adicional de decoración
+        `**${t(lang, 'balance.field')}:** \`${balance.toLocaleString()}\` 🪙`
       )
       .setTimestamp()
-      .setFooter({ text: 'MantiCoins - La moneda oficial de OweenBot', iconURL: gifManti })
+      .setFooter({ text: t(lang, 'balance.footer'), iconURL: gifManti })
 
     await interaction.editReply({ embeds: [embed] });
   }

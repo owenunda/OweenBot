@@ -1,0 +1,313 @@
+{
+  "common": {
+    "error": "An error occurred while executing this command.",
+    "only_guild": "This command can only be used in servers.",
+    "cooldown": "Please wait {time} seconds before using the `{command}` command again.",
+    "no_gifs": "No GIFs found.",
+    "footer_thanks": "Thanks for using OweenBot ❤️"
+  },
+  "economy": {
+    "insufficient_funds": "🚫 You don't have enough MantiCoins!",
+    "balance": "Your balance",
+    "bet_amount": "Bet amount",
+    "need_more": "You need **{amount}** more MantiCoins.",
+    "check_balance": "Use /balance to check your current balance",
+    "bet": "Bet",
+    "change": "Change",
+    "new_balance": "New Balance",
+    "profit": "Profit",
+    "loss": "Loss",
+    "reward": "{user} earned {reward} MantiCoins! Balance: {balance} 🪙"
+  },
+  "help": {
+    "description": "Show all available commands and information about the bot",
+    "select_category": "Select a Category",
+    "categories": {
+      "fun": "🎮 Fun",
+      "fun_desc": "Entertainment and game commands",
+      "economy": "💰 Economy",
+      "economy_desc": "MantiCoins and betting commands",
+      "social": "❤️ Social",
+      "social_desc": "Interact with other users",
+      "utility": "🛠️ Utility",
+      "utility_desc": "Useful utility commands",
+      "info": "ℹ️ Info",
+      "info_desc": "About OweenBot"
+    },
+    "embed": {
+      "title": "🤖 OweenBot - Help Menu",
+      "welcome": "**Welcome to OweenBot!**\n\nSelect a category below to see available commands.\n\n**Categories:**\n🎮 **Fun** - Games and entertainment\n💰 **Economy** - MantiCoins system\n❤️ **Social** - Interact with others\n🛠️ **Utility** - Useful tools\nℹ️ **Info** - About the bot",
+      "footer": "Use the dropdown menu to navigate"
+    },
+    "fun_embed": {
+      "title": "🎮 Fun Commands",
+      "desc": "Entertainment and game commands",
+      "footer": "All casino games use MantiCoins"
+    },
+    "economy_embed": {
+      "title": "💰 Economy Commands",
+      "desc": "MantiCoins system - The official currency of OweenBot",
+      "footer": "Each server has its own economy!"
+    },
+    "social_embed": {
+      "title": "❤️ Social Commands",
+      "desc": "Interact with other users and earn MantiCoins!",
+      "footer": "All social commands reward MantiCoins!"
+    },
+    "utility_embed": {
+      "title": "🛠️ Utility Commands",
+      "desc": "Useful tools and utilities",
+      "footer": "More utility commands coming soon!"
+    },
+    "info_embed": {
+      "title": "ℹ️ About OweenBot",
+      "desc": "**OweenBot** is a multipurpose Discord bot with games, economy, and social features!\n\n**Features:**\n🎰 **Casino Games** - Blackjack, Roulette, Slots, Coinflip\n💰 **Economy System** - Earn and spend MantiCoins\n❤️ **Social Interactions** - Fun commands to interact with friends\n🏆 **Leaderboards** - Compete with others globally or per server\n🎮 **Valorant** - Random agent selector\n\n**MantiCoins System:**\n• Each server has its own independent economy\n• Earn coins through social commands and daily rewards\n• Use coins to play casino games and win big!\n• Global and server-specific leaderboards\n\n**Support:**\nNeed help? Use `/help` to see all commands!\nJoin our support server: [Discord](https://discord.gg/3rE9PRH95y)",
+      "stats": "📊 Statistics",
+      "stats_value": "Servers: {servers}\nUsers: {users}",
+      "links": "🔗 Links",
+      "dev": "👨‍💻 Developer",
+      "footer": "OweenBot v1.0 | Made with ❤️"
+    }
+  },
+  "hug": {
+    "self_hug": "You can't hug yourself! 🥺",
+    "bot_hug": "🫢 Oh! Thank you, but I'm a bot! 🤖",
+    "hug_message": "**{user}** hugged **{target}**! 🫢",
+    "error_gif": "There was an error while searching for the GIF, but the hug still counts. 🫢",
+    "reward": "{user} earned {reward} MantiCoins! Balance: {balance} 🪙"
+  },
+  "kiss": {
+    "description": "Give someone a kiss! 😘",
+    "self": "You can't kiss yourself! 🥺",
+    "bot": "🫢 Oh! Thank you, but I'm a bot! 🤖",
+    "message": "**{user}** kissed **{target}**! 😘",
+    "error": "There was an error while searching for the GIF, but the kiss still counts. 😘"
+  },
+  "slap": {
+    "description": "Slap someone! 👋",
+    "self": "You can't slap yourself! 😠",
+    "bot": "Hey! Don't hit me! 🤖",
+    "message": "**{user}** slapped **{target}**! 👋",
+    "error": "There was an error while searching for the GIF, but the slap still counts. 👋",
+    "self_slap": "You can't slap yourself! 🥺",
+    "bot_slap": "🫢 Oh! Thank you, but I'm a bot! 🤖",
+    "msg": "**{user}** slapped **{target}**! 🫢"
+  },
+  "pat": {
+    "description": "Pat someone on the head! 🤚",
+    "self": "You can't pat yourself! 🥺",
+    "bot": "Thank you! I love pats. 🤖",
+    "message": "**{user}** patted **{target}**! 🤚",
+    "error": "There was an error while searching for the GIF, but the pat still counts. 🤚",
+    "self_pat": "You can't pat yourself! 🥺",
+    "bot_pat": "🫢 Oh! Thank you, but I'm a bot! 🤖",
+    "msg": "**{user}** patted **{target}**! 🫢"
+  },
+  "cry": {
+    "description": "Express your sadness. 😢",
+    "message": "**{user}** is crying... 😢",
+    "error": "There was an error while searching for the GIF, but the tears are real. 😢"
+  },
+  "dance": {
+    "description": "Show off your dance moves! 💃",
+    "message": "**{user}** is dancing! 💃",
+    "error": "There was an error while searching for the GIF, but the dance continues. 💃"
+  },
+  "punch": {
+    "description": "Punch someone! 👊",
+    "self": "Why would you punch yourself? 🤕",
+    "bot": "Dodged! 🤖",
+    "message": "**{user}** punched **{target}**! 👊",
+    "error": "There was an error while searching for the GIF, but the punch hurt anyway. 👊",
+    "self_punch": "You can't punch yourself! 🥺",
+    "bot_punch": "🫢 Oh! Thank you, but I'm a bot! 🤖",
+    "msg": "**{user}** punched **{target}**! 👊"
+  },
+  "kill": {
+    "description": "Eliminate someone (virtually)! 💀",
+    "self": "Don't do that! 😱",
+    "bot": "I am immortal. 🤖",
+    "message": "**{user}** eliminated **{target}**! 💀",
+    "error": "There was an error while searching for the GIF, but the fate is the same. 💀"
+  },
+  "neko": {
+    "description": "Get a random cute neko image and earn MantiCoins!",
+    "message": "Here is a neko for you, **{user}**! 🐱",
+    "error": "Sorry, I couldn't find a neko this time. 😿",
+    "title": "Here is your random Neko! 🐾"
+  },
+  "server": {
+    "info": "Server name: {name}\nTotal members: {members}"
+  },
+  "language": {
+    "description": "Change the bot's language in this server.",
+    "set": "Language set to **{lang}** 🇪🇸/🇺🇸",
+    "invalid": "Invalid language. Use 'es' or 'en'.",
+    "no_permission": "You do not have permission to change the language."
+  },
+  "avatar": {
+    "description": "Get the avatar of yourself or another user",
+    "title": "Avatar of {user}",
+    "link": "Link to Avatar"
+  },
+  "balance": {
+    "description": "Check your MantiCoins balance or another user's balance",
+    "title": "💰 Balance of {user}",
+    "field": "MantiCoins",
+    "footer": "OweenBot Economy System"
+  },
+  "joindate": {
+    "description": "Shows when a user joined the server",
+    "title": "📅 Join Date",
+    "joined": "**{user}** joined the server on:",
+    "ago": "Ago **{time}**"
+  },
+  "manticoint": {
+    "description": "MantiCoins system commands",
+    "daily_claimed": "✅ You have claimed your daily **100 MantiCoins**!\nCome back in **{time}**.",
+    "daily_success": "✅ You have claimed your daily **100 MantiCoins**!\n💰 New balance: **{balance} MantiCoins**",
+    "top_title": "🏆 Top 10 Richest (Server)",
+    "global_title": "🌍 Top 10 Richest (Global)",
+    "empty": "No data yet.",
+    "info_title": "💰 MantiCoins System",
+    "info_desc": "MantiCoins is the virtual currency of OweenBot. Use it to play and have fun!",
+    "info_earn": "📥 **How to earn:**\n• `/manticoins daily`: 100 coins every 24h\n• Social commands (/hug, /kiss, etc.): 1-5 coins\n• Gambling games (/blackjack, /ruleta, etc.)",
+    "info_spend": "📤 **How to spend:**\n• `/blackjack`: Play 21\n• `/ruleta`: Bet on colors\n• `/slots`: Slot machine\n• `/coinflip`: Heads or tails"
+  },
+  "user": {
+    "description": "Show information about yourself",
+    "title": "👤 User Information",
+    "username": "Username",
+    "id": "ID",
+    "created": "Account created",
+    "joined": "Joined server"
+  },
+  "infobot": {
+    "description": "Display detailed information about OweenBot",
+    "title": "🤖 OweenBot Information",
+    "desc": "A multipurpose Discord bot made with ❤️",
+    "dev": "Developer",
+    "lib": "Library",
+    "uptime": "Uptime",
+    "servers": "Servers",
+    "users": "Users",
+    "ping": "Ping"
+  },
+  "blackjack": {
+    "description": "Play Blackjack against the dealer",
+    "invalid_bet": "❌ You must bet a valid amount greater than 0.",
+    "no_funds": "❌ You don't have enough MantiCoins. You have **{balance}**.",
+    "title": "🎰 Blackjack",
+    "your_hand": "Your Hand",
+    "dealer_hand": "Dealer's Hand",
+    "total": "Total",
+    "win": "You won **{amount}** MantiCoins! 🎉",
+    "lose": "You lost **{amount}** MantiCoins. 😢",
+    "tie": "Tie. You get your bet back.",
+    "blackjack": "BLACKJACK! You won **{amount}** MantiCoins! 🃏",
+    "bust": "Bust! You lost **{amount}** MantiCoins.",
+    "dealer_bust": "Dealer bust! You won **{amount}** MantiCoins.",
+    "stand": "You stood with **{total}**.",
+    "hit": "You hit.",
+    "btn_hit": "Hit",
+    "active_game": "❌ You already have an active Blackjack game! Finish it first.",
+    "game_not_found": "❌ Game not found!",
+    "double": "💰 Double Down",
+    "btn_double": "💰 Double Down",
+    "result_title": "🎰 Blackjack - Result",
+    "blackjack_win": "🎊 **BLACKJACK!** You win 2.5x!",
+    "push": "🤝 **PUSH!** It's a tie!",
+    "btn_stand": "Stand"
+  },
+  "coinflip": {
+    "description": "Flip a coin and bet",
+    "invalid_side": "❌ Choose 'heads' or 'tails'.",
+    "win": "✅ **YOU WON!** It was **{result}**.\nYou won **{amount}** MantiCoins.",
+    "lose": "❌ **YOU LOST...** It was **{result}**.\nYou lost **{amount}** MantiCoins.",
+    "flipping": "🪙 The coin is flipping...",
+    "title": "🪙 Coinflip: {user} bet {amount} 🪙"
+  },
+  "ruleta": {
+    "description": "Spin the roulette wheel and bet",
+    "invalid_color": "❌ Choose 'red', 'black', or 'green'.",
+    "spin": "The ball landed on **{number}** ({color}).",
+    "win": "You won!",
+    "lose": "You lost!",
+    "red_btn": "🔴 Red (2x)",
+    "black_btn": "⚫ Black (2x)",
+    "green_btn": "🟢 Green (14x)",
+    "title": "🎰 Roulette - Place your bet",
+    "options": "Options",
+    "red": "Red",
+    "black": "Black",
+    "green": "Green",
+    "payout_2x": "Pays 2x",
+    "payout_14x": "Pays 14x",
+    "choose_color": "Choose a color to spin the wheel!",
+    "spinning": "🎰 The roulette is spinning...",
+    "waiting": "🌀 Waiting for result...",
+    "landed_on": "The roulette landed on {color} ({number})",
+    "multiplier": "Multiplier",
+    "result_title": "🎰 Roulette Result",
+    "timeout_title": "⏱️ Timeout",
+    "timeout_desc": "You didn't choose any option. The bet has been cancelled."
+  },
+  "slots": {
+    "description": "Play the slot machine",
+    "spin": "🎰 | {a} {b} {c}",
+    "win": "JACKPOT! You won **{amount}** MantiCoins! 🎉",
+    "small_win": "You won **{amount}** MantiCoins!",
+    "lose": "You lost **{amount}** MantiCoins. Better luck next time!",
+    "title": "🎰 Slot Machine",
+    "spinning": "SPINNING...",
+    "reels_spinning": "The reels are spinning...",
+    "mega_jackpot": "🎊 **MEGA JACKPOT! 7-7-7!** 🎊",
+    "diamond_jackpot": "💎 **DIAMOND JACKPOT!** 💎",
+    "triple_bells": "🔔 **TRIPLE BELLS!** 🔔",
+    "triple_grapes": "🍇 **Triple Grapes!** 🍇",
+    "triple_oranges": "🍊 **Triple Oranges!** 🍊",
+    "triple_lemons": "🍋 **Triple Lemons!** 🍋",
+    "triple_cherries": "🍒 **Triple Cherries!** 🍒",
+    "winning_pair": "✨ **Winning Pair!** ✨",
+    "no_match": "❌ **No Match...**",
+    "result_title": "🎰 Slot Machine - Result",
+    "result": "RESULT"
+  },
+  "valorant": {
+    "description": "Get a random Valorant agent",
+    "title": "🎮 Random Agent: {role}",
+    "agent": "Agent",
+    "role": "Role",
+    "desc": "Description",
+    "agent_msg": "Your random agent is {agent} 😉"
+  },
+  "ping": {
+    "description": "Check the bot's latency",
+    "response": "🏓 Pong! Latency: **{latency}ms**",
+    "pong": "pong!!",
+    "pong2": "another pong!!"
+  },
+  "moderation": {
+    "banned": "Banned: {user} — Reason: {reason}",
+    "kicked": "Kicked: {user} — Reason: {reason}",
+    "no_reason": "No reason provided",
+    "ban_list": {
+      "description": "Show the list of banned users",
+      "title": "🔨 Banned Users",
+      "empty": "No banned users in this server.",
+      "error": "Error fetching ban list."
+    },
+    "kick": {
+      "description": "Kick a user from the server",
+      "success": "✅ **{user}** has been kicked. Reason: {reason}",
+      "failed": "❌ I could not kick that user. Check my permissions and role hierarchy.",
+      "self": "You cannot kick yourself.",
+      "bot": "I cannot kick myself."
+    },
+    "reload": {
+      "description": "Reload a command (Developer only)",
+      "success": "Command `{command}` was reloaded!",
+      "error": "There was an error while reloading a command `{command}`."
+    }
+  }
+}

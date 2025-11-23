@@ -1,4 +1,6 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import { getGuildLanguage } from "../../utils/language.js";
+import { t } from "../../utils/i18n.js";
 
 export default {
   cooldown: 5,
@@ -18,9 +20,10 @@ export default {
         .setDMPermission(false),    
   async execute(interaction) {
     const target = interaction.options.getMember('target');
-    const reason = interaction.options.getString('reason') ?? 'No reason provided';
+    const lang = await getGuildLanguage(interaction.guildId);
+    const reason = interaction.options.getString('reason') ?? t(lang, 'moderation.no_reason');
     
   await interaction.guild.members.kick(target);
-  return interaction.reply(`Expulsión: ${target.user.username} — Motivo: ${reason}`);
+  return interaction.reply(t(lang, 'moderation.kicked', { user: target.user.username, reason: reason }));
   },
 };

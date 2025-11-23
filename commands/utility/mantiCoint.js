@@ -1,6 +1,8 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 
 import { topUsersManticoins, topUsersManticoinsByGuild, addCoins, getWorkData, updateWorkTime } from '../../utils/economy.js';
+import { getGuildLanguage } from '../../utils/language.js';
+import { t } from '../../utils/i18n.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -21,6 +23,7 @@ export default {
 
   async execute(interaction) {
     const subcommand = interaction.options.getSubcommand();
+    const lang = await getGuildLanguage(interaction.guildId);
 
     // Top 10 del SERVIDOR ACTUAL
     if (subcommand === 'top') {
@@ -31,9 +34,9 @@ export default {
       if (topUsers.length === 0) {
         const emptyEmbed = new EmbedBuilder()
           .setColor('#FFD700')
-          .setTitle(`💰 Top de MantiCoins - ${interaction.guild.name}`)
-          .setDescription('¡Aún no hay usuarios en el ranking de este servidor!\n\nSé el primero en ganar MantiCoins.')
-          .setFooter({ text: 'MantiCoins - La moneda oficial de OweenBot', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' });
+          .setTitle(t(lang, 'manticoint.top_title', { guildName: interaction.guild.name }))
+          .setDescription(t(lang, 'manticoint.empty'))
+          .setFooter({ text: 'MantiCoins', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' });
         
         return await interaction.editReply({ embeds: [emptyEmbed] });
       }
@@ -47,17 +50,17 @@ export default {
             return `**${index + 1}.** ${discordUser.username} - ${user.manticoins.toLocaleString()} 🪙`;
           } catch (error) {
             // Si el usuario borró su cuenta o no se encuentra
-            return `**${index + 1}.** Usuario Desconocido (${user.userid}) - ${user.manticoins.toLocaleString()} 🪙`;
+            return `**${index + 1}.** ${t(lang, 'manticoint.unknown_user')} (${user.userid}) - ${user.manticoins.toLocaleString()} 🪙`;
           }
         })
       )
 
       const embed = new EmbedBuilder()
         .setColor('#FFD700') // Color Oro
-        .setTitle(`💰 Top 10 de MantiCoins - ${interaction.guild.name}`)
+        .setTitle(t(lang, 'manticoint.top_title', { guildName: interaction.guild.name }))
         .setDescription(leaderBoardString.join('\n'))
         .setTimestamp()
-        .setFooter({ text: 'MantiCoins - La moneda oficial de OweenBot', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
+        .setFooter({ text: 'MantiCoins', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
 
       await interaction.editReply({ embeds: [embed] });
     }
@@ -70,9 +73,9 @@ export default {
       if (topUsers.length === 0) {
         const emptyEmbed = new EmbedBuilder()
           .setColor('#FFD700')
-          .setTitle(`💰 Top de MantiCoins Global`)
-          .setDescription('¡Aún no hay usuarios en el ranking global!\n\nSé el primero en ganar MantiCoins.')
-          .setFooter({ text: 'MantiCoins - La moneda oficial de OweenBot', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' });
+          .setTitle(t(lang, 'manticoint.global_title'))
+          .setDescription(t(lang, 'manticoint.empty'))
+          .setFooter({ text: 'MantiCoins', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' });
         
         return await interaction.editReply({ embeds: [emptyEmbed] });
       }
@@ -86,17 +89,17 @@ export default {
             return `**${index + 1}.** ${discordUser.username} - ${user.manticoins.toLocaleString()} 🪙`;
           } catch (error) {
             // Si el usuario borró su cuenta o no se encuentra
-            return `**${index + 1}.** Usuario Desconocido (${user.userid}) - ${user.manticoins.toLocaleString()} 🪙`;
+            return `**${index + 1}.** ${t(lang, 'manticoint.unknown_user')} (${user.userid}) - ${user.manticoins.toLocaleString()} 🪙`;
           }
         })
       )
 
       const embed = new EmbedBuilder()
         .setColor('#FFD700') // Color Oro
-        .setTitle(`💰 Top de MantiCoins Global`)
+        .setTitle(t(lang, 'manticoint.global_title'))
         .setDescription(leaderBoardString.join('\n'))
         .setTimestamp()
-        .setFooter({ text: 'MantiCoins - La moneda oficial de OweenBot', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
+        .setFooter({ text: 'MantiCoins', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
 
       await interaction.editReply({ embeds: [embed] });
     }
@@ -114,25 +117,6 @@ export default {
       const now = new Date();
       const timeDiff = now - new Date(lastDaily);
       const hoursDiff = timeDiff / (1000 * 60 * 60); // Convertir a horas
-
-      // Verificar si han pasado 24 horas
-      if (hoursDiff < 24) {
-        const hoursLeft = Math.floor(24 - hoursDiff);
-        const minutesLeft = Math.floor((24 - hoursDiff - hoursLeft) * 60);
-
-        const embed = new EmbedBuilder()
-          .setColor('#FF6B6B') // Color rojo para indicar error
-          .setTitle(`⏰ Daily MantiCoins`)
-          .setDescription(
-            `Ya reclamaste tu recompensa diaria.\n\n` +
-            `**Tiempo restante:** ${hoursLeft}h ${minutesLeft}m`
-          )
-          .setTimestamp()
-          .setFooter({ text: 'MantiCoins - La moneda oficial de OweenBot', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
-
-        return await interaction.editReply({ embeds: [embed] });
-      }
-
       // Si han pasado 24 horas, dar las monedas
       const dailyAmount = 100; // Cantidad de monedas diarias
       const newBalance = await addCoins(userId, guildId, dailyAmount);
@@ -140,14 +124,10 @@ export default {
 
       const embed = new EmbedBuilder()
         .setColor('#FFD700') // Color Oro
-        .setTitle(`💰 Daily MantiCoins`)
-        .setDescription(
-          `¡Has reclamado tu recompensa diaria!\n\n` +
-          `**+${dailyAmount} MantiCoins** 🪙\n` +
-          `**Nuevo saldo:** \`${newBalance.toLocaleString()}\` 🪙`
-        )
+        .setTitle(t(lang, 'manticoint.daily_title'))
+        .setDescription(t(lang, 'manticoint.daily_success', { amount: dailyAmount, balance: newBalance.toLocaleString() }))
         .setTimestamp()
-        .setFooter({ text: 'MantiCoins - La moneda oficial de OweenBot', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
+        .setFooter({ text: 'MantiCoins', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
 
       await interaction.editReply({ embeds: [embed] });
     }
@@ -158,28 +138,18 @@ export default {
 
       const embed = new EmbedBuilder()
         .setColor('#FFD700') // Color Oro
-        .setTitle(`💰 Info de MantiCoins`)
+        .setTitle(t(lang, 'manticoint.info_title'))
         .setDescription(
-          `**MantiCoins** es la moneda oficial de OweenBot 🪙\n\n` +
-          `**¿Cómo ganar MantiCoins?**\n` +
-          `• Usa comandos sociales (beso, abrazo, etc.)\n` +
-          `• Reclama tu recompensa diaria con \`/manticoins daily\`\n` +
-          `• Juega y apuesta con \`/coinflip\`\n\n` +
-          `**Comandos disponibles:**\n` +
-          `• \`/balance\` - Ver tu saldo\n` +
-          `• \`/manticoins top\` - Top del servidor\n` +
-          `• \`/manticoins global\` - Top global\n` +
-          `• \`/manticoins daily\` - Recompensa diaria\n\n` +
-          `**Nota:** Cada servidor tiene su propia economía independiente.`
+          `${t(lang, 'manticoint.info_desc')}\n\n` +
+          `${t(lang, 'manticoint.info_earn')}\n\n` +
+          `${t(lang, 'manticoint.info_commands')}\n\n` +
+          `${t(lang, 'manticoint.info_note')}`
         )
         .setTimestamp()
-        .setFooter({ text: 'MantiCoins - La moneda oficial de OweenBot', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
+        .setFooter({ text: 'MantiCoins', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
 
       await interaction.editReply({ embeds: [embed] });
     }
-
-
-
   }
 
 }

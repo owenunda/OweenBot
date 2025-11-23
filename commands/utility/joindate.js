@@ -1,4 +1,6 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
+import { getGuildLanguage } from '../../utils/language.js';
+import { t } from '../../utils/i18n.js';
 
 export default {
 	cooldown: 5,
@@ -11,12 +13,13 @@ export default {
 				.setRequired(false)),
 	async execute(interaction) {
 		await interaction.deferReply();
+        const lang = await getGuildLanguage(interaction.guildId);
 
 		const targetUser = interaction.options.getUser('user') || interaction.user;
 		const member = await interaction.guild.members.fetch(targetUser.id);
 
 		if (!member) {
-			return interaction.editReply({ content: '❌ Could not find that user in the server.' });
+			return interaction.editReply({ content: t(lang, 'common.error') });
 		}
 
 		const joinedAt = member.joinedAt;
@@ -53,13 +56,13 @@ export default {
 
 		const embed = new EmbedBuilder()
 			.setColor('#00ff00')
-			.setTitle('📅 User Information')
+			.setTitle(t(lang, 'joindate.title'))
 			.setThumbnail(targetUser.displayAvatarURL({ dynamic: true }))
 			.setDescription(`**${targetUser.tag}**`);
 
 		// Last join date
 		embed.addFields({ 
-			name: '📥 Last Server Join', 
+			name: t(lang, 'joindate.joined', { user: targetUser.username }), 
 			value: `<t:${joinedTimestamp}:F>\n<t:${joinedTimestamp}:R>`, 
 			inline: false 
 		});
@@ -96,7 +99,7 @@ export default {
 					inline: false 
 				},
 				{
-					name: '⏱️ Estimated Time in Server',
+					name: t(lang, 'joindate.ago', { time: timeStr }),
 					value: timeStr,
 					inline: true
 				},

@@ -1,0 +1,313 @@
+{
+  "common": {
+    "error": "Ocurrió un error al ejecutar este comando.",
+    "only_guild": "Este comando solo se puede usar en servidores.",
+    "cooldown": "Por favor espera {time} segundos antes de usar el comando `{command}` de nuevo.",
+    "no_gifs": "No se encontraron GIFs.",
+    "footer_thanks": "Gracias por usar OweenBot ❤️"
+  },
+  "economy": {
+    "insufficient_funds": "🚫 ¡No tienes suficientes MantiCoins!",
+    "balance": "Tu saldo",
+    "bet_amount": "Cantidad a apostar",
+    "need_more": "Te faltan **{amount}** MantiCoins.",
+    "check_balance": "Usa /balance para ver tu saldo actual",
+    "bet": "Apuesta",
+    "change": "Cambio",
+    "new_balance": "Nuevo Saldo",
+    "profit": "Ganancia",
+    "loss": "Pérdida",
+    "reward": "¡{user} ganó {reward} MantiCoins! Saldo: {balance} 🪙"
+  },
+  "help": {
+    "description": "Muestra todos los comandos disponibles e información sobre el bot",
+    "select_category": "Selecciona una categoría",
+    "categories": {
+      "fun": "🎮 Diversión",
+      "fun_desc": "Entretenimiento y juegos",
+      "economy": "💰 Economía",
+      "economy_desc": "Sistema de MantiCoins y apuestas",
+      "social": "❤️ Social",
+      "social_desc": "Interactúa con otros usuarios",
+      "utility": "🛠️ Utilidad",
+      "utility_desc": "Herramientas útiles",
+      "info": "ℹ️ Información",
+      "info_desc": "Sobre OweenBot"
+    },
+    "embed": {
+      "title": "🤖 OweenBot - Menú de Ayuda",
+      "welcome": "**¡Bienvenido a OweenBot!**\n\nSelecciona una categoría abajo para ver los comandos disponibles.\n\n**Categorías:**\n🎮 **Diversión** - Juegos y entretenimiento\n💰 **Economía** - Sistema de MantiCoins\n❤️ **Social** - Interactúa con otros\n🛠️ **Utilidad** - Herramientas útiles\nℹ️ **Info** - Sobre el bot",
+      "footer": "Usa el menú desplegable para navegar"
+    },
+    "fun_embed": {
+      "title": "🎮 Comandos de Diversión",
+      "desc": "Comandos de entretenimiento y juegos",
+      "footer": "¡Todos los juegos de casino usan MantiCoins!"
+    },
+    "economy_embed": {
+      "title": "💰 Comandos de Economía",
+      "desc": "Sistema MantiCoins - La moneda oficial de OweenBot",
+      "footer": "¡Cada servidor tiene su propia economía!"
+    },
+    "social_embed": {
+      "title": "❤️ Comandos Sociales",
+      "desc": "¡Interactúa con otros usuarios y gana MantiCoins!",
+      "footer": "¡Todos los comandos sociales recompensan con MantiCoins!"
+    },
+    "utility_embed": {
+      "title": "🛠️ Comandos de Utilidad",
+      "desc": "Herramientas y utilidades útiles",
+      "footer": "¡Más comandos de utilidad pronto!"
+    },
+    "info_embed": {
+      "title": "ℹ️ Sobre OweenBot",
+      "desc": "**OweenBot** es un bot multipropósito con juegos, economía y funciones sociales.\n\n**Características:**\n🎰 **Juegos de Casino** - Blackjack, Ruleta, Tragamonedas, Cara o Cruz\n💰 **Sistema de Economía** - Gana y gasta MantiCoins\n❤️ **Interacciones Sociales** - Comandos divertidos para interactuar con amigos\n🏆 **Tablas de Clasificación** - Compite con otros globalmente o por servidor\n🎮 **Valorant** - Selector de agentes aleatorio\n\n**Sistema MantiCoins:**\n• Cada servidor tiene su propia economía independiente\n• Gana monedas a través de comandos sociales y recompensas diarias\n• ¡Usa monedas para jugar juegos de casino y ganar en grande!\n• Tablas de clasificación globales y específicas del servidor\n\n**Soporte:**\n¿Necesitas ayuda? ¡Usa `/help` para ver todos los comandos!\nÚnete a nuestro servidor de soporte: [Discord](https://discord.gg/3rE9PRH95y)",
+      "stats": "📊 Estadísticas",
+      "stats_value": "Servidores: {servers}\nUsers: {users}",
+      "links": "🔗 Enlaces",
+      "dev": "👨‍💻 Desarrollador",
+      "footer": "OweenBot v1.0 | Hecho con ❤️"
+    }
+  },
+  "hug": {
+    "self_hug": "¡No puedes abrazarte a ti mismo! 🥺",
+    "bot_hug": "🫢 ¡Oh! Gracias, pero soy un bot. 🤖",
+    "hug_message": "**{user}** abrazó a **{target}**! 🫢",
+    "error_gif": "Hubo un error al buscar el GIF, pero el abrazo cuenta igual. 🫢",
+    "reward": "¡{user} ganó {reward} MantiCoins! Saldo: {balance} 🪙"
+  },
+  "kiss": {
+    "description": "¡Dale un beso a alguien! 😘",
+    "self": "¡No puedes besarte a ti mismo! 🥺",
+    "bot": "🫢 ¡Oh! Gracias, pero soy un bot. 🤖",
+    "message": "**{user}** besó a **{target}**! 😘",
+    "error": "Hubo un error al buscar el GIF, pero el beso cuenta igual. 😘"
+  },
+  "slap": {
+    "description": "¡Abofetea a alguien! 👋",
+    "self": "¡No puedes abofetearte a ti mismo! 😠",
+    "bot": "¡Oye! ¡No me pegues! 🤖",
+    "message": "**{user}** abofeteó a **{target}**! 👋",
+    "error": "Hubo un error al buscar el GIF, pero la bofetada cuenta igual. 👋",
+    "self_slap": "¡No puedes abofetearte a ti mismo! 🥺",
+    "bot_slap": "🫢 ¡Oh! Gracias, pero soy un bot. 🤖",
+    "msg": "**{user}** abofeteó a **{target}**! 🫢"
+  },
+  "pat": {
+    "description": "¡Acaricia a alguien! 🤚",
+    "self": "¡No puedes acariciarte a ti mismo! 🥺",
+    "bot": "¡Gracias! Me encantan las caricias. 🤖",
+    "message": "**{user}** acarició a **{target}**! 🤚",
+    "error": "Hubo un error al buscar el GIF, pero la caricia cuenta igual. 🤚",
+    "self_pat": "¡No puedes acariciarte a ti mismo! 🥺",
+    "bot_pat": "🫢 ¡Oh! Gracias, pero soy un bot. 🤖",
+    "msg": "**{user}** acarició a **{target}**! 🫢"
+  },
+  "cry": {
+    "description": "Expresa tu tristeza. 😢",
+    "message": "**{user}** está llorando... 😢",
+    "error": "Hubo un error al buscar el GIF, pero las lágrimas son reales. 😢"
+  },
+  "dance": {
+    "description": "¡Muestra tus pasos de baile! 💃",
+    "message": "**{user}** está bailando! 💃",
+    "error": "Hubo un error al buscar el GIF, pero el baile continúa. 💃"
+  },
+  "punch": {
+    "description": "¡Golpea a alguien! 👊",
+    "self": "¿Por qué te golpearías a ti mismo? 🤕",
+    "bot": "¡Esquivado! 🤖",
+    "message": "**{user}** golpeó a **{target}**! 👊",
+    "error": "Hubo un error al buscar el GIF, pero el golpe dolió igual. 👊",
+    "self_punch": "¡No puedes golpearte a ti mismo! 🥺",
+    "bot_punch": "🫢 ¡Oh! Gracias, pero soy un bot. 🤖",
+    "msg": "**{user}** golpeó a **{target}**! 👊"
+  },
+  "kill": {
+    "description": "¡Elimina a alguien (virtualmente)! 💀",
+    "self": "¡No hagas eso! 😱",
+    "bot": "Soy inmortal. 🤖",
+    "message": "**{user}** eliminó a **{target}**! 💀",
+    "error": "Hubo un error al buscar el GIF, pero el destino es el mismo. 💀"
+  },
+  "neko": {
+    "description": "¡Obtén una imagen de neko aleatoria y gana MantiCoins!",
+    "message": "¡Aquí tienes un neko para ti, **{user}**! 🐱",
+    "error": "Lo siento, no pude encontrar un neko esta vez. 😿",
+    "title": "¡Aquí tienes tu Neko aleatorio! 🐾"
+  },
+  "server": {
+    "info": "Nombre del servidor: {name}\nTotal de miembros: {members}"
+  },
+  "language": {
+    "description": "Cambia el idioma del bot en este servidor.",
+    "set": "Idioma establecido a **{lang}** 🇪🇸/🇺🇸",
+    "invalid": "Idioma no válido. Usa 'es' o 'en'.",
+    "no_permission": "No tienes permiso para cambiar el idioma."
+  },
+  "avatar": {
+    "description": "Obtén el avatar de un usuario",
+    "title": "Avatar de {user}",
+    "link": "Enlace al Avatar"
+  },
+  "balance": {
+    "description": "Revisa tu saldo de MantiCoins o el de otro usuario",
+    "title": "💰 Balance de {user}",
+    "field": "MantiCoins",
+    "footer": "Sistema de Economía OweenBot"
+  },
+  "joindate": {
+    "description": "Muestra cuándo se unió un usuario al servidor",
+    "title": "📅 Fecha de Ingreso",
+    "joined": "**{user}** se unió al servidor el:",
+    "ago": "Hace **{time}**"
+  },
+  "manticoint": {
+    "description": "Comandos del sistema MantiCoins",
+    "daily_claimed": "✅ ¡Has reclamado tus **100 MantiCoins** diarios!\nVuelve en **{time}**.",
+    "daily_success": "✅ ¡Has reclamado tus **100 MantiCoins** diarios!\n💰 Nuevo saldo: **{balance} MantiCoins**",
+    "top_title": "🏆 Top 10 Más Ricos (Servidor)",
+    "global_title": "🌍 Top 10 Más Ricos (Global)",
+    "empty": "No hay datos aún.",
+    "info_title": "💰 Sistema MantiCoins",
+    "info_desc": "MantiCoins es la moneda virtual de OweenBot. ¡Úsala para jugar y divertirte!",
+    "info_earn": "📥 **Cómo ganar:**\n• `/manticoins daily`: 100 monedas cada 24h\n• Comandos sociales (/hug, /kiss, etc.): 1-5 monedas\n• Juegos de azar (/blackjack, /ruleta, etc.)",
+    "info_spend": "📤 **Cómo gastar:**\n• `/blackjack`: Juega al 21\n• `/ruleta`: Apuesta a colores\n• `/slots`: Máquina tragamonedas\n• `/coinflip`: Cara o cruz"
+  },
+  "user": {
+    "description": "Muestra información sobre ti",
+    "title": "👤 Información de Usuario",
+    "username": "Nombre de usuario",
+    "id": "ID",
+    "created": "Cuenta creada",
+    "joined": "Se unió al servidor"
+  },
+  "infobot": {
+    "description": "Muestra información detallada sobre OweenBot",
+    "title": "🤖 Información de OweenBot",
+    "desc": "Un bot de Discord multipropósito creado con ❤️",
+    "dev": "Desarrollador",
+    "lib": "Librería",
+    "uptime": "Tiempo activo",
+    "servers": "Servidores",
+    "users": "Usuarios",
+    "ping": "Ping"
+  },
+  "blackjack": {
+    "description": "Juega Blackjack contra el dealer",
+    "invalid_bet": "❌ Debes apostar una cantidad válida mayor a 0.",
+    "no_funds": "❌ No tienes suficientes MantiCoins. Tienes **{balance}**.",
+    "title": "🎰 Blackjack",
+    "your_hand": "Tu Mano",
+    "dealer_hand": "Mano del Dealer",
+    "total": "Total",
+    "win": "¡Ganaste **{amount}** MantiCoins! 🎉",
+    "lose": "Perdiste **{amount}** MantiCoins. 😢",
+    "tie": "Empate. Recuperas tu apuesta.",
+    "blackjack": "¡BLACKJACK! Ganaste **{amount}** MantiCoins! 🃏",
+    "bust": "¡Te pasaste! Perdiste **{amount}** MantiCoins.",
+    "dealer_bust": "¡El dealer se pasó! Ganaste **{amount}** MantiCoins.",
+    "stand": "Te plantaste con **{total}**.",
+    "hit": "Pediste carta.",
+    "btn_hit": "Pedir Carta",
+    "active_game": "❌ ¡Ya tienes un juego de Blackjack activo! Termínalo primero.",
+    "game_not_found": "❌ ¡Juego no encontrado!",
+    "double": "💰 Doblar",
+    "btn_double": "💰 Doblar",
+    "result_title": "🎰 Blackjack - Resultado",
+    "blackjack_win": "🎊 **¡BLACKJACK!** ¡Ganaste 2.5x!",
+    "push": "🤝 **¡EMPATE!** ¡Es un empate!",
+    "btn_stand": "Plantarse"
+  },
+  "coinflip": {
+    "description": "Lanza una moneda y apuesta",
+    "invalid_side": "❌ Elige 'cara' o 'cruz'.",
+    "win": "✅ **¡GANASTE!** La moneda cayó en **{result}**.\nGanaste **{amount}** MantiCoins.",
+    "lose": "❌ **PERDISTE...** La moneda cayó en **{result}**.\nPerdiste **{amount}** MantiCoins.",
+    "flipping": "🪙 La moneda está girando...",
+    "title": "🪙 Coinflip: {user} apostó {amount} 🪙"
+  },
+  "ruleta": {
+    "description": "Gira la ruleta y apuesta",
+    "invalid_color": "❌ Elige 'rojo', 'negro' o 'verde'.",
+    "spin": "La bola cayó en **{number}** ({color}).",
+    "win": "¡Ganaste!",
+    "lose": "¡Perdiste!",
+    "red_btn": "🔴 Rojo (2x)",
+    "black_btn": "⚫ Negro (2x)",
+    "green_btn": "🟢 Verde (14x)",
+    "title": "🎰 Ruleta - Elige tu apuesta",
+    "options": "Opciones",
+    "red": "Rojo",
+    "black": "Negro",
+    "green": "Verde",
+    "payout_2x": "Paga 2x",
+    "payout_14x": "Paga 14x",
+    "choose_color": "¡Elige un color para girar la ruleta!",
+    "spinning": "🎰 La ruleta está girando...",
+    "waiting": "🌀 Esperando el resultado...",
+    "landed_on": "La ruleta cayó en {color} ({number})",
+    "multiplier": "Multiplicador",
+    "result_title": "🎰 Resultado de la Ruleta",
+    "timeout_title": "⏱️ Tiempo agotado",
+    "timeout_desc": "No elegiste ninguna opción. La apuesta ha sido cancelada."
+  },
+  "slots": {
+    "description": "Juega a la máquina tragamonedas",
+    "spin": "🎰 | {a} {b} {c}",
+    "win": "¡JACKPOT! Ganaste **{amount}** MantiCoins! 🎉",
+    "small_win": "¡Ganaste **{amount}** MantiCoins!",
+    "lose": "Perdiste **{amount}** MantiCoins. ¡Suerte la próxima!",
+    "title": "🎰 Máquina Tragamonedas",
+    "spinning": "GIRANDO...",
+    "reels_spinning": "Los carretes están girando...",
+    "mega_jackpot": "🎊 **¡MEGA JACKPOT! 7-7-7!** 🎊",
+    "diamond_jackpot": "💎 **¡JACKPOT DE DIAMANTES!** 💎",
+    "triple_bells": "🔔 **¡TRIPLE CAMPANAS!** 🔔",
+    "triple_grapes": "🍇 **¡Triple Uvas!** 🍇",
+    "triple_oranges": "🍊 **¡Triple Naranjas!** 🍊",
+    "triple_lemons": "🍋 **¡Triple Limones!** 🍋",
+    "triple_cherries": "🍒 **¡Triple Cerezas!** 🍒",
+    "winning_pair": "✨ **¡Par Ganador!** ✨",
+    "no_match": "❌ **Sin Coincidencia...**",
+    "result_title": "🎰 Máquina Tragamonedas - Resultado",
+    "result": "RESULTADO"
+  },
+  "valorant": {
+    "description": "Obtén un agente de Valorant aleatorio",
+    "title": "🎮 Agente Aleatorio: {role}",
+    "agent": "Agente",
+    "role": "Rol",
+    "desc": "Descripción",
+    "agent_msg": "Tu agente aleatorio es {agent} 😉"
+  },
+  "ping": {
+    "description": "Revisa la latencia del bot",
+    "response": "🏓 Pong! Latencia: **{latency}ms**",
+    "pong": "¡pong!",
+    "pong2": "¡otro pong!"
+  },
+  "moderation": {
+    "banned": "Baneado: {user} — Motivo: {reason}",
+    "kicked": "Expulsado: {user} — Motivo: {reason}",
+    "no_reason": "Sin motivo proporcionado",
+    "ban_list": {
+      "description": "Muestra la lista de usuarios baneados",
+      "title": "🔨 Usuarios Baneados",
+      "empty": "No hay usuarios baneados en este servidor.",
+      "error": "Error al obtener la lista de bans."
+    },
+    "kick": {
+      "description": "Expulsa a un usuario del servidor",
+      "success": "✅ **{user}** ha sido expulsado. Razón: {reason}",
+      "failed": "❌ No pude expulsar a ese usuario. Verifica mis permisos y la jerarquía de roles.",
+      "self": "No puedes expulsarte a ti mismo.",
+      "bot": "No puedo expulsarme a mí mismo."
+    },
+    "reload": {
+      "description": "Recarga un comando (Solo desarrollador)",
+      "success": "Comando `{command}` recargado con éxito.",
+      "error": "Error al recargar el comando `{command}`."
+    }
+  }
+}

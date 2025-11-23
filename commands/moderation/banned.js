@@ -1,4 +1,6 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
+import { getGuildLanguage } from '../../utils/language.js';
+import { t } from '../../utils/i18n.js';
 
 export default {
 	data: new SlashCommandBuilder()
@@ -18,9 +20,10 @@ export default {
 
         async execute(interaction) {
             const target = interaction.options.getUser('target');
-            const reason = interaction.options.getString('reason') ?? 'No reason provided';
+            const lang = await getGuildLanguage(interaction.guildId);
+            const reason = interaction.options.getString('reason') ?? t(lang, 'moderation.no_reason');
     
-			await interaction.reply(`Baneando: ${target.username} — Motivo: ${reason}`);
+			await interaction.reply(t(lang, 'moderation.banned', { user: target.username, reason: reason }));
             await interaction.guild.members.ban(target);
         },
 };

@@ -1,5 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { getBalance, addCoins, removeCoins } from '../../utils/economy.js';
+import { getGuildLanguage } from '../../utils/language.js';
+import { t } from '../../utils/i18n.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -17,19 +19,20 @@ export default {
     const betAmount = interaction.options.getInteger('amount');
     const userId = interaction.user.id;
     const guildId = interaction.guildId;
+    const lang = await getGuildLanguage(guildId);
 
     // Validate funds
     const currentBalance = await getBalance(userId, guildId);
     if (currentBalance < betAmount) {
       const errorEmbed = new EmbedBuilder()
         .setColor('#FF0000')
-        .setTitle('🚫 Insufficient MantiCoins!')
+        .setTitle(t(lang, 'economy.insufficient_funds'))
         .setDescription(
-          `**Your balance:** ${currentBalance.toLocaleString()} 🪙\n` +
-          `**Bet amount:** ${betAmount.toLocaleString()} 🪙\n\n` +
-          `You need **${(betAmount - currentBalance).toLocaleString()}** more MantiCoins.`
+          `**${t(lang, 'economy.balance')}:** ${currentBalance.toLocaleString()} 🪙\n` +
+          `**${t(lang, 'economy.bet_amount')}:** ${betAmount.toLocaleString()} 🪙\n\n` +
+          t(lang, 'economy.need_more', { amount: (betAmount - currentBalance).toLocaleString() })
         )
-        .setFooter({ text: 'Use /balance to check your balance' });
+        .setFooter({ text: t(lang, 'economy.check_balance') });
       
       return interaction.editReply({ embeds: [errorEmbed] });
     }
@@ -55,15 +58,15 @@ export default {
     // Spinning animation
     const spinningEmbed = new EmbedBuilder()
       .setColor('#FFA500')
-      .setTitle('🎰 Slot Machine')
+      .setTitle(t(lang, 'slots.title'))
       .setDescription(
         '**━━━━━━━━━━━━━━━**\n' +
-        '🎰 **SPINNING...** 🎰\n' +
+        `🎰 **${t(lang, 'slots.spinning')}** 🎰\n` +
         '**━━━━━━━━━━━━━━━**\n\n' +
         '> ❓ ❓ ❓\n\n' +
-        '🎲 The reels are spinning...'
+        `🎲 ${t(lang, 'slots.reels_spinning')}`
       )
-      .setFooter({ text: `Bet: ${betAmount.toLocaleString()} 🪙` });
+      .setFooter({ text: `${t(lang, 'economy.bet')}: ${betAmount.toLocaleString()} 🪙` });
 
     await interaction.editReply({ embeds: [spinningEmbed] });
 
@@ -87,31 +90,31 @@ export default {
       switch (slot1) {
         case '7️⃣':
           multiplier = 100; // 7-7-7 = MEGA JACKPOT!
-          resultMessage = '🎊 **MEGA JACKPOT! 7-7-7!** 🎊';
+          resultMessage = t(lang, 'slots.mega_jackpot');
           break;
         case '💎':
           multiplier = 50; // Diamonds
-          resultMessage = '💎 **DIAMOND JACKPOT!** 💎';
+          resultMessage = t(lang, 'slots.diamond_jackpot');
           break;
         case '🔔':
           multiplier = 25; // Bells
-          resultMessage = '🔔 **TRIPLE BELLS!** 🔔';
+          resultMessage = t(lang, 'slots.triple_bells');
           break;
         case '🍇':
           multiplier = 15; // Grapes
-          resultMessage = '🍇 **Triple Grapes!** 🍇';
+          resultMessage = t(lang, 'slots.triple_grapes');
           break;
         case '🍊':
           multiplier = 10; // Oranges
-          resultMessage = '🍊 **Triple Oranges!** 🍊';
+          resultMessage = t(lang, 'slots.triple_oranges');
           break;
         case '🍋':
           multiplier = 7; // Lemons
-          resultMessage = '🍋 **Triple Lemons!** 🍋';
+          resultMessage = t(lang, 'slots.triple_lemons');
           break;
         case '🍒':
           multiplier = 5; // Cherries
-          resultMessage = '🍒 **Triple Cherries!** 🍒';
+          resultMessage = t(lang, 'slots.triple_cherries');
           break;
       }
     }
@@ -119,11 +122,11 @@ export default {
     else if (slot1 === slot2 || slot2 === slot3 || slot1 === slot3) {
       won = true;
       multiplier = 2; // Pays 2x
-      resultMessage = '✨ **Winning Pair!** ✨';
+      resultMessage = t(lang, 'slots.winning_pair');
     }
     // Lost
     else {
-      resultMessage = '❌ **No Match...**';
+      resultMessage = t(lang, 'slots.no_match');
     }
 
     // Calculate win/loss
@@ -145,17 +148,17 @@ export default {
     // Create result embed
     const resultEmbed = new EmbedBuilder()
       .setColor(embedColor)
-      .setTitle('🎰 Slot Machine - Result')
+      .setTitle(t(lang, 'slots.result_title'))
       .setDescription(
         '**━━━━━━━━━━━━━━━**\n' +
-        '🎰 **RESULT** 🎰\n' +
+        `🎰 **${t(lang, 'slots.result')}** 🎰\n` +
         '**━━━━━━━━━━━━━━━**\n\n' +
         `> ${slot1} ${slot2} ${slot3}\n\n` +
         resultMessage + '\n\n' +
-        `**Bet:** ${betAmount.toLocaleString()} 🪙\n` +
-        (won ? `**Multiplier:** ${multiplier}x\n` : '') +
-        `**Change:** ${balanceChange} 🪙\n` +
-        `**New Balance:** ${newBalance.toLocaleString()} 🪙`
+        `**${t(lang, 'economy.bet')}:** ${betAmount.toLocaleString()} 🪙\n` +
+        (won ? `**${t(lang, 'ruleta.multiplier')}:** ${multiplier}x\n` : '') +
+        `**${t(lang, 'economy.change')}:** ${balanceChange} 🪙\n` +
+        `**${t(lang, 'economy.new_balance')}:** ${newBalance.toLocaleString()} 🪙`
       )
       .setFooter({ text: `${interaction.user.username} | OweenBot Betting System` })
       .setTimestamp();

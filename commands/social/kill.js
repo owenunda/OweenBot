@@ -2,6 +2,8 @@ import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import axios from "axios";
 import 'dotenv/config'
 import { addCoins } from "../../utils/economy.js";
+import { getGuildLanguage } from "../../utils/language.js";
+import { t } from "../../utils/i18n.js";
 
 export default {
   data: new SlashCommandBuilder()
@@ -10,13 +12,14 @@ export default {
     .addUserOption(option => option.setName("user").setDescription("The user to kill (game)").setRequired(true)),
 
   async execute(interaction) {
+    const lang = await getGuildLanguage(interaction.guildId);
     const targetUser = interaction.options.getUser("user");
     const user = interaction.user;
 
     // Evitamos matarnos a uno mismo 
     if (targetUser.id === user.id) {
       return await interaction.reply({
-        content: "You can't kill yourself! 🥺",
+        content: t(lang, 'kill.self_kill'),
         ephemeral: true
       });
     }
@@ -24,7 +27,7 @@ export default {
     // Si menciona al mismo bot
     if (targetUser.id === interaction.client.user.id) {
       return await interaction.reply({
-        content: "🫢 Oh! You can't kill me, I'm immortal! 🤖",
+        content: t(lang, 'kill.bot_kill'),
         ephemeral: true
       });
     }
@@ -49,7 +52,7 @@ export default {
 
       if(!gifs || gifs.length === 0) {
         return await interaction.editReply({
-          content: "No GIFs found, but the kill still counts. 💀"
+          content: t(lang, 'common.no_gifs')
         });
       }
 
@@ -59,7 +62,7 @@ export default {
 
       const embed = new EmbedBuilder()
         .setColor('#8B0000')
-        .setDescription(`**${user}** killed **${targetUser}**! 💀 (It's just a game!)`)
+        .setDescription(t(lang, 'kill.msg', { user: user, target: targetUser }))
         .setImage(gifUrl)
         .setTimestamp()
 
@@ -70,7 +73,7 @@ export default {
       const newBalance = await addCoins(user.id, interaction.guildId, reward);
 
       embed.setFooter({
-        text: `¡${user.username} ganó ${reward} MantiCoins! Saldo: ${newBalance.toLocaleString()} 🪙`,
+        text: t(lang, 'economy.reward', { user: user.username, reward: reward, balance: newBalance.toLocaleString() }),
         iconURL: interaction.client.user.displayAvatarURL()
       });
 
@@ -79,7 +82,7 @@ export default {
     } catch (error) {
       console.error('Error fetching kill gif:', error);
       await interaction.editReply({
-        content: "There was an error while searching for the GIF, but the kill still counts. 💀",
+        content: t(lang, 'common.error'),
       });
     }
   },

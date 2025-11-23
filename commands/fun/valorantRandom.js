@@ -1,5 +1,8 @@
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import fs from 'node:fs';
+import { getGuildLanguage } from "../../utils/language.js";
+import { t } from "../../utils/i18n.js";
+
 const agentValorant = JSON.parse(
   fs.readFileSync(new URL('./json/agentValorant.json', import.meta.url), 'utf-8')
 );
@@ -8,7 +11,7 @@ let imgAgent = "";
 let nameAgent = "";
 let numRandom = 0;
 
-const randomAgent = (role) => {
+const randomAgent = (role, lang) => {
   switch (role) {
     case "role_sentinel":
       numRandom = Math.floor(
@@ -44,14 +47,14 @@ const randomAgent = (role) => {
   const exampleEmbed = new EmbedBuilder()
     .setColor(0x0099ff)
     .setAuthor({
-      name: `Your random agent is ${nameAgent} 😉`,
+      name: t(lang, 'valorant.agent_msg', { agent: nameAgent }),
       iconURL:
         "https://cdn4.iconfinder.com/data/icons/valorant-jett-and-killjoy-cute-chibi/2000/valorant_chibi_killjoy_jettvalorant_cute_jettcute_killjoycute-09-512.png",
     })
     .setImage(imgAgent)
     .setTimestamp()
     .setFooter({
-  text: "Thanks for using OweenBot ❤️",
+      text: t(lang, 'common.footer_thanks'),
       iconURL:
         "https://www.techspot.com/images2/downloads/topdownload/2020/06/2020-06-09-ts3_thumbs-7fd-p_256.webp",
     });
@@ -77,6 +80,7 @@ export default {
 
   async execute(interaction) {
     const role = interaction.options.getString("role");
-    await interaction.reply(randomAgent(role));
+    const lang = await getGuildLanguage(interaction.guildId);
+    await interaction.reply(randomAgent(role, lang));
   },
 };

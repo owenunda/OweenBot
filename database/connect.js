@@ -39,16 +39,28 @@ const initializeDatabase = async () => {
     let retries = 3;
     while (retries > 0) {
         try {
-            const createTableQuery = `
+            // Tabla de economía actualizada con guildId y PK compuesta
+            const createEconomyTableQuery = `
                 CREATE TABLE IF NOT EXISTS economy (
-                    userId VARCHAR(20) PRIMARY KEY,
+                    userId VARCHAR(20),
+                    guildId VARCHAR(255) NOT NULL,
                     mantiCoins INTEGER DEFAULT 0,
-                    lastDaily TIMESTAMP WITH TIME ZONE DEFAULT '1970-01-01'
+                    lastDaily TIMESTAMP WITH TIME ZONE DEFAULT '1970-01-01',
+                    PRIMARY KEY (userId, guildId)
                 );
             `;
-            // Ejecutamos la creación de la tabla
-            await pool.query(createTableQuery); 
-            console.log('✅ PostgreSQL: Tabla "economy" asegurada y lista.');
+            await pool.query(createEconomyTableQuery);
+
+            // Nueva tabla para configuraciones del servidor (idioma)
+            const createGuildSettingsTableQuery = `
+                CREATE TABLE IF NOT EXISTS guild_settings (
+                    guildId VARCHAR(20) PRIMARY KEY,
+                    language VARCHAR(5) DEFAULT 'es'
+                );
+            `;
+            await pool.query(createGuildSettingsTableQuery);
+
+            console.log('✅ PostgreSQL: Tablas "economy" y "guild_settings" aseguradas y listas.');
             return; // Salir si tiene éxito
         } catch (error) {
             retries--;

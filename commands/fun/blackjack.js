@@ -1,5 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { getBalance, addCoins, removeCoins } from '../../utils/economy.js';
+import { getGuildLanguage } from '../../utils/language.js';
+import { t } from '../../utils/i18n.js';
 
 // Card deck
 const suits = ['♠️', '♥️', '♣️', '♦️'];
@@ -71,11 +73,12 @@ export default {
     const betAmount = interaction.options.getInteger('amount');
     const userId = interaction.user.id;
     const guildId = interaction.guildId;
+    const lang = await getGuildLanguage(guildId);
 
     // Check if user already has an active game
     if (activeGames.has(userId)) {
       return interaction.reply({ 
-        content: '❌ You already have an active Blackjack game! Finish it first.', 
+        content: t(lang, 'blackjack.active_game'), 
         ephemeral: true 
       });
     }
@@ -85,13 +88,13 @@ export default {
     if (currentBalance < betAmount) {
       const errorEmbed = new EmbedBuilder()
         .setColor('#FF0000')
-        .setTitle('🚫 Insufficient MantiCoins!')
+        .setTitle(t(lang, 'economy.insufficient_funds'))
         .setDescription(
-          `**Your balance:** ${currentBalance.toLocaleString()} 🪙\n` +
-          `**Bet amount:** ${betAmount.toLocaleString()} 🪙\n\n` +
-          `You need **${(betAmount - currentBalance).toLocaleString()}** more MantiCoins.`
+          `**${t(lang, 'economy.balance')}:** ${currentBalance.toLocaleString()} 🪙\n` +
+          `**${t(lang, 'economy.bet_amount')}:** ${betAmount.toLocaleString()} 🪙\n\n` +
+          t(lang, 'economy.need_more', { amount: (betAmount - currentBalance).toLocaleString() })
         )
-        .setFooter({ text: 'Use /balance to check your balance' });
+        .setFooter({ text: t(lang, 'economy.check_balance') });
       
       return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
     }
@@ -111,7 +114,8 @@ export default {
       dealerHand,
       betAmount,
       guildId,
-      doubled: false
+      doubled: false,
+      lang // Store language in game state
     };
     activeGames.set(userId, gameState);
 
@@ -120,29 +124,29 @@ export default {
       .addComponents(
         new ButtonBuilder()
           .setCustomId(`bj_hit_${userId}`)
-          .setLabel('🎴 Hit')
+          .setLabel(t(lang, 'blackjack.btn_hit'))
           .setStyle(ButtonStyle.Primary),
         new ButtonBuilder()
           .setCustomId(`bj_stand_${userId}`)
-          .setLabel('✋ Stand')
+          .setLabel(t(lang, 'blackjack.btn_stand'))
           .setStyle(ButtonStyle.Secondary),
         new ButtonBuilder()
           .setCustomId(`bj_double_${userId}`)
-          .setLabel('💰 Double Down')
+          .setLabel(t(lang, 'blackjack.btn_double'))
           .setStyle(ButtonStyle.Success)
           .setDisabled(currentBalance < betAmount * 2)
       );
 
     const embed = new EmbedBuilder()
       .setColor('#1E90FF')
-      .setTitle('🃏 Blackjack')
+      .setTitle(t(lang, 'blackjack.title'))
       .setDescription(
-        `**Your Hand:** ${formatHand(playerHand)} (${playerValue})\n` +
-        `**Dealer's Hand:** ${formatHand(dealerHand, true)} (?)\n\n` +
-        `**Bet:** ${betAmount.toLocaleString()} 🪙`
+        `**${t(lang, 'blackjack.your_hand')}:** ${formatHand(playerHand)} (${playerValue})\n` +
+        `**${t(lang, 'blackjack.dealer_hand')}:** ${formatHand(dealerHand, true)} (?)\n\n` +
+        `**${t(lang, 'economy.bet')}:** ${betAmount.toLocaleString()} 🪙`
       )
       .setImage('https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDV2ODg2cXR6cmxxYnJjdjhvbmYxdHRqM3EwZG96OWlwMG1lazZ5diZlcD12MV9naWZzX3NlYXJjaCZjdD1n/5yYoECDolGySFHKZYl/200.webp')
-      .setFooter({ text: `${interaction.user.username} | Balance: ${currentBalance.toLocaleString()} 🪙` })
+      .setFooter({ text: `${interaction.user.username} | ${t(lang, 'economy.balance')}: ${currentBalance.toLocaleString()} 🪙` })
       .setTimestamp();
 
     await interaction.reply({ embeds: [embed], components: [row] });
@@ -161,7 +165,7 @@ export default {
       const game = activeGames.get(userId);
 
       if (!game) {
-        return i.reply({ content: '❌ Game not found!', ephemeral: true });
+        return i.reply({ content: t(lang, 'blackjack.game_not_found'), ephemeral: true });
       }
 
       await i.deferUpdate();
@@ -186,6 +190,7 @@ export default {
 };
 
 async function handleHit(interaction, userId, game) {
+  const lang = game.lang;
   game.playerHand.push(game.deck.pop());
   const playerValue = calculateHandValue(game.playerHand);
 
@@ -197,11 +202,11 @@ async function handleHit(interaction, userId, game) {
   // Update embed
   const embed = new EmbedBuilder()
     .setColor('#1E90FF')
-    .setTitle('🃏 Blackjack')
+    .setTitle(t(lang, 'blackjack.title'))
     .setDescription(
-      `**Your Hand:** ${formatHand(game.playerHand)} (${playerValue})\n` +
-      `**Dealer's Hand:** ${formatHand(game.dealerHand, true)} (?)\n\n` +
-      `**Bet:** ${game.betAmount.toLocaleString()} 🪙`
+      `**${t(lang, 'blackjack.your_hand')}:** ${formatHand(game.playerHand)} (${playerValue})\n` +
+      `**${t(lang, 'blackjack.dealer_hand')}:** ${formatHand(game.dealerHand, true)} (?)\n\n` +
+      `**${t(lang, 'economy.bet')}:** ${game.betAmount.toLocaleString()} 🪙`
     )
     .setImage('https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDV2ODg2cXR6cmxxYnJjdjhvbmYxdHRqM3EwZG96OWlwMG1lazZ5diZlcD12MV9naWZzX3NlYXJjaCZjdD1n/5yYoECDolGySFHKZYl/200.webp')
     .setFooter({ text: `${interaction.user.username}` })
@@ -211,11 +216,11 @@ async function handleHit(interaction, userId, game) {
     .addComponents(
       new ButtonBuilder()
         .setCustomId(`bj_hit_${userId}`)
-        .setLabel('🎴 Hit')
+        .setLabel(t(lang, 'blackjack.btn_hit'))
         .setStyle(ButtonStyle.Primary),
       new ButtonBuilder()
         .setCustomId(`bj_stand_${userId}`)
-        .setLabel('✋ Stand')
+        .setLabel(t(lang, 'blackjack.btn_stand'))
         .setStyle(ButtonStyle.Secondary)
     );
 
@@ -248,6 +253,7 @@ async function handleBlackjack(interaction, userId, game) {
 }
 
 async function endGame(interaction, userId, game, result) {
+  const lang = game.lang;
   // Dealer plays
   let dealerValue = calculateHandValue(game.dealerHand);
   
@@ -266,27 +272,27 @@ async function endGame(interaction, userId, game, result) {
   let embedColor = '';
 
   if (result === 'bust' || playerValue > 21) {
-    resultMessage = '💥 **BUST!** You went over 21!';
+    resultMessage = t(lang, 'blackjack.bust', { amount: game.betAmount });
     winAmount = -game.betAmount;
     embedColor = '#FF0000';
   } else if (result === 'blackjack') {
-    resultMessage = '🎊 **BLACKJACK!** You win 2.5x!';
+    resultMessage = t(lang, 'blackjack.blackjack_win');
     winAmount = Math.floor(game.betAmount * 1.5); // Blackjack pays 3:2
     embedColor = '#FFD700';
   } else if (dealerValue > 21) {
-    resultMessage = '🎉 **DEALER BUST!** You win!';
+    resultMessage = t(lang, 'blackjack.dealer_bust', { amount: game.betAmount });
     winAmount = game.betAmount;
     embedColor = '#00FF00';
   } else if (playerValue > dealerValue) {
-    resultMessage = '✅ **YOU WIN!**';
+    resultMessage = t(lang, 'blackjack.win', { amount: game.betAmount });
     winAmount = game.betAmount;
     embedColor = '#00FF00';
   } else if (playerValue < dealerValue) {
-    resultMessage = '❌ **DEALER WINS!**';
+    resultMessage = t(lang, 'blackjack.lose', { amount: game.betAmount });
     winAmount = -game.betAmount;
     embedColor = '#FF0000';
   } else {
-    resultMessage = '🤝 **PUSH!** It\'s a tie!';
+    resultMessage = t(lang, 'blackjack.push');
     winAmount = 0;
     embedColor = '#FFA500';
   }
@@ -304,14 +310,14 @@ async function endGame(interaction, userId, game, result) {
   // Final embed
   const embed = new EmbedBuilder()
     .setColor(embedColor)
-    .setTitle('🃏 Blackjack - Result')
+    .setTitle(t(lang, 'blackjack.result_title'))
     .setDescription(
-      `**Your Hand:** ${formatHand(game.playerHand)} (${playerValue})\n` +
-      `**Dealer's Hand:** ${formatHand(game.dealerHand)} (${dealerValue})\n\n` +
+      `**${t(lang, 'blackjack.your_hand')}:** ${formatHand(game.playerHand)} (${playerValue})\n` +
+      `**${t(lang, 'blackjack.dealer_hand')}:** ${formatHand(game.dealerHand)} (${dealerValue})\n\n` +
       resultMessage + '\n\n' +
-      `**Bet:** ${game.betAmount.toLocaleString()} 🪙\n` +
-      `**Change:** ${winAmount >= 0 ? '+' : ''}${winAmount.toLocaleString()} 🪙\n` +
-      `**New Balance:** ${newBalance.toLocaleString()} 🪙`
+      `**${t(lang, 'economy.bet')}:** ${game.betAmount.toLocaleString()} 🪙\n` +
+      `**${t(lang, 'economy.change')}:** ${winAmount >= 0 ? '+' : ''}${winAmount.toLocaleString()} 🪙\n` +
+      `**${t(lang, 'economy.new_balance')}:** ${newBalance.toLocaleString()} 🪙`
     )
     .setFooter({ text: `${interaction.user.username} | OweenBot Betting System` })
     .setTimestamp();
