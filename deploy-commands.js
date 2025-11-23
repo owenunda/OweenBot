@@ -33,8 +33,12 @@ import { pathToFileURL, fileURLToPath } from 'node:url';  // Conversión de ruta
  * CLIENT_ID: ID de la aplicación del bot (se obtiene del Discord Developer Portal)
  * TOKEN: Token de autenticación del bot (necesario para la API)
  */
-const clientId = process.env.CLIENT_ID;
-const token = process.env.TOKEN;
+const clientId = process.env.NODE_ENV === 'development'
+	? process.env.CLIENT_ID_DEV
+	: process.env.CLIENT_ID;
+const token = process.env.NODE_ENV === 'development'
+	? process.env.TOKEN_DEV
+	: process.env.TOKEN;
 const guildId = process.env.GUILD_ID;
 const nodeEnv = process.env.NODE_ENV;
 // Obtiene el directorio actual del script

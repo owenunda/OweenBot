@@ -20,7 +20,7 @@ export default {
     // Evitamos besarnos a uno mismo 
     if (targetUser.id === user.id) {
       return await interaction.reply({
-        content: t(lang, 'kiss.self_kiss'),
+        content: t(lang, 'kiss.self'),
         ephemeral: true
       });
     }
@@ -28,7 +28,7 @@ export default {
     // Si menciona al mismo bot
     if (targetUser.id === interaction.client.user.id) {
       return await interaction.reply({
-        content: t(lang, 'kiss.bot_kiss'),
+        content: t(lang, 'kiss.bot'),
         ephemeral: true
       });
     }

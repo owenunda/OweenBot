@@ -209,4 +209,8 @@ process.on('exit', () => {
  * El token se debe guardar en el archivo .env como: TOKEN=tu_token_aqui
  * NUNCA compartas tu token públicamente
  */
-client.login(process.env.TOKEN);
+const token = process.env.NODE_ENV === 'development'
+	? process.env.TOKEN_DEV
+	: process.env.TOKEN;
+
+client.login(token);
