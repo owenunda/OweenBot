@@ -82,9 +82,11 @@ export default {
                 { name: '/coinflip <side> <amount>', value: 'Flip a coin and bet on Heads or Tails. Win 2x your bet!', inline: false },
                 { name: '/ruleta <amount>', value: 'Spin the roulette wheel! Bet on Red (2x), Black (2x), or Green (14x).', inline: false },
                 { name: '/slots <amount>', value: 'Play the slot machine! Match 3 symbols for big wins. Jackpot: 100x!', inline: false },
-                { name: '/neko', value: 'Get a random cute neko image and earn MantiCoins!', inline: false }
+                { name: '/neko', value: 'Get a random cute neko image and earn MantiCoins!', inline: false },
+                { name: '/random-agent <role>', value: 'Get a random Valorant agent by role (Sentinel, Duelist, Initiator, Controller).', inline: false },
+                { name: '/ping', value: 'Check the bot\'s response time and latency.', inline: false }
               )
-              .setFooter({ text: 'All games use MantiCoins' })
+              .setFooter({ text: 'All casino games use MantiCoins' })
               .setTimestamp();
             break;
 
@@ -130,9 +132,11 @@ export default {
               .setDescription('Useful tools and utilities')
               .addFields(
                 { name: '/help', value: 'Show this help menu with all available commands.', inline: false },
-                { name: '/ping', value: 'Check the bot\'s latency and response time.', inline: false },
-                { name: '/serverinfo', value: 'Display information about the current server.', inline: false },
-                { name: '/userinfo [user]', value: 'Show information about yourself or another user.', inline: false }
+                { name: '/infobot', value: 'Display detailed information about OweenBot.', inline: false },
+                { name: '/avatar [user]', value: 'Get the avatar of yourself or another user.', inline: false },
+                { name: '/server', value: 'Display information about the current server.', inline: false },
+                { name: '/user', value: 'Show information about yourself.', inline: false },
+                { name: '/joindate [user]', value: 'Shows when a user joined the server with detailed time calculations.', inline: false }
               )
               .setFooter({ text: 'More utility commands coming soon!' })
               .setTimestamp();
@@ -148,18 +152,21 @@ export default {
                 '🎰 **Casino Games** - Blackjack, Roulette, Slots, Coinflip\n' +
                 '💰 **Economy System** - Earn and spend MantiCoins\n' +
                 '❤️ **Social Interactions** - Fun commands to interact with friends\n' +
-                '🏆 **Leaderboards** - Compete with others globally or per server\n\n' +
+                '🏆 **Leaderboards** - Compete with others globally or per server\n' +
+                '🎮 **Valorant** - Random agent selector\n\n' +
                 '**MantiCoins System:**\n' +
                 '• Each server has its own independent economy\n' +
                 '• Earn coins through social commands and daily rewards\n' +
                 '• Use coins to play casino games and win big!\n' +
                 '• Global and server-specific leaderboards\n\n' +
                 '**Support:**\n' +
-                'Need help? Use `/help` to see all commands!'
+                'Need help? Use `/help` to see all commands!\n' +
+                'Join our support server: [Discord](https://discord.gg/3rE9PRH95y)'
               )
               .addFields(
                 { name: '📊 Statistics', value: `Servers: ${interaction.client.guilds.cache.size}\nUsers: ${interaction.client.users.cache.size}`, inline: true },
-                { name: '🔗 Links', value: '[Invite Bot](https://discord.com) | [Support Server](https://discord.com)', inline: true }
+                { name: '🔗 Links', value: '[GitHub](https://github.com/owenunda/OweenBot/)\n[Website](https://oweenbot.oween.software/)', inline: true },
+                { name: '👨‍💻 Developer', value: 'oweenunda#9782\nusername: manticora', inline: true }
               )
               .setThumbnail(interaction.client.user.displayAvatarURL())
               .setFooter({ text: `OweenBot v1.0 | Made with ❤️` })

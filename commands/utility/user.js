@@ -4,9 +4,9 @@ export default {
     cooldown: 5,
     data: new SlashCommandBuilder()
     .setName("user")
-    .setDescription("Da informacion del usuario"),
+    .setDescription("Provides information about the user"),
 
     async execute(interaction){
-    await interaction.reply(`Comando ejecutado por ${interaction.user.username}`) 
+    await interaction.reply(`Command executed by ${interaction.user.username}`) 
     }
 }

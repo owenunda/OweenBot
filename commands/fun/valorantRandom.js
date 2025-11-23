@@ -10,28 +10,28 @@ let numRandom = 0;
 
 const randomAgent = (role) => {
   switch (role) {
-    case "role_centinela":
+    case "role_sentinel":
       numRandom = Math.floor(
         Math.random() * (agentValorant.centinela.length - 1)
       );
       imgAgent = agentValorant.centinela[numRandom].img;
       nameAgent = agentValorant.centinela[numRandom].name;
       break;
-    case "role_duelista":
+    case "role_duelist":
       numRandom = Math.floor(
         Math.random() * (agentValorant.duelista.length - 1)
       );
       imgAgent = agentValorant.duelista[numRandom].img;
       nameAgent = agentValorant.duelista[numRandom].name;
       break;
-    case "role_iniciador":
+    case "role_initiator":
       numRandom = Math.floor(
         Math.random() * (agentValorant.iniciadore.length - 1)
       );
       imgAgent = agentValorant.iniciadore[numRandom].img;
       nameAgent = agentValorant.iniciadore[numRandom].name;
       break;
-    case "role_Controlador":
+    case "role_controller":
       numRandom = Math.floor(
         Math.random() * (agentValorant.controlador.length - 1)
       );
@@ -44,14 +44,14 @@ const randomAgent = (role) => {
   const exampleEmbed = new EmbedBuilder()
     .setColor(0x0099ff)
     .setAuthor({
-      name: `El agente aleatorio es ${nameAgent} 😉 `,
+      name: `Your random agent is ${nameAgent} 😉`,
       iconURL:
         "https://cdn4.iconfinder.com/data/icons/valorant-jett-and-killjoy-cute-chibi/2000/valorant_chibi_killjoy_jettvalorant_cute_jettcute_killjoycute-09-512.png",
     })
     .setImage(imgAgent)
     .setTimestamp()
     .setFooter({
-  text: "gracias por usar OweenBot ❤️",
+  text: "Thanks for using OweenBot ❤️",
       iconURL:
         "https://www.techspot.com/images2/downloads/topdownload/2020/06/2020-06-09-ts3_thumbs-7fd-p_256.webp",
     });
@@ -61,17 +61,17 @@ export default {
   cooldown: 3,
   data: new SlashCommandBuilder()
     .setName("random-agent")
-    .setDescription("te da un agente random de valorant")
+    .setDescription("Get a random Valorant agent")
     .addStringOption((option) =>
       option
         .setName("role")
-        .setDescription("agent role")
+        .setDescription("Agent role")
         .setRequired(true)
         .addChoices(
-          { name: "centinela", value: "role_centinela" },
-          { name: "duelista", value: "role_duelista" },
-          { name: "iniciador", value: "role_iniciador" },
-          { name: "controlador", value: "role_Controlador" }
+          { name: "Sentinel", value: "role_sentinel" },
+          { name: "Duelist", value: "role_duelist" },
+          { name: "Initiator", value: "role_initiator" },
+          { name: "Controller", value: "role_controller" }
         )
     ),
 
