@@ -35,6 +35,11 @@ const initializeDatabase = async () => {
 
 // 2. Exportar el Pool y la función de conexión
 export { pool };
+
+export const endPool = async () => {
+    await pool.end();
+    console.log('🔗 Conexión a PostgreSQL cerrada.');
+};
 export const connectDB = async () => {
     try {
         await pool.query('SELECT NOW()'); 

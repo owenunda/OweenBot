@@ -98,29 +98,14 @@ export default {
 		try {
 			// Ejecuta la función principal del comando
 			await command.execute(interaction);
-		} catch (error) {
-			// Captura cualquier error que ocurra durante la ejecución
-			console.error(`Error al ejecutar ${interaction.commandName}: - interactionCreate.js:103`);
-			console.error(error);
-			
-			/**
-			 * Maneja la respuesta de error según el estado de la interacción:
-			 * - replied: Ya se envió una respuesta inicial
-			 * - deferred: Se está procesando (se mostró "pensando...")
-			 * - ninguno: No se ha respondido aún
-			 */
+		}
+		catch (error) {
+			console.error(`Error al ejecutar ${interaction.commandName}:`, error);
 			if (interaction.replied || interaction.deferred) {
-				// Usa followUp si ya se respondió antes
-				await interaction.followUp({ 
-					content: "Hubo un error al ejecutar este comando!", 
-					ephemeral: true 
-				});
-			} else {
-				// Usa reply si es la primera respuesta
-				await interaction.reply({ 
-					content: 'Hubo un error al ejecutar este comando!', 
-					ephemeral: true 
-				});
+				await interaction.followUp({ content: 'Hubo un error al ejecutar este comando!', ephemeral: true });
+			}
+			else {
+				await interaction.reply({ content: 'Hubo un error al ejecutar este comando!', ephemeral: true });
 			}
 		}
 	},

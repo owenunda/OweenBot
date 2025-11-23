@@ -102,21 +102,21 @@ const commandFolders = fs.readdirSync(foldersPath);  // Lee todas las carpetas e
  */
 for (const folder of commandFolders) {
 	const commandsPath = path.join(foldersPath, folder);
-	
+
 	// Filtra solo archivos JavaScript, ignora subcarpetas y otros archivos
 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-	
+
 	// Procesa cada archivo de comando individualmente
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
-		
+
 		// Convierte la ruta del archivo a URL para importación dinámica (requerido en ES modules)
 		const moduleUrl = pathToFileURL(filePath).href;
 		const imported = await import(moduleUrl);
-		
+
 		// Soporta tanto export default como exports nombrados
 		const command = imported.default ?? imported;
-		
+
 		// Valida que el comando tenga la estructura correcta
 		if ('data' in command && 'execute' in command) {
 			/**
@@ -126,7 +126,7 @@ for (const folder of commandFolders) {
 			 */
 			command.category = command.category ?? folder;
 			command.fileName = command.fileName ?? path.parse(file).name;
-			
+
 			// Registra el comando en la colección usando su nombre como clave
 			client.commands.set(command.data.name, command);
 		} else {
@@ -152,7 +152,7 @@ for (const file of eventFiles) {
 	const moduleUrl = pathToFileURL(filePath).href;
 	const imported = await import(moduleUrl);
 	const event = imported.default ?? imported;
-	
+
 	/**
 	 * Registra el evento según su configuración:
 	 * - once: true -> Se ejecuta solo una vez (ej: ready)
@@ -163,11 +163,34 @@ for (const file of eventFiles) {
 	} else {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
-	
+
 	console.log(`[EVENTO] Cargado: ${event.name} - index.js:167`);
 }
 
 connectDB();
+
+
+// ------------------------------------------------------------------
+// AÑADE ESTE BLOQUE DE CÓDIGO AL FINAL DE index.js
+// ------------------------------------------------------------------
+
+// Manejar el cierre del proceso (ctrl+c, o reinicio de --watch)
+process.on('SIGINT', async () => {
+	// SIGINT es la señal común para Cierre de terminales (incluido --watch)
+	console.log('\nRecibida señal SIGINT. Iniciando cierre ordenado.');
+	await endPool(); // Cierra las conexiones a la DB
+	// 2. Espera un breve momento (ej: 500ms) antes de forzar el exit. 
+	// Esto da tiempo a que el pool complete la comunicación de cierre.
+	setTimeout(() => {
+		console.log('Finalizando proceso con retraso.');
+		process.exit(0);
+	}, 500); // 500 milisegundos de retraso
+});
+
+// Manejar el evento de salida del proceso
+process.on('exit', () => {
+	console.log('Proceso Node.js finalizado.');
+});
 
 // ═══════════════════════════════════════════════════════════════════════════
 // INICIO DE SESIÓN DEL BOT
