@@ -26,7 +26,7 @@ export default {
       const MAX_REWARDS = 5;
       const reward = Math.floor(Math.random() * (MAX_REWARDS - MIN_REWARDS + 1)) + MIN_REWARDS;
 
-      const newBalance = await addCoins(interaction.user.id, reward);
+      const newBalance = await addCoins(interaction.user.id, interaction.guildId, reward);
 
       embed.setFooter({
         text: `¡${interaction.user.username} ganó ${reward} MantiCoins! Saldo: ${newBalance.toLocaleString()} 🪙`,

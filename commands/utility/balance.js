@@ -17,8 +17,9 @@ export default {
 
     // determina el usuario objetivo
     const targetUser = interaction.options.getUser('user') || interaction.user;
+    const guildId = interaction.guildId;
     const gifManti = 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp'
-    const balance = await getBalance(targetUser.id);
+    const balance = await getBalance(targetUser.id, guildId);
 
     const embed = new EmbedBuilder()
       .setColor('#FFD700') // Color Oro

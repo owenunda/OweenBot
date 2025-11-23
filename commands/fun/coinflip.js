@@ -25,9 +25,10 @@ export default {
     const choice = interaction.options.getString('lado');
     const betAmount = interaction.options.getInteger('cantidad');
     const userId = interaction.user.id;
+    const guildId = interaction.guildId;
 
     // 1. Validación de Fondos
-    const currentBalance = await getBalance(userId);
+    const currentBalance = await getBalance(userId, guildId);
 
     if (currentBalance < betAmount) {
       const errorEmbed = new EmbedBuilder()
@@ -72,12 +73,12 @@ export default {
 
     if (hasWon) {
       // Ganó: Se le suma la cantidad apostada (Profit)
-      newBalance = await addCoins(userId, betAmount);
+      newBalance = await addCoins(userId, guildId, betAmount);
       description = `✅ **¡GANASTE!** La moneda cayó en **${result.toUpperCase()}**.\nGanaste **${betAmount.toLocaleString()}** MantiCoins.`;
       color = '#00FF00'; // Verde
     } else {
       // Perdió: Se le resta lo apostado
-      newBalance = await removeCoins(userId, betAmount);
+      newBalance = await removeCoins(userId, guildId, betAmount);
       description = `❌ **PERDISTE...** La moneda cayó en **${result.toUpperCase()}**.\nPerdiste **${betAmount.toLocaleString()}** MantiCoins.`;
       color = '#FF0000'; // Rojo
     }
