@@ -27,7 +27,7 @@ import { pathToFileURL, fileURLToPath } from 'node:url';  // Conversión de ruta
 import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';  // Librería de Discord
 import express from "express";         // Framework web para el servidor HTTP
 import 'dotenv/config';                // Carga variables de entorno desde .env
-
+import { connectDB } from './database/connect.js';
 // ═══════════════════════════════════════════════════════════════════════════
 // CONFIGURACIÓN DEL SERVIDOR EXPRESS
 // ═══════════════════════════════════════════════════════════════════════════
@@ -166,6 +166,8 @@ for (const file of eventFiles) {
 	
 	console.log(`[EVENTO] Cargado: ${event.name} - index.js:167`);
 }
+
+connectDB();
 
 // ═══════════════════════════════════════════════════════════════════════════
 // INICIO DE SESIÓN DEL BOT

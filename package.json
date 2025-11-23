@@ -20,7 +20,8 @@
     "dotenv": "^16.3.1",
     "express": "^5.1.0",
     "glob": "^8.0.3",
-    "nekos.life": "^3.0.0"
+    "nekos.life": "^3.0.0",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
