@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import NekosLife from "nekos.life";
+import { addCoins } from "../../utils/economy.js";
 
 const nekoClient = new NekosLife();
 
@@ -41,7 +42,17 @@ export default {
         .setDescription(`**${user}** hugged **${targetUser}**! 🫢`)
         .setImage(imageUrl)
         .setTimestamp()
-        .setFooter({ text: `Requested by ${user.username}` });
+
+      const MIN_REWARDS = 1;
+      const MAX_REWARDS = 5;
+      const reward = Math.floor(Math.random() * (MAX_REWARDS - MIN_REWARDS + 1)) + MIN_REWARDS;
+
+      const newBalance = await addCoins(user.id, reward);
+
+      embed.setFooter({
+        text: `¡${user.username} ganó ${reward} MantiCoins! Saldo: ${newBalance.toLocaleString()} 🪙`,
+        iconURL: interaction.client.user.displayAvatarURL()
+      });
 
       await interaction.editReply({ embeds: [embed] });
 

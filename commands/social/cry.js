@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import axios from "axios";
 import 'dotenv/config'
+import { addCoins } from "../../utils/economy.js";
 
 export default {
   data: new SlashCommandBuilder()
@@ -57,7 +58,17 @@ export default {
         .setDescription(`**${user}** is crying because of **${targetUser}**! 😢`)
         .setImage(gifUrl)
         .setTimestamp()
-        .setFooter({ text: `Requested by ${user.username}` });
+
+      const MIN_REWARDS = 1;
+      const MAX_REWARDS = 5;
+      const reward = Math.floor(Math.random() * (MAX_REWARDS - MIN_REWARDS + 1)) + MIN_REWARDS;
+
+      const newBalance = await addCoins(user.id, reward);
+
+      embed.setFooter({
+        text: `¡${user.username} ganó ${reward} MantiCoins! Saldo: ${newBalance.toLocaleString()} 🪙`,
+        iconURL: interaction.client.user.displayAvatarURL()
+      });
 
       await interaction.editReply({ embeds: [embed] });
 
