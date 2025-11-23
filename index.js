@@ -27,7 +27,8 @@ import { pathToFileURL, fileURLToPath } from 'node:url';  // Conversión de ruta
 import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';  // Librería de Discord
 import express from "express";         // Framework web para el servidor HTTP
 import 'dotenv/config';                // Carga variables de entorno desde .env
-import { connectDB } from './database/connect.js';
+import { connectDB, endPool } from './database/connect.js';
+import { startSelfPing } from './utils/keepAlive.js';
 // ═══════════════════════════════════════════════════════════════════════════
 // CONFIGURACIÓN DEL SERVIDOR EXPRESS
 // ═══════════════════════════════════════════════════════════════════════════
@@ -52,11 +53,20 @@ app.get("/", (req, res) => {
 	res.sendFile(filePath);
 });
 
+app.get("/ping", (req, res) => {
+	res.status(200).send("OweenBot is alive!");
+});
+
 /**
  * Inicia el servidor Express en el puerto especificado
  * Esto mantiene el proceso activo y permite monitoreo externo
  */
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT} - index.js:59`));
+app.listen(PORT, () => {
+	console.log(`✅ Server running on port ${PORT} - index.js:59`)
+
+	const pingUrl = `${process.env.APP_URL}/ping`;
+	startSelfPing(pingUrl);
+});
 
 // ═══════════════════════════════════════════════════════════════════════════
 // CONFIGURACIÓN DEL CLIENTE DE DISCORD
@@ -169,29 +179,27 @@ for (const file of eventFiles) {
 
 connectDB();
 
+// ═══════════════════════════════════════════════════════════════════════════
+// MANEJO DE CIERRE (Requerido para el Pool de DB)
+// ═══════════════════════════════════════════════════════════════════════════
 
-// ------------------------------------------------------------------
-// AÑADE ESTE BLOQUE DE CÓDIGO AL FINAL DE index.js
-// ------------------------------------------------------------------
-
-// Manejar el cierre del proceso (ctrl+c, o reinicio de --watch)
 process.on('SIGINT', async () => {
-	// SIGINT es la señal común para Cierre de terminales (incluido --watch)
 	console.log('\nRecibida señal SIGINT. Iniciando cierre ordenado.');
-	await endPool(); // Cierra las conexiones a la DB
-	// 2. Espera un breve momento (ej: 500ms) antes de forzar el exit. 
-	// Esto da tiempo a que el pool complete la comunicación de cierre.
+
+	// Intentamos cerrar el pool si existe la función importada
+	if (typeof endPool === 'function') {
+		await endPool();
+	}
+
 	setTimeout(() => {
 		console.log('Finalizando proceso con retraso.');
 		process.exit(0);
-	}, 500); // 500 milisegundos de retraso
+	}, 500);
 });
 
-// Manejar el evento de salida del proceso
 process.on('exit', () => {
 	console.log('Proceso Node.js finalizado.');
 });
-
 // ═══════════════════════════════════════════════════════════════════════════
 // INICIO DE SESIÓN DEL BOT
 // ═══════════════════════════════════════════════════════════════════════════
