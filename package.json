@@ -19,7 +19,8 @@
     "discord.js": "^14.15.2",
     "dotenv": "^16.3.1",
     "express": "^5.1.0",
-    "glob": "^8.0.3"
+    "glob": "^8.0.3",
+    "nekos.life": "^3.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
