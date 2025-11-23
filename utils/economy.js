@@ -36,7 +36,7 @@ export const getBalance = async (userId) => {
 
 export const addCoins = async (userId, amount) => {
   // Consulta con 'ON CONFLICT': Si el usuario existe, actualiza; si no, inserta.
-  cosnt result = await pool.query(
+  const result = await pool.query(
   `INSERT INTO economy (userId, mantiCoins)
     VALUES ($1, $2)
     ON CONFLICT (userId)
