@@ -42,7 +42,7 @@ export default {
 
       const embed = new EmbedBuilder()
         .setColor('#1E25E9')
-        .setDescription(t(lang, 'pat.msg', { user: user, target: targetUser }))
+        .setDescription(t(lang, 'pat.message', { user: user, target: targetUser }))
         .setImage(imageUrl)
         .setTimestamp()
 

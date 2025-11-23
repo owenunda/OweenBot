@@ -42,7 +42,7 @@ export default {
 
       const embed = new EmbedBuilder()
         .setColor('#FF69B4')
-        .setDescription(t(lang, 'kiss.msg', { user: user, target: targetUser }))
+        .setDescription(t(lang, 'kiss.message', { user: user, target: targetUser }))
         .setImage(imageUrl)
         .setTimestamp()
 

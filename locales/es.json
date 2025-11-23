@@ -72,7 +72,7 @@
   "hug": {
     "self_hug": "¡No puedes abrazarte a ti mismo! 🥺",
     "bot_hug": "🫢 ¡Oh! Gracias, pero soy un bot. 🤖",
-    "hug_message": "**{user}** abrazó a **{target}**! 🫢",
+    "hug_message": "**{user}** le dio un abrazo cálido a **{target}**! 🤗💝",
     "error_gif": "Hubo un error al buscar el GIF, pero el abrazo cuenta igual. 🫢",
     "reward": "¡{user} ganó {reward} MantiCoins! Saldo: {balance} 🪙"
   },
@@ -80,14 +80,14 @@
     "description": "¡Dale un beso a alguien! 😘",
     "self": "¡No puedes besarte a ti mismo! 🥺",
     "bot": "🫢 ¡Oh! Gracias, pero soy un bot. 🤖",
-    "message": "**{user}** besó a **{target}**! 😘",
+    "message": "Aww~ **{user}** le dio un besito a **{target}**! 😘💕",
     "error": "Hubo un error al buscar el GIF, pero el beso cuenta igual. 😘"
   },
   "slap": {
     "description": "¡Abofetea a alguien! 👋",
     "self": "¡No puedes abofetearte a ti mismo! 😠",
     "bot": "¡Oye! ¡No me pegues! 🤖",
-    "message": "**{user}** abofeteó a **{target}**! 👋",
+    "message": "¡PAM! **{user}** abofeteó a **{target}**! Eso dolió... 😵",
     "error": "Hubo un error al buscar el GIF, pero la bofetada cuenta igual. 👋",
     "self_slap": "¡No puedes abofetearte a ti mismo! 🥺",
     "bot_slap": "🫢 ¡Oh! Gracias, pero soy un bot. 🤖",
@@ -97,7 +97,7 @@
     "description": "¡Acaricia a alguien! 🤚",
     "self": "¡No puedes acariciarte a ti mismo! 🥺",
     "bot": "¡Gracias! Me encantan las caricias. 🤖",
-    "message": "**{user}** acarició a **{target}**! 🤚",
+    "message": "Qué lindo~ **{user}** le dio palmaditas en la cabeza a **{target}** 🥰✨",
     "error": "Hubo un error al buscar el GIF, pero la caricia cuenta igual. 🤚",
     "self_pat": "¡No puedes acariciarte a ti mismo! 🥺",
     "bot_pat": "🫢 ¡Oh! Gracias, pero soy un bot. 🤖",
@@ -105,19 +105,25 @@
   },
   "cry": {
     "description": "Expresa tu tristeza. 😢",
-    "message": "**{user}** está llorando... 😢",
+    "message": "Oh no... **{target}** hizo llorar a **{user}** 😢💔",
+    "solo_message": "**{user}** está llorando... 😢💧",
+    "self_cry": "¡No puedes llorar por ti mismo! 🥺",
+    "bot_cry": "¿Por qué lloras por mí? ¡Soy solo un bot! 🤖",
     "error": "Hubo un error al buscar el GIF, pero las lágrimas son reales. 😢"
   },
   "dance": {
     "description": "¡Muestra tus pasos de baile! 💃",
-    "message": "**{user}** está bailando! 💃",
+    "message": "¡Wow! **{user}** está bailando con **{target}**! 💃🕺✨",
+    "solo_message": "¡Mira! **{user}** está bailando solo! 💃🎶✨",
+    "self_dance": "¡No puedes bailar contigo mismo... o sí puedes! Usa el comando sin mencionar a nadie. 🕺",
+    "bot_dance": "¡Me encanta bailar! Pero soy un bot, no tengo piernas. 🤖💃",
     "error": "Hubo un error al buscar el GIF, pero el baile continúa. 💃"
   },
   "punch": {
     "description": "¡Golpea a alguien! 👊",
     "self": "¿Por qué te golpearías a ti mismo? 🤕",
     "bot": "¡Esquivado! 🤖",
-    "message": "**{user}** golpeó a **{target}**! 👊",
+    "message": "¡AUCH! **{user}** le dio un golpe a **{target}**! 👊💥",
     "error": "Hubo un error al buscar el GIF, pero el golpe dolió igual. 👊",
     "self_punch": "¡No puedes golpearte a ti mismo! 🥺",
     "bot_punch": "🫢 ¡Oh! Gracias, pero soy un bot. 🤖",
@@ -127,7 +133,7 @@
     "description": "¡Elimina a alguien (virtualmente)! 💀",
     "self": "¡No hagas eso! 😱",
     "bot": "Soy inmortal. 🤖",
-    "message": "**{user}** eliminó a **{target}**! 💀",
+    "message": "💀 **{user}** eliminó a **{target}**... F en el chat 💀",
     "error": "Hubo un error al buscar el GIF, pero el destino es el mismo. 💀"
   },
   "neko": {

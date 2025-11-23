@@ -58,7 +58,7 @@ export default {
 
       const embed = new EmbedBuilder()
         .setColor('#FF4500')
-        .setDescription(t(lang, 'punch.msg', { user: user, target: targetUser }))
+        .setDescription(t(lang, 'punch.message', { user: user, target: targetUser }))
         .setImage(gifUrl)
         .setTimestamp()
 

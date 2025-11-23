@@ -9,12 +9,64 @@ export default {
   data: new SlashCommandBuilder()
     .setName("dance")
     .setDescription("Dance with someone! 💃")
-    .addUserOption(option => option.setName("user").setDescription("The user to dance with").setRequired(true)),
+    .addUserOption(option => option.setName("user").setDescription("The user to dance with").setRequired(false)),
 
   async execute(interaction) {
     const lang = await getGuildLanguage(interaction.guildId);
     const targetUser = interaction.options.getUser("user");
     const user = interaction.user;
+
+    // Si no hay target, el usuario está bailando solo
+    if (!targetUser) {
+      await interaction.deferReply();
+
+      try {
+        const response = await axios.get('https://api.giphy.com/v1/gifs/search', {
+          params: {
+            api_key: process.env.GIPHY_API_KEY,
+            q: "anime dance",
+            limit: 50,
+            rating: "g"
+          }
+        });
+        const gifs = response.data.data;
+
+        if(!gifs || gifs.length === 0) {
+          return await interaction.editReply({
+            content: t(lang, 'common.no_gifs')
+          });
+        }
+
+        const randomIndex = Math.floor(Math.random() * gifs.length);
+        const randomGif = gifs[randomIndex];
+        const gifUrl = randomGif.images.original.url;
+
+        const embed = new EmbedBuilder()
+          .setColor('#9B59B6')
+          .setDescription(t(lang, 'dance.solo_message', { user: user }))
+          .setImage(gifUrl)
+          .setTimestamp()
+
+        const MIN_REWARDS = 1;
+        const MAX_REWARDS = 5;
+        const reward = Math.floor(Math.random() * (MAX_REWARDS - MIN_REWARDS + 1)) + MIN_REWARDS;
+
+        const newBalance = await addCoins(user.id, interaction.guildId, reward);
+
+        embed.setFooter({
+          text: t(lang, 'economy.reward', { user: user.username, reward: reward, balance: newBalance.toLocaleString() }),
+          iconURL: interaction.client.user.displayAvatarURL()
+        });
+
+        return await interaction.editReply({ embeds: [embed] });
+
+      } catch (error) {
+        console.error('Error fetching dance gif:', error);
+        return await interaction.editReply({
+          content: t(lang, 'common.error'),
+        });
+      }
+    }
 
     // Evitamos bailar con uno mismo 
     if (targetUser.id === user.id) {
@@ -58,7 +110,7 @@ export default {
 
       const embed = new EmbedBuilder()
         .setColor('#9B59B6')
-        .setDescription(t(lang, 'dance.msg', { user: user, target: targetUser }))
+        .setDescription(t(lang, 'dance.message', { user: user, target: targetUser }))
         .setImage(gifUrl)
         .setTimestamp()
 

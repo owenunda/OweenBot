@@ -72,7 +72,7 @@
   "hug": {
     "self_hug": "You can't hug yourself! 🥺",
     "bot_hug": "🫢 Oh! Thank you, but I'm a bot! 🤖",
-    "hug_message": "**{user}** hugged **{target}**! 🫢",
+    "hug_message": "**{user}** gave **{target}** a warm hug! 🤗💝",
     "error_gif": "There was an error while searching for the GIF, but the hug still counts. 🫢",
     "reward": "{user} earned {reward} MantiCoins! Balance: {balance} 🪙"
   },
@@ -80,14 +80,14 @@
     "description": "Give someone a kiss! 😘",
     "self": "You can't kiss yourself! 🥺",
     "bot": "🫢 Oh! Thank you, but I'm a bot! 🤖",
-    "message": "**{user}** kissed **{target}**! 😘",
+    "message": "Aww~ **{user}** gave **{target}** a sweet kiss! 😘💕",
     "error": "There was an error while searching for the GIF, but the kiss still counts. 😘"
   },
   "slap": {
     "description": "Slap someone! 👋",
     "self": "You can't slap yourself! 😠",
     "bot": "Hey! Don't hit me! 🤖",
-    "message": "**{user}** slapped **{target}**! 👋",
+    "message": "SLAP! **{user}** slapped **{target}**! That must've hurt... 😵",
     "error": "There was an error while searching for the GIF, but the slap still counts. 👋",
     "self_slap": "You can't slap yourself! 🥺",
     "bot_slap": "🫢 Oh! Thank you, but I'm a bot! 🤖",
@@ -97,7 +97,7 @@
     "description": "Pat someone on the head! 🤚",
     "self": "You can't pat yourself! 🥺",
     "bot": "Thank you! I love pats. 🤖",
-    "message": "**{user}** patted **{target}**! 🤚",
+    "message": "How cute~ **{user}** patted **{target}** on the head 🥰✨",
     "error": "There was an error while searching for the GIF, but the pat still counts. 🤚",
     "self_pat": "You can't pat yourself! 🥺",
     "bot_pat": "🫢 Oh! Thank you, but I'm a bot! 🤖",
@@ -105,19 +105,25 @@
   },
   "cry": {
     "description": "Express your sadness. 😢",
-    "message": "**{user}** is crying... 😢",
+    "message": "Oh no... **{target}** made **{user}** cry 😢💔",
+    "solo_message": "**{user}** is crying... 😢💧",
+    "self_cry": "You can't cry because of yourself! 🥺",
+    "bot_cry": "Why are you crying because of me? I'm just a bot! 🤖",
     "error": "There was an error while searching for the GIF, but the tears are real. 😢"
   },
   "dance": {
     "description": "Show off your dance moves! 💃",
-    "message": "**{user}** is dancing! 💃",
+    "message": "Wow! **{user}** is dancing with **{target}**! 💃🕺✨",
+    "solo_message": "Look! **{user}** is dancing alone! 💃🎶✨",
+    "self_dance": "You can't dance with yourself... or can you! Use the command without mentioning anyone. 🕺",
+    "bot_dance": "I love dancing! But I'm a bot, I have no legs. 🤖💃",
     "error": "There was an error while searching for the GIF, but the dance continues. 💃"
   },
   "punch": {
     "description": "Punch someone! 👊",
     "self": "Why would you punch yourself? 🤕",
     "bot": "Dodged! 🤖",
-    "message": "**{user}** punched **{target}**! 👊",
+    "message": "OUCH! **{user}** punched **{target}**! 👊💥",
     "error": "There was an error while searching for the GIF, but the punch hurt anyway. 👊",
     "self_punch": "You can't punch yourself! 🥺",
     "bot_punch": "🫢 Oh! Thank you, but I'm a bot! 🤖",
@@ -127,7 +133,7 @@
     "description": "Eliminate someone (virtually)! 💀",
     "self": "Don't do that! 😱",
     "bot": "I am immortal. 🤖",
-    "message": "**{user}** eliminated **{target}**! 💀",
+    "message": "💀 **{user}** eliminated **{target}**... Press F to pay respects 💀",
     "error": "There was an error while searching for the GIF, but the fate is the same. 💀"
   },
   "neko": {

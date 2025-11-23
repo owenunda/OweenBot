@@ -62,7 +62,7 @@ export default {
 
       const embed = new EmbedBuilder()
         .setColor('#8B0000')
-        .setDescription(t(lang, 'kill.msg', { user: user, target: targetUser }))
+        .setDescription(t(lang, 'kill.message', { user: user, target: targetUser }))
         .setImage(gifUrl)
         .setTimestamp()
 
