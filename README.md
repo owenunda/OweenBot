@@ -9,7 +9,7 @@ Tu compañero de aventuras en Discord: saluda, juega, muestra avatares, comparte
 </div>
 
 ## ¿Qué puede hacer?
-
+ 
 - “¡Hola!” pero con estilo — saluda, bromea y corrige typos.
 - “Pong!!” — responde a tu ping como todo buen bot.
 - “Dime tu avatar” — te muestra el tuyo o el de quien elijas.
