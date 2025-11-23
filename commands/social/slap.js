@@ -1,8 +1,7 @@
-import { SlashCommandBuilder, EmbedBuilder, MessageFlags } from "discord.js";
-import axios from "axios";
-import 'dotenv/config'
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
+import NekosLife from "nekos.life";
 
-
+const nekoClient = new NekosLife();
 
 export default {
   data: new SlashCommandBuilder()
@@ -14,63 +13,43 @@ export default {
     const targetUser = interaction.options.getUser("user");
     const user = interaction.user;
 
-    // Evitamos besarnos a uno mismo 
+    // Evitamos golpearnos a uno mismo 
     if (targetUser.id === user.id) {
-      await interaction.deferReply({
+      return await interaction.reply({
+        content: "You can't slap yourself! 🥺",
         ephemeral: true
-      })
-      return await interaction.editReply({
-        content: "You can't slap yourself",
-      })
+      });
     }
 
-    // Si mencioa al mismo bot
+    // Si menciona al mismo bot
     if (targetUser.id === interaction.client.user.id) {
       return await interaction.reply({
-        content: "🫢 Oh! Thanks you, but I'm a bot",
-      })
+        content: "🫢 Oh! Thank you, but I'm a bot! 🤖",
+        ephemeral: true
+      });
     }
-    // DeferReply: Avisamos a Discord que estamos "pensando" (por si Giphy tarda un poco)
-    await interaction.deferReply()
 
+    // DeferReply: Avisamos a Discord que estamos "pensando"
+    await interaction.deferReply();
 
     try {
-      const response = await axios.get('https://api.giphy.com/v1/gifs/search', {
-        params: {
-          api_key: process.env.GIPHY_API_KEY,
-          // 2. FILTRO MÁS AGRESIVO
-          q: "manga style slap reaction", // Usa esta frase
-          limit: 50, // Traemos 50 resultados
-          rating: "g"
-        }
-      })
-      const gifs = response.data.data; // Aquí 'gifs' AHORA SÍ es la lista de 50 resultados
-
-      if(!gifs || gifs.length === 0) {
-        return;
-      }
-
-      const randomIndex = Math.floor(Math.random() * gifs.length);
-      const randomGif = gifs[randomIndex];
-      const gifUrl = randomGif.images.original.url;
+      const response = await nekoClient.slap();
+      const imageUrl = response.url;
 
       const embed = new EmbedBuilder()
         .setColor('#1E25E9')
         .setDescription(`**${user}** slapped **${targetUser}**! 🫢`)
-        .setImage(gifUrl)
+        .setImage(imageUrl)
         .setTimestamp()
-        .setFooter({ text: `Requested by ${user.username}` })
+        .setFooter({ text: `Requested by ${user.username}` });
 
-      await interaction.editReply({ embeds: [embed] })
+      await interaction.editReply({ embeds: [embed] });
 
     } catch (error) {
-      console.log('Error al obtener el gif', error)
+      console.error('Error fetching slap image:', error);
       await interaction.editReply({
-        content: "There was an error while searching for the GIF, but the slap still counts.🫢",
-      })
+        content: "There was an error while searching for the GIF, but the slap still counts. 🫢",
+      });
     }
-
-
-
   },
-}
+};
