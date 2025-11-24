@@ -55,44 +55,60 @@ const __dirname = path.dirname(__filename);
  */
 const commands = [];
 
+/**
+ * Función recursiva para explorar carpetas y encontrar todos los archivos .js
+ * @param {string} dir - Directorio a explorar
+ * @returns {Array<string>} - Array con todas las rutas de archivos .js encontrados
+ */
+function getAllCommandFiles(dir) {
+	const files = [];
+	const items = fs.readdirSync(dir, { withFileTypes: true });
+
+	for (const item of items) {
+		const fullPath = path.join(dir, item.name);
+
+		if (item.isDirectory()) {
+			// Si es una carpeta, explora recursivamente
+			// Ignora carpetas especiales y subcarpetas de comandos RPG
+			if (!['node_modules', '.git', 'json', 'character', 'gameplay', 'info', 'items'].includes(item.name)) {
+				files.push(...getAllCommandFiles(fullPath));
+			}
+		} else if (item.isFile() && item.name.endsWith('.js')) {
+			// Si es un archivo .js, agrégalo
+			files.push(fullPath);
+		}
+	}
+
+	return files;
+}
+
 // Ruta a la carpeta que contiene todas las categorías de comandos
 const foldersPath = path.join(__dirname, 'commands');
-const commandFolders = fs.readdirSync(foldersPath);  // Lee carpetas: fun, moderation, utility, etc.
+const commandFiles = getAllCommandFiles(foldersPath);
 
 /**
- * Recorre cada categoría de comandos y extrae la definición de cada comando
+ * Procesa cada archivo de comando:
+ * 1. Importa el módulo
+ * 2. Valida su estructura
+ * 3. Convierte la definición a JSON
+ * 4. Lo agrega al array de comandos
  */
-for (const folder of commandFolders) {
-	const commandsPath = path.join(foldersPath, folder);
+for (const filePath of commandFiles) {
+	// Convierte la ruta a URL para importación dinámica
+	const moduleUrl = pathToFileURL(filePath).href;
+	const imported = await import(moduleUrl);
+	const command = imported.default ?? imported;
 
-	// Filtra solo archivos .js, ignora subcarpetas (como /json)
-	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-
-	/**
-	 * Procesa cada archivo de comando:
-	 * 1. Importa el módulo
-	 * 2. Valida su estructura
-	 * 3. Convierte la definición a JSON
-	 * 4. Lo agrega al array de comandos
-	 */
-	for (const file of commandFiles) {
-		const filePath = path.join(commandsPath, file);
-
-		// Convierte la ruta a URL para importación dinámica
-		const moduleUrl = pathToFileURL(filePath).href;
-		const imported = await import(moduleUrl);
-		const command = imported.default ?? imported;
-
-		// Valida que el comando tenga las propiedades requeridas
-		if ('data' in command && 'execute' in command) {
-			/**
-			 * Convierte el SlashCommandBuilder a JSON
-			 * Este formato es el que espera la API de Discord
-			 */
-			commands.push(command.data.toJSON());
-		} else {
-			console.log(`[ADVERTENCIA] El comando en ${filePath} no tiene la propiedad requerida "data" o "execute". - deploy-commands.js:30`);
-		}
+	// Valida que el comando tenga las propiedades requeridas
+	if ('data' in command && 'execute' in command) {
+		/**
+		 * Convierte el SlashCommandBuilder a JSON
+		 * Este formato es el que espera la API de Discord
+		 */
+		commands.push(command.data.toJSON());
+		console.log(`[OK] Comando cargado: ${command.data.name} (${filePath})`);
+	} else {
+		console.log(`[ADVERTENCIA] El comando en ${filePath} no tiene la propiedad requerida "data" o "execute".`);
 	}
 }
 
