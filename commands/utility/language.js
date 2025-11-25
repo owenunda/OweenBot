@@ -14,8 +14,8 @@ export default {
                     { name: 'Español', value: 'es' },
                     { name: 'English', value: 'en' }
                 )
-        )
-        .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+        ),
+        //.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
     async execute(interaction) {
         const langCode = interaction.options.getString('lang');
         const guildId = interaction.guildId;

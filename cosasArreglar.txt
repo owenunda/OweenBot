@@ -1,0 +1,1 @@
+el titulo del comando manticoint.daily_title y permite usarlo muchas veces 
