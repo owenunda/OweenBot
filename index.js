@@ -213,4 +213,13 @@ const token = process.env.NODE_ENV === 'development'
 	? process.env.TOKEN_DEV
 	: process.env.TOKEN;
 
-client.login(token);
+console.log('🔐 Intentando conectar con Discord...');
+console.log('📌 Modo:', process.env.NODE_ENV || 'production');
+console.log('🔑 Token configurado:', token ? 'Sí ✅' : 'No ❌');
+
+client.login(token)
+	.then(() => console.log('✅ Login exitoso'))
+	.catch(err => {
+		console.error('❌ Error al hacer login:', err.message);
+		process.exit(1);
+	});
