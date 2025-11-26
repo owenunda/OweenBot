@@ -33,7 +33,7 @@ export default {
         )
         .setFooter({ text: t(lang, 'economy.check_balance') });
       
-      return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+      return interaction.reply({ embeds: [errorEmbed] });
     }
 
     // Crear botones para elegir color
