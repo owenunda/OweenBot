@@ -84,7 +84,7 @@ TECHNICAL.md
 - Recarga falla con “No se encontró módulo…”
   - Asegúrate de pasar el nombre del slash command a `/reload` (ej. `hola-pepe`, `random-agent`).
 
-### Seguridad
+### Seguridad 
 
 - Añade `.env` a `.gitignore` y evita publicarlo.
 - Regenera tu token si se expone.
