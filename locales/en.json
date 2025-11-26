@@ -169,7 +169,9 @@
     "ago": "Ago **{time}**"
   },
   "manticoint": {
+    "daily_title": "Daily Reward",
     "description": "MantiCoins system commands",
+    "daily_cooldown": "⏳ You already claimed your daily reward!\nCome back in **{time}**.",
     "daily_claimed": "✅ You have claimed your daily **100 MantiCoins**!\nCome back in **{time}**.",
     "daily_success": "✅ You have claimed your daily **100 MantiCoins**!\n💰 New balance: **{balance} MantiCoins**",
     "top_title": "🏆 Top 10 Richest (Server)",

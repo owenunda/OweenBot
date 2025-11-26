@@ -169,7 +169,9 @@
     "ago": "Hace **{time}**"
   },
   "manticoint": {
+    "daily_title": "Recompensa diaria",
     "description": "Comandos del sistema MantiCoins",
+    "daily_cooldown": "⏳ ¡Ya reclamaste tu recompensa diaria!\nVuelve en **{time}**.",
     "daily_claimed": "✅ ¡Has reclamado tus **100 MantiCoins** diarios!\nVuelve en **{time}**.",
     "daily_success": "✅ ¡Has reclamado tus **100 MantiCoins** diarios!\n💰 Nuevo saldo: **{balance} MantiCoins**",
     "top_title": "🏆 Top 10 Más Ricos (Servidor)",

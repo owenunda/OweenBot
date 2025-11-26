@@ -53,7 +53,7 @@ export default {
             return `**${index + 1}.** ${t(lang, 'manticoint.unknown_user')} (${user.userid}) - ${user.manticoins.toLocaleString()} 🪙`;
           }
         })
-      )
+      );
 
       const embed = new EmbedBuilder()
         .setColor('#FFD700') // Color Oro
@@ -92,7 +92,7 @@ export default {
             return `**${index + 1}.** ${t(lang, 'manticoint.unknown_user')} (${user.userid}) - ${user.manticoins.toLocaleString()} 🪙`;
           }
         })
-      )
+      );
 
       const embed = new EmbedBuilder()
         .setColor('#FFD700') // Color Oro
@@ -114,13 +114,37 @@ export default {
 
       // Obtener la última vez que el usuario reclamó el daily
       const { lastDaily } = await getWorkData(userId, guildId);
+      
+      // Si lastDaily es null/undefined (usuario nuevo), usamos fecha 0 (1970)
+      const lastDailyDate = lastDaily ? new Date(lastDaily) : new Date(0);
       const now = new Date();
-      const timeDiff = now - new Date(lastDaily);
+      const timeDiff = now - lastDailyDate;
       const hoursDiff = timeDiff / (1000 * 60 * 60); // Convertir a horas
+
+      // Si NO han pasado 24 horas, mostrar error
+      if (hoursDiff < 24) {
+        const remainingHours = 24 - hoursDiff;
+        const remainingTime = new Date(now.getTime() + remainingHours * 60 * 60 * 1000);
+        const timestamp = Math.ceil(remainingTime.getTime() / 1000);
+
+        const embed = new EmbedBuilder()
+          .setColor('#FF0000') // Rojo para error
+          .setTitle(t(lang, 'manticoint.daily_title'))
+          .setDescription(t(lang, 'manticoint.daily_cooldown', { time: `<t:${timestamp}:R>` }))
+          .setTimestamp()
+          .setFooter({ text: 'MantiCoins', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' });
+
+        return await interaction.editReply({ embeds: [embed] });
+      }
+
       // Si han pasado 24 horas, dar las monedas
       const dailyAmount = 100; // Cantidad de monedas diarias
       const newBalance = await addCoins(userId, guildId, dailyAmount);
       await updateWorkTime(userId, guildId);
+
+      console.log('DEBUG: lang:', lang);
+      console.log('DEBUG: key:', 'manticoint.daily_title');
+      console.log('DEBUG: translation:', t(lang, 'manticoint.daily_title'));
 
       const embed = new EmbedBuilder()
         .setColor('#FFD700') // Color Oro
