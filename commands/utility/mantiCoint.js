@@ -36,9 +36,9 @@ export default {
           .setColor('#FFD700')
           .setTitle(t(lang, 'manticoint.top_title', { guildName: interaction.guild.name }))
           .setDescription(t(lang, 'manticoint.empty'))
-          .setFooter({ text: 'MantiCoins', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' });
+          .setFooter({ text: 'MantiCoins', iconURL: 'attachment://manticoin_front.png' });
         
-        return await interaction.editReply({ embeds: [emptyEmbed] });
+        return await interaction.editReply({ embeds: [emptyEmbed], files: ['./assets/manticoin_pixel/manticoin_front.png'] });
       }
 
       const leaderBoardString = await Promise.all(
@@ -60,9 +60,9 @@ export default {
         .setTitle(t(lang, 'manticoint.top_title', { guildName: interaction.guild.name }))
         .setDescription(leaderBoardString.join('\n'))
         .setTimestamp()
-        .setFooter({ text: 'MantiCoins', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
+        .setFooter({ text: 'MantiCoins', iconURL: 'attachment://manticoin_front.png' })
 
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed], files: ['./assets/manticoin_pixel/manticoin_front.png'] });
     }
 
     // Top 10 GLOBAL (todos los servidores)
@@ -75,9 +75,9 @@ export default {
           .setColor('#FFD700')
           .setTitle(t(lang, 'manticoint.global_title'))
           .setDescription(t(lang, 'manticoint.empty'))
-          .setFooter({ text: 'MantiCoins', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' });
+          .setFooter({ text: 'MantiCoins', iconURL: 'attachment://manticoin_front.png' });
         
-        return await interaction.editReply({ embeds: [emptyEmbed] });
+        return await interaction.editReply({ embeds: [emptyEmbed], files: ['./assets/manticoin_pixel/manticoin_front.png'] });
       }
 
       const leaderBoardString = await Promise.all(
@@ -99,9 +99,9 @@ export default {
         .setTitle(t(lang, 'manticoint.global_title'))
         .setDescription(leaderBoardString.join('\n'))
         .setTimestamp()
-        .setFooter({ text: 'MantiCoins', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
+        .setFooter({ text: 'MantiCoins', iconURL: 'attachment://manticoin_front.png' })
 
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed], files: ['./assets/manticoin_pixel/manticoin_front.png'] });
     }
 
 
@@ -132,9 +132,9 @@ export default {
           .setTitle(t(lang, 'manticoint.daily_title'))
           .setDescription(t(lang, 'manticoint.daily_cooldown', { time: `<t:${timestamp}:R>` }))
           .setTimestamp()
-          .setFooter({ text: 'MantiCoins', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' });
+          .setFooter({ text: 'MantiCoins', iconURL: 'attachment://manticoin_front.png' });
 
-        return await interaction.editReply({ embeds: [embed] });
+        return await interaction.editReply({ embeds: [embed], files: ['./assets/manticoin_pixel/manticoin_front.png'] });
       }
 
       // Si han pasado 24 horas, dar las monedas
@@ -151,9 +151,9 @@ export default {
         .setTitle(t(lang, 'manticoint.daily_title'))
         .setDescription(t(lang, 'manticoint.daily_success', { amount: dailyAmount, balance: newBalance.toLocaleString() }))
         .setTimestamp()
-        .setFooter({ text: 'MantiCoins', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
+        .setFooter({ text: 'MantiCoins', iconURL: 'attachment://manticoin_front.png' })
 
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed], files: ['./assets/manticoin_pixel/manticoin_front.png'] });
     }
 
     // info about MantiCoins
@@ -170,9 +170,9 @@ export default {
           `${t(lang, 'manticoint.info_note')}`
         )
         .setTimestamp()
-        .setFooter({ text: 'MantiCoins', iconURL: 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp' })
+        .setFooter({ text: 'MantiCoins', iconURL: 'attachment://manticoin_front.png' })
 
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed], files: ['./assets/manticoin_pixel/manticoin_front.png'] });
     }
   }
 

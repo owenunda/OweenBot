@@ -23,7 +23,7 @@ export default {
 
   async execute(interaction) {
     await interaction.deferReply();
-
+    console.log('coinflip');
     const choice = interaction.options.getString('lado');
     const betAmount = interaction.options.getInteger('cantidad');
     const userId = interaction.user.id;
@@ -48,13 +48,16 @@ export default {
     }
 
     // Mostrar animación de moneda girando
-    const coinflipGif = 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp';
+    const coinflipGif = 'attachment://manticoin_loop.gif';
     const loadingEmbed = new EmbedBuilder()
       .setDescription(t(lang, 'coinflip.flipping'))
       .setImage(coinflipGif) // Gif de moneda
       .setColor('Yellow');
 
-    await interaction.editReply({ embeds: [loadingEmbed] });
+    await interaction.editReply({ 
+      embeds: [loadingEmbed],
+      files: ['./assets/manticoin_pixel/manticoin_loop.gif']
+    });
 
     // Esperar un poco para efecto dramático
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -64,10 +67,14 @@ export default {
     const result = Math.random() < 0.5 ? 'cara' : 'cruz';
     const hasWon = choice === result;
 
-    // Imágenes para el Embed (puedes cambiarlas)
+    // Imágenes para el Embed (MantiCoin pixel art)
     const coinImg = result === 'cara'
-      ? 'https://media.tenor.com/JBYCgGO1vtcAAAAi/publi-art.gif' // Imagen de Cara
-      : 'https://media.tenor.com/EXRUmfDcs8oAAAAi/crypto-coin-crypto.gif'; // Imagen de Cruz
+      ? 'attachment://manticoin_front.png' // Imagen de Cara
+      : 'attachment://manticoin_back.png'; // Imagen de Cruz
+    
+    const coinFile = result === 'cara'
+      ? './assets/manticoin_pixel/manticoin_front.png'
+      : './assets/manticoin_pixel/manticoin_back.png';
 
     // 3. Transacción en Base de Datos
     let newBalance;
@@ -95,6 +102,9 @@ export default {
       .setColor(color)
       .setFooter({ text: 'Sistema de Apuestas OweenBot', iconURL: coinflipGif });
 
-    await interaction.editReply({ embeds: [embed] });
+    await interaction.editReply({ 
+      embeds: [embed],
+      files: [coinFile]
+    });
   },
 };

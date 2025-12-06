@@ -21,7 +21,7 @@ export default {
     // determina el usuario objetivo
     const targetUser = interaction.options.getUser('user') || interaction.user;
     const guildId = interaction.guildId;
-    const gifManti = 'https://media.tenor.com/Vl6iJkR2IzMAAAAm/memecoin.webp'
+    const gifManti = 'attachment://manticoin_front.png'
     const balance = await getBalance(targetUser.id, guildId);
 
     const embed = new EmbedBuilder()
@@ -34,7 +34,7 @@ export default {
       .setTimestamp()
       .setFooter({ text: t(lang, 'balance.footer'), iconURL: gifManti })
 
-    await interaction.editReply({ embeds: [embed] });
+    await interaction.editReply({ embeds: [embed], files: ['./assets/manticoin_pixel/manticoin_front.png'] });
   }
 
 }
