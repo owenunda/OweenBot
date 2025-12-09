@@ -64,8 +64,6 @@ app.get("/ping", (req, res) => {
 app.listen(PORT, () => {
 	console.log(`✅ Server running on port ${PORT} - index.js:59`)
 
-	const pingUrl = `${process.env.APP_URL}/ping`;
-	startSelfPing(pingUrl);
 });
 
 // ═══════════════════════════════════════════════════════════════════════════
