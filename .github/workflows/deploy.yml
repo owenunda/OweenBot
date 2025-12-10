@@ -12,7 +12,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 1. Login a Docker Hub (usa tus secretos)
+      # 1. Login a Docker Hub
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -27,7 +27,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/oweenbot:latest 
           
-      # 3. Preparar las Variables para el Despliegue con Trazabilidad
+      # 3. Preparar las Variables para la Trazabilidad
       - name: Set Deployment Variables
         id: deploy_vars
         run: |
@@ -37,30 +37,30 @@ jobs:
           # Nombre completo de la imagen
           echo "DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/oweenbot:latest" >> $GITHUB_OUTPUT
 
-# 4. Trigger Dokploy Deployment (API Method) con info del Commit
+      # 4. Trigger Dokploy Deployment (API Method) con info del Commit
+      # Usamos el AppID y el API Key proporcionados
       - name: Trigger Dokploy Deployment via API
         env:
+          # Clave API proporcionada
           DOKPLOY_API_KEY: "DAKBRScPuizchpQjZEuvaNGcubJxblnuMKFtvfjGRHByOjrImUwugVPTuLMzxganHcx" 
+          # ID de la aplicación oweenBot
           APP_ID: "j1ENw3kTP7e0fiyqkay7t" 
-          # Aseguramos que las variables de output estén disponibles como variables de entorno
+          # Variables de Output (para uso seguro en el script)
           COMMIT_SHA: ${{ steps.deploy_vars.outputs.COMMIT_SHA }}
           COMMIT_MSG: ${{ steps.deploy_vars.outputs.COMMIT_MESSAGE }}
           IMAGE_NAME: ${{ steps.deploy_vars.outputs.DOCKER_IMAGE }}
           
         run: |
-           # 1. Definir el mensaje usando las variables de entorno (que ya están aseguradas)
+           # 1. Definir el mensaje usando las variables de entorno
            DEPLOY_MESSAGE="Deploy por commit $COMMIT_SHA: $COMMIT_MSG"
            
            echo "Disparando API Deploy para APP_ID: $APP_ID. Mensaje: $DEPLOY_MESSAGE"
            
            # 2. CURL al endpoint de API de Dokploy
-           # Usamos comillas dobles en -d para contener el mensaje y la imagen
+           # Se usa 'x-api-key' en lugar de 'Authorization: Bearer' para corregir el error 401
            curl -X POST \
                 --fail \
                 -v \
-                -H "Authorization: Bearer $DOKPLOY_API_KEY" \
+                -H "x-api-key: $DOKPLOY_API_KEY" \
                 -H "Content-Type: application/json" \
-                -d "{\"image\":\"$IMAGE_NAME\", \"message\":\"$DEPLOY_MESSAGE\"}" \
-                "https://dokploy.oween.software/api/applications/$APP_ID/deploy"
-           
-           echo "✅ Despliegue API disparado. Revisa la cola de Dokploy y el mensaje de despliegue."
+                -d "{\"image\":\"$IMAGE_NAME\", \"message\":\"
