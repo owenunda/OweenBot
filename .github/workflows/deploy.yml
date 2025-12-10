@@ -29,7 +29,11 @@ jobs:
 
       - name: Trigger Dokploy Deployment Webhook
         env:
-          DOKPLOY_WEBHOOK_URL: ${{ secrets.DOKPLOY_WEBHOOK }} # (¡Importante! Ver paso 3)
+        # Usas DOKPLOY_WEBHOOK en tu YAML anterior, así que mantenemos el nombre
+          DOKPLOY_WEBHOOK_URL: ${{ secrets.DOKPLOY_WEBHOOK }} 
         run: |
-          # 💡 URL: Obtén esta URL de Dokploy, en la sección 'Deployments' de tu aplicación.
-          curl -X POST $DOKPLOY_WEBHOOK_URL.
+                # --fail: Hace que el action falle si Dokploy devuelve 4xx/5xx.
+                # -v: Muestra los headers de la respuesta (verbose).
+                # -L: Sigue redirecciones (útil si hay un proxy o 301).
+                echo "Disparando Webhook: $DOKPLOY_WEBHOOK_URL"
+                curl -X POST --fail -v -L "$DOKPLOY_WEBHOOK_URL"
