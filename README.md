@@ -53,7 +53,7 @@ Useful tools and information
 - `/ping` - Check bot latency
 
 ### 🎮 Gaming
-- `/random-agent` - Get a random Valorant agent by role..
+- `/random-agent` - Get a random Valorant agent by role.
 
 ---
 
