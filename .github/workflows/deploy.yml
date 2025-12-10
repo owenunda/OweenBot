@@ -37,30 +37,29 @@ jobs:
           # Nombre completo de la imagen
           echo "DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/oweenbot:latest" >> $GITHUB_OUTPUT
 
-      # 4. Trigger Dokploy Deployment (API Method) con info del Commit
+# 4. Trigger Dokploy Deployment (API Method) con info del Commit
       - name: Trigger Dokploy Deployment via API
         env:
           DOKPLOY_API_KEY: "DAKBRScPuizchpQjZEuvaNGcubJxblnuMKFtvfjGRHByOjrImUwugVPTuLMzxganHcx" 
           APP_ID: "j1ENw3kTP7e0fiyqkay7t" 
+          # Aseguramos que las variables de output estén disponibles como variables de entorno
+          COMMIT_SHA: ${{ steps.deploy_vars.outputs.COMMIT_SHA }}
+          COMMIT_MSG: ${{ steps.deploy_vars.outputs.COMMIT_MESSAGE }}
+          IMAGE_NAME: ${{ steps.deploy_vars.outputs.DOCKER_IMAGE }}
           
         run: |
-           # Siempre encierra las variables de salida en comillas dobles
-           COMMIT_SHA="${{ steps.deploy_vars.outputs.COMMIT_SHA }}"
-           COMMIT_MSG="${{ steps.deploy_vars.outputs.COMMIT_MESSAGE }}"
-           IMAGE_NAME="${{ steps.deploy_vars.outputs.DOCKER_IMAGE }}"
-
-           # Mensaje personalizado de despliegue que deseas ver en Dokploy
+           # 1. Definir el mensaje usando las variables de entorno (que ya están aseguradas)
            DEPLOY_MESSAGE="Deploy por commit $COMMIT_SHA: $COMMIT_MSG"
            
            echo "Disparando API Deploy para APP_ID: $APP_ID. Mensaje: $DEPLOY_MESSAGE"
            
-           # CURL al endpoint de API de Dokploy
+           # 2. CURL al endpoint de API de Dokploy
+           # Usamos comillas dobles en -d para contener el mensaje y la imagen
            curl -X POST \
                 --fail \
                 -v \
                 -H "Authorization: Bearer $DOKPLOY_API_KEY" \
                 -H "Content-Type: application/json" \
-                # Usar DEPLOY_MESSAGE y IMAGE_NAME entre comillas dobles en el JSON
                 -d "{\"image\":\"$IMAGE_NAME\", \"message\":\"$DEPLOY_MESSAGE\"}" \
                 "https://dokploy.oween.software/api/applications/$APP_ID/deploy"
            
