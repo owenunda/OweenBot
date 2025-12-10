@@ -45,7 +45,6 @@ Interact with other users and earn MantiCoins!
 Useful tools and information
 
 
-
 - `/help` - Interactive help menu
 - `/infobot` - Bot statistics and info
 - `/avatar` - Display user avatars
