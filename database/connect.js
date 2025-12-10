@@ -8,11 +8,10 @@ const { Pool } = pg;
 // 1. Crear el Pool de Conexiones con configuración mejorada
 const pool = new Pool({
     connectionString: process.env.POSTGRES_URI,
-    ssl: { rejectUnauthorized: false },
-    // Configuración de pool para mejor manejo de conexiones
-    max: 20, // Máximo de conexiones en el pool
-    idleTimeoutMillis: 30000, // Cerrar conexiones inactivas después de 30s
-    connectionTimeoutMillis: 10000, // Timeout de 10s para nuevas conexiones
+    ssl: false, // Desactiva SSL
+    max: 20,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 10000,
 });
 
 // Manejar errores del pool para evitar crashes
@@ -92,7 +91,7 @@ export const connectDB = async () => {
     while (retries > 0) {
         try {
             await pool.query('SELECT NOW()'); 
-            console.log('🔗 Conectado a PostgreSQL (Supabase).');
+            console.log('🔗 Conectado a PostgreSQL (dockploy).');
             await initializeDatabase();
             return; // Salir si tiene éxito
         } catch (error) {
