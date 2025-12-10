@@ -3,7 +3,7 @@ name: CI/CD Docker Build and Deploy
 on:
   push:
     branches:
-      - main # Solo se ejecuta cuando hay un push a la rama 'main'
+      - main 
 
 jobs:
   build_and_push:
@@ -12,28 +12,45 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 1. Login a Docker Hub
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }} 
           password: ${{ secrets.DOCKER_PASSWORD }} 
 
+      # 2. Build y Push de la Imagen
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/oweenbot:latest # Debe coincidir con lo que pusiste en Dokploy
-          # Opcionalmente, puedes usar un tag dinámico basado en el hash del commit
-          # tags: ${{ secrets.DOCKER_USERNAME }}/oweenbot:${{ github.sha }}
-
-      - name: Trigger Dokploy Deployment Webhook
-        env:
-        # Usas DOKPLOY_WEBHOOK en tu YAML anterior, así que mantenemos el nombre
-          DOKPLOY_WEBHOOK_URL: ${{ secrets.DOKPLOY_WEBHOOK }} 
+          # Usa el nombre completo de la imagen (oween/oweenbot:latest)
+          tags: ${{ secrets.DOCKER_USERNAME }}/oweenbot:latest 
+          
+      # 3. Define la Variable de la Imagen
+      # (Necesaria para construir el JSON del Webhook)
+      - name: Set Image Name Variable
+        id: image_name_vars
         run: |
-                # --fail: Hace que el action falle si Dokploy devuelve 4xx/5xx.
-                # -v: Muestra los headers de la respuesta (verbose).
-                # -L: Sigue redirecciones (útil si hay un proxy o 301).
-                echo "Disparando Webhook: $DOKPLOY_WEBHOOK_URL"
-                curl -X POST --fail -v -L "$DOKPLOY_WEBHOOK_URL"
+          # Variable con el nombre que Dokploy debe descargar
+          echo "DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/oweenbot:latest" >> $GITHUB_OUTPUT
+
+      # 4. Trigger Dokploy Webhook con Payload JSON (La Solución al error)
+      - name: Trigger Dokploy Deployment Webhook with JSON Payload
+        env:
+          DOKPLOY_WEBHOOK_URL: ${{ secrets.DOKPLOY_WEBHOOK }}
+          IMAGE_NAME: ${{ steps.image_name_vars.outputs.DOCKER_IMAGE }} 
+        run: |
+           echo "Disparando Webhook a Dokploy con imagen: $IMAGE_NAME"
+           
+           # Envía Content-Type: application/json y el cuerpo: {"image": "oween/oweenbot:latest"}
+           curl -X POST \
+                --fail \
+                -v \
+                -L \
+                -H "Content-Type: application/json" \
+                -d "{\"image\":\"$IMAGE_NAME\"}" \
+                "$DOKPLOY_WEBHOOK_URL"
+           
+           echo "✅ Señal de despliegue enviada. Revisa la pestaña Deployments en Dokploy."
