@@ -32,4 +32,4 @@ jobs:
           DOKPLOY_WEBHOOK_URL: ${{ secrets.DOKPLOY_WEBHOOK }} # (¡Importante! Ver paso 3)
         run: |
           # 💡 URL: Obtén esta URL de Dokploy, en la sección 'Deployments' de tu aplicación.
-          curl -X POST $DOKPLOY_WEBHOOK_URL
+          curl -X POST $DOKPLOY_WEBHOOK_URL.
