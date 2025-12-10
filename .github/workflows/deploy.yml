@@ -1,4 +1,4 @@
-name: CI/CD Docker Build and Push
+name: CI/CD Docker Build and Deploy with Commit Info
 
 on:
   push:
@@ -12,25 +12,56 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 1. Login a Docker Hub
+      # 1. Login a Docker Hub (usa tus secretos)
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }} 
           password: ${{ secrets.DOCKER_PASSWORD }} 
 
-      # 2. Build y Push de la Imagen (Paso Final en GitHub Actions)
+      # 2. Build y Push de la Imagen 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          # Asegúrate de que el TAG sea el que Dokploy espera
           tags: ${{ secrets.DOCKER_USERNAME }}/oweenbot:latest 
           
-      # 🚨 ¡IMPORTANTE! Hemos ELIMINADO los pasos anteriores de CURL y Webhook.
-      # Ahora, Docker Hub enviará la señal a Dokploy una vez que este paso termine.
-      
-      - name: Finalización del Job
+      # 3. Preparar las Variables para el Despliegue con Trazabilidad
+      - name: Set Deployment Variables
+        id: deploy_vars
         run: |
-           echo "✅ Imagen subida a Docker Hub. Esperando que Docker Hub dispare el Webhook en Dokploy."
+          # Capturar el SHA (hash corto) del commit y el mensaje
+          echo "COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
+          echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+          # Nombre completo de la imagen
+          echo "DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/oweenbot:latest" >> $GITHUB_OUTPUT
+
+      # 4. Trigger Dokploy Deployment (API Method) con info del Commit
+      - name: Trigger Dokploy Deployment via API
+        env:
+          # API Key proporcionada para Dokploy
+          DOKPLOY_API_KEY: "DAKBRScPuizchpQjZEuvaNGcubJxblnuMKFtvfjGRHByOjrImUwugVPTuLMzxganHcx" 
+          # AppID de tu aplicación oweenBot
+          APP_ID: "j1ENw3kTP7e0fiyqkay7t" 
+          
+        run: |
+           COMMIT_SHA=${{ steps.deploy_vars.outputs.COMMIT_SHA }}
+           COMMIT_MSG=${{ steps.deploy_vars.outputs.COMMIT_MESSAGE }}
+           IMAGE_NAME=${{ steps.deploy_vars.outputs.DOCKER_IMAGE }}
+
+           # Mensaje personalizado de despliegue que deseas ver en Dokploy
+           DEPLOY_MESSAGE="Deploy por commit $COMMIT_SHA: $COMMIT_MSG"
+           
+           echo "Disparando API Deploy para APP_ID: $APP_ID. Mensaje: $DEPLOY_MESSAGE"
+           
+           # CURL al endpoint de API de Dokploy
+           curl -X POST \
+                --fail \
+                -v \
+                -H "Authorization: Bearer $DOKPLOY_API_KEY" \
+                -H "Content-Type: application/json" \
+                -d "{\"image\":\"$IMAGE_NAME\", \"message\":\"$DEPLOY_MESSAGE\"}" \
+                "https://dokploy.oween.software/api/applications/$APP_ID/deploy"
+           
+           echo "✅ Despliegue API disparado. Revisa la cola de Dokploy y el mensaje de despliegue."
