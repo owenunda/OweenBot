@@ -1,4 +1,4 @@
-name: CI/CD Docker Build and Deploy
+name: CI/CD Docker Build and Push
 
 on:
   push:
@@ -19,38 +19,18 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }} 
           password: ${{ secrets.DOCKER_PASSWORD }} 
 
-      # 2. Build y Push de la Imagen
+      # 2. Build y Push de la Imagen (Paso Final en GitHub Actions)
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          # Usa el nombre completo de la imagen (oween/oweenbot:latest)
+          # Asegúrate de que el TAG sea el que Dokploy espera
           tags: ${{ secrets.DOCKER_USERNAME }}/oweenbot:latest 
           
-      # 3. Define la Variable de la Imagen
-      # (Necesaria para construir el JSON del Webhook)
-      - name: Set Image Name Variable
-        id: image_name_vars
+      # 🚨 ¡IMPORTANTE! Hemos ELIMINADO los pasos anteriores de CURL y Webhook.
+      # Ahora, Docker Hub enviará la señal a Dokploy una vez que este paso termine.
+      
+      - name: Finalización del Job
         run: |
-          # Variable con el nombre que Dokploy debe descargar
-          echo "DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/oweenbot:latest" >> $GITHUB_OUTPUT
-
-      # 4. Trigger Dokploy Webhook con Payload JSON (La Solución al error)
-      - name: Trigger Dokploy Deployment Webhook with JSON Payload
-        env:
-          DOKPLOY_WEBHOOK_URL: ${{ secrets.DOKPLOY_WEBHOOK }}
-          IMAGE_NAME: ${{ steps.image_name_vars.outputs.DOCKER_IMAGE }} 
-        run: |
-           echo "Disparando Webhook a Dokploy con imagen: $IMAGE_NAME"
-           
-           # Envía Content-Type: application/json y el cuerpo: {"image": "oween/oweenbot:latest"}
-           curl -X POST \
-                --fail \
-                -v \
-                -L \
-                -H "Content-Type: application/json" \
-                -d "{\"image\":\"$IMAGE_NAME\"}" \
-                "$DOKPLOY_WEBHOOK_URL"
-           
-           echo "✅ Señal de despliegue enviada. Revisa la pestaña Deployments en Dokploy."
+           echo "✅ Imagen subida a Docker Hub. Esperando que Docker Hub dispare el Webhook en Dokploy."
